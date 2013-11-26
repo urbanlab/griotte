@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+
+import raspeomix.server
+import raspeomix.constants as C
+import tornado.ioloop
+import tornado.web
+import os
+
+from optparse import OptionParser
+
+static_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'static')
+
+class IndexHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    def get(self):
+        self.render(os.path.join(static_path,"index.html"))
+
+app = tornado.web.Application([
+    (r'^/$', IndexHandler),
+    (r'/(.*)', tornado.web.StaticFileHandler, {'path': static_path}),
+    (r'/', raspeomix.server.Server),
+])
+
+def parse_opts():
+  parser = OptionParser()
+  parser.add_option("-p", "--port", dest="port",
+                    help="Listen on port PORT (default=%s)" % C.DEFAULT_PORT, metavar="PORT",
+                    default=C.DEFAULT_PORT)
+
+  return parser.parse_args()
+
+def main():
+
+  (option,args) = parse_opts()
+
+  print("Listening on port %s" % option.port)
+  app.listen(option.port)
+  print("Static assets path : ", static_path)
+  tornado.ioloop.IOLoop.instance().start()
+
+if __name__ == "__main__":
+    main()
