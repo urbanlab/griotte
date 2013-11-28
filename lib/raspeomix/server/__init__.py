@@ -27,7 +27,7 @@ class Server(tornado.websocket.WebSocketHandler):
     def open(self):
         print("WebSocket opened")
         for con in Server.clients:
-            con.write_message(json.dumps({"type":"presence"}))
+            con.write_message(json.dumps({"channel":"presence"}))
 
         Server.clients.add(self)
         print("Handling %s clients" % len(Server.clients))
@@ -36,6 +36,18 @@ class Server(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         print("Received : %s" % message)
         #self.write_message(u"You said: " + message)
+
+        decoded = None
+
+        try:
+            decoded = json.loads(message)
+        except ValueError:
+            print("Unable to decode crappy JSON: '%s'" + message)
+
+        if decoded is not None and decoded['channel'] == 'sound':
+            print("Got SOUND !!")
+            for con in Server.clients:
+                con.write_message(message)
 
     def on_close(self):
         print("WebSocket closed")

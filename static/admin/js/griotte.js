@@ -8,15 +8,16 @@ Griotte = {
     this.ready = false;
 
     this._ws.onopen = function() {
-      self._ws.send("Websocket connected to " + url);
+      //self._ws.send("Websocket connected to " + url);
       console.log("Websocket connected");
       self.ready = true;
       self.dispatch({"channel": "ready"});
     };
 
     self._ws.onmessage = function(message) {
-      console.log("got message " + message);
-      self.dispatch(message);
+      data = JSON.parse(message.data)
+      console.log("got message for channel " + data.channel);
+      self.dispatch(data);
     };
 
     this._ws.onclose = function() {

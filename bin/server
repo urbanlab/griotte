@@ -17,8 +17,9 @@ class IndexHandler(tornado.web.RequestHandler):
 
 app = tornado.web.Application([
 #    (r'.*/$', IndexHandler),
-    (r'/ws', raspeomix.server.Server),
-    (r'/(.*)', tornado.web.StaticFileHandler, {'path': static_path, 'default_filename': 'index.html' }),
+  (r'/ws', raspeomix.server.Server),
+  (r'/(.*)', tornado.web.StaticFileHandler, {'path': static_path,
+                                             'default_filename': 'index.html' }),
 ])
 
 def parse_opts():

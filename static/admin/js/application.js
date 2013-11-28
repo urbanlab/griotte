@@ -46,13 +46,13 @@ Application = {
 
     console.log("Application initialized");
 
-    this._griotte.subscribe('ready', self.launch);
+    this._griotte.subscribe('ready', self.launch.bind(this));
   },
 
   launch: function() {
     console.log("Application.launch called");
     console.log(self)
-    Application._griotte.subscribe("sound", this.sound_in);
+    this._griotte.subscribe("sound", this.sound_in.bind(this));
   },
 
   accept: function(message) {
@@ -60,7 +60,7 @@ Application = {
   },
 
   scenario: function(state) {
-    this._griotte.publish('/' + this._prefix + '/scenario', {command: state});
+    this._griotte.publish('/' + this._prefix + '/scenario', { command: state });
   },
 
   sound: function(state, volume) {
@@ -83,16 +83,19 @@ Application = {
     this._togglescenario.prop({ value: data['command'] });
     this._togglescenario.slider('refresh');
   },
-  sound_in: function(data) {
+
+  sound_in: function(message) {
+    data = message.data
     console.log("sound event in");
     console.log(data);
 
     // Toggle
     console.log(this._togglesound);
   //    this._togglesound.slider({ value: data['state'] });
-    this._togglesound.prop({ value: data['state'] });
+    this._togglesound.prop({ value: data.state });
     this._togglesound.slider('refresh');
 
+    console.log(this._slidersound);
     if (data['state'] == 'off') {
       this._slidersound.slider('disable');
     } else {
@@ -100,6 +103,7 @@ Application = {
     }
 
     // Slider
+    console.log("setting value prop for slider to " + data.level);
     this._slidersound.prop({ value: data['level'] });
     this._slidersound.slider('refresh');
   },
