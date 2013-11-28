@@ -1,0 +1,70 @@
+Griotte = {
+  init: function(url) {
+    var self = this;
+
+    this._url = url
+    this._ws = new WebSocket(url);
+    this._events = {};
+    this.ready = false;
+
+    this._ws.onopen = function() {
+      self._ws.send("Websocket connected to " + url);
+      console.log("Websocket connected");
+      self.ready = true;
+      self.dispatch({"channel": "ready"});
+    };
+
+    self._ws.onmessage = function(message) {
+      console.log("got message " + message);
+      self.dispatch(message);
+    };
+
+    this._ws.onclose = function() {
+      console.log("Websocket closed");
+      self.ready = false;
+    }
+    console.log("Griotte initialized");
+  },
+
+  dispatch: function(message) {
+    var self = this;
+    console.log("dispatching " + message.channel);
+
+    if (self._events.hasOwnProperty(message.channel)) {
+        console.log("calling cb for " + message.channel);
+        self._events[message.channel](message);
+      }
+  },
+
+  subscribe: function(channel, callback) {
+    var self = this;
+
+    console.log("Receiving subscription for " + channel);
+
+    self._events[channel] = callback;
+    console.log("subscribing to " + channel);
+
+    if (channel == "ready" && self.ready) {
+      console.log("Immediate dispatch for ready");
+      self.dispatch({"channel": "ready"});
+    }
+
+    self.publish("subscribe", { channel: channel });
+  },
+
+  publish: function(channel, data) {
+    var self = this;
+
+    if (self.ready) {
+      console.log("publishing " + data + " to " + channel);
+      var msg = { channel: channel, data: data};
+      self._ws.send(JSON.stringify(msg));
+    } else {
+      console.log("Websocket not ready, dropping message");
+    }
+
+  },
+};
+
+
+
