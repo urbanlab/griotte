@@ -5,6 +5,12 @@ __pycache__/
 # C extensions
 *.so
 
+# Exuberant Ctags
+.tags
+
+# Sublime text
+*.sublime-*
+
 # Distribution / packaging
 build/
 develop-eggs/

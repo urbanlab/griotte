@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      #graph-container {
+        width : 400px;
+        height: 200px;
+        margin: 8px auto;
+      }
+    </style>
+    <link rel="icon" type="image/png" href="/img/raspberry_pi.png">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Raspeomix Server</title>
+    <link rel="stylesheet" href="/css/jquery-ui-1.9.2.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="/css/jquery.mobile-1.3.2.css" type="text/css" media="screen">
+    <script src="/js/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="/js/jquery-ui-1.9.2-min.js" type="text/javascript"></script>
+    <script src="/js/jquery.mobile-1.3.1.js" type="text/javascript"></script>
+    <script data-main="scripts/main" src="scripts/require.js"></script>
+    <script src="/admin/js/griotte.js" type="text/javascript"></script>
+    <script src="/js/flotr2.min.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div data-role="page" id="control">
+      <div data-role="header">
+
+        <h1>Raspeomix</h1>
+        <a href="index.html" data-icon="delete" data-mini="true" class="ui-btn-right">Logout</a>
+
+        <div data-role="navbar" data-iconpos="bottom">
+          <ul>
+            <li><a href="#" data-icon="grid" class="ui-state-persist ui-btn-active">Contrôle</a></li>
+            <li><a href="#scenario" data-icon="gear">Scenario</a></li>
+            <li><a href="#cartels" data-icon="info">Cartels</a></li>
+            <li><a href="#monitor" data-icon="alert">Moniteur</a></li>
+          </ul>
+        </div> <!-- /navbar -->
+      </div> <!-- header -->
+
+      <div data-role="content">
+        <h3>En cours</h3>
+        Vidéo <em>(videofinale.mp4 - 123 s)</em>
+        <div data-role="fieldcontain">
+          <label for="slider-current">Progression (s)</label>
+          <input name="slider-current" id="slider-current" data-mini="true" min="0" max="123" value="57" type="range" data-highlight="true">
+        </div>
+
+        <h3>À suivre</h3>
+        Capteur AN0
+        <div data-role="fieldcontain">
+          <div data-role="rangeslider" data-mini="true">
+            <label for="range-nexta">Distance | Maxbotix EZ-1 (cm)</label>
+            <input name="range-nexta" id="range-nexta" min="0" max="680" value="100" type="range" />
+            <label for="range-nextb">Distance | Maxbotix EZ-1 (cm)</label>
+            <input name="range-nextb" id="range-nextb" min="0" max="680" value="350" type="range" />
+          </div>
+        </div>
+
+        <h3>Réglages</h3>
+        <form>
+          <div data-role="fieldcontain">
+            <label for="toggle-scenario">Fonctionnement</label>
+            <select name="toggle-scenario" id="toggle-scenario" data-role="slider" data-mini="true">
+              <option value="pause">Pause</option>
+              <option value="play">Play</option>
+            </select>
+          </div>
+          <div data-role="fieldcontain">
+            <label for="toggle-sound">Son</label>
+            <select name="toggle-sound" id="toggle-sound" data-role="slider" data-mini="true">
+              <option value="off">Off</option>
+              <option value="on">On</option>
+            </select>
+          </div>
+          <div data-role="fieldcontain">
+            <label for="slider-sound">Volume général (%)</label>
+            <input type="range" step="10" name="slider-sound" id="slider-sound" value="20" min="0" max="120" data-highlight="true" data-mini="true">
+          </div>
+        </form>
+      </div> <!-- content -->
+
+      <div data-role="footer">
+        <h4>&copy ERASME 2013</h4>
+      </div><!-- /footer -->
+
+    </div> <!-- /page control -->
+
+    <div data-role="page" id="scenario">
+      <div data-role="panel" id="scenario-panel">
+        <!-- panel content goes here -->
+      </div><!-- /panel -->
+
+      <div data-role="header">
+
+        <h1>Raspeomix</h1>
+        <a href="index.html" data-icon="delete" data-mini="true" class="ui-btn-right">Logout</a>
+
+        <div data-role="navbar" data-iconpos="bottom">
+          <ul>
+            <li><a href="#control" data-icon="grid">Contrôle</a></li>
+            <li><a href="#scenario" data-icon="gear" class="ui-state-persist ui-btn-active">Scenario</a></li>
+            <li><a href="#cartels" data-icon="info">Cartels</a></li>
+            <li><a href="#monitor" data-icon="alert">Moniteur</a></li>
+          </ul>
+        </div><!-- /navbar -->
+
+        <div data-role="footer">
+          <a href="#scenario-panel" data-icon="plus" class="ui-btn-right">Ajouter</a>
+        </div>
+      </div>
+
+      <div data-role="content">
+
+        <div id="plumb">
+          <div id="render"></div>
+          <div class="w" id="start-0">Départ<div class="ep"></div></div>
+          <div class="w" id="start-1">Départ<div class="ep"></div></div>
+          <div class="w" id="start-2">Départ<div class="ep"></div></div>
+          <div class="w" id="analog0-0">Capteur AN0<div class="ep"></div></div>
+          <div class="w" id="video-0">Lecture vidéo<div class="ep"></div></div>
+          <div class="w" id="sound-0">Lecture son<div class="ep"></div></div>
+          <div class="w" id="image-0">Lecture son<div class="ep"></div></div>
+          <div class="w" id="pause-0">Pause<div class="ep"></div></div>
+          <div class="w" id="io-0">Capteur IO0<div class="ep"></div></div>
+          <div class="w" id="io-1">Capteur IO1<div class="ep"></div></div>
+          <div class="w" id="time-1">Heure<div class="ep"></div></div>
+        </div>
+
+      </div> <!-- content -->
+    </div> <!-- page scenario-->
+
+    <div data-role="page" id="cartels">
+      <div data-role="header">
+
+        <h1>Raspeomix</h1>
+
+        <a href="index.html" data-icon="delete" data-mini="true" class="ui-btn-right">Logout</a>
+        <div data-role="navbar" data-iconpos="bottom">
+          <ul>
+            <li><a href="#control" data-icon="grid">Contrôle</a></li>
+            <li><a href="#scenario" data-icon="gear">Scenario</a></li>
+            <li><a href="#cartels" data-icon="info" class="ui-state-persist ui-btn-active">Cartels</a></li>
+            <li><a href="#monitor" data-icon="alert">Moniteur</a></li>
+          </ul>
+        </div><!-- /navbar -->
+
+      </div>
+
+      <div data-role="content">
+        <div class="content-primary">
+          <ul data-role="listview">
+            <li data-role="list-divider">Demo</li>
+            <li><a href="/cartels/demo/fr/index.html" target="_blank">fr</a></li>
+            <li><a href="/cartels/demo/en/index.html" target="_blank">en</a></li>
+            <li data-role="list-divider">Demo</li>
+            <li><a href="/cartels/demo/fr/index.html" target="_blank">fr</a></li>
+            <li><a href="/cartels/demo/en/index.html" target="_blank">en</a></li>
+          </ul>
+        </div>
+      </div> <!-- content -->
+    </div> <!-- page cenario-->
+
+    <div data-role="page" id="monitor">
+      <div data-role="header">
+
+        <h1>Raspeomix</h1>
+        <a href="index.html" data-icon="delete" data-mini="true" class="ui-btn-right">Logout</a>
+
+        <div data-role="navbar" data-iconpos="bottom">
+          <ul>
+            <li><a href="#control" data-icon="grid">Contrôle</a></li>
+            <li><a href="#scenario" data-icon="gear">Scenario</a></li>
+            <li><a href="#cartels" data-icon="info">Cartels</a></li>
+            <li><a href="#monitor" data-icon="alert" class="ui-state-persist ui-btn-active">Moniteur</a></li>
+          </ul>
+        </div><!-- /navbar -->
+
+      </div>
+
+      <div data-role="content">
+
+        <div data-role="collapsible-set">
+          <div data-role="collapsible">
+            <h3>Services</h3>
+            <p>Liste des services en cours de fonctionnment</p>
+
+            <div data-role="fieldcontain">
+              <label for="slider_scheduler">Scheduler</label>
+              <select name="slider_scheduler" id="slider_scheduler" data-role="slider" data-mini="true">
+                <option value="off">Off</option>
+                <option value="on" selected>On</option>
+              </select>
+            </div> <!-- fieldcontain -->
+            <div data-role="fieldcontain">
+              <label for="slider_videoclient">Video/Son</label>
+              <select name="slider_videoclient" id="slider_videoclient" data-role="slider" data-mini="true">
+                <option value="off">Off</option>
+                <option value="on" selected>On</option>
+              </select>
+            </div> <!-- fieldcontain -->
+            <div data-role="fieldcontain">
+              <label for="slider_imageclient">Image</label>
+              <select name="slider_imageclient" id="slider_imageclient" data-role="slider" data-mini="true">
+                <option value="off">Off</option>
+                <option value="on">On</option>
+              </select>
+            </div> <!-- fieldcontain -->
+            <div data-role="fieldcontain">
+              <label for="slider_analog">Capteurs analogiques</label>
+              <select name="slider_analog" id="slider_analog" data-role="slider" data-mini="true">
+                <option value="off">Off</option>
+                <option value="on" selected>On</option>
+              </select>
+            </div> <!-- fieldcontain -->
+            <div data-role="fieldcontain">
+              <label for="slider_digital">Capteurs digitaux</label>
+              <select name="slider_digital" id="slider_digital" data-role="slider" data-mini="true">
+                <option value="off">Off</option>
+                <option value="on">On</option>
+              </select>
+            </div> <!-- fieldcontain -->
+          </div> <!-- collapsible -->
+
+          <div data-role="collapsible">
+            <h3>Capteurs</h3>
+            <p>État des capteurs</p>
+
+            <ul data-role="listview">
+              <li data-role="list-divider">Analogiques</li>
+              <li><a href="#analog0" data-rel="dialog">AN0</a></li>
+              <li><a href="#analog1" data-rel="dialog">AN1</a></li>
+              <li><a href="#analog2" data-rel="dialog">AN2</a></li>
+              <li><a href="#analog3" data-rel="dialog">AN3</a></li>
+              <li data-role="list-divider">Digitaux</li>
+              <li><a href="#digital0" data-rel="dialog">IO0</a></li>
+              <li><a href="#digital1" data-rel="dialog">IO1</a></li>
+              <li><a href="#digital2" data-rel="dialog">IO2</a></li>
+              <li><a href="#digital3" data-rel="dialog">IO3</a></li>
+            </ul>
+
+          </div>
+
+          <div data-role="collapsible">
+            <h3>Automatisation</h3>
+            <p>Arrêt automatique</p>
+
+            <div data-role="fieldcontain">
+              <label for="autoshutdown">Arrêt automatique</label>
+              <input type="checkbox" name="autoshutdown" id="autoshutdown" class="custom" />
+              <label for="time">Heure d'arrêt</label>
+              <input type="time" name="time" id="time" value="" />
+              <label for="projector">Coupure du vidéo projecteur</label>
+              <input type="checkbox" name="projector" id="projector" class="custom" />
+            </div>
+
+          </div>
+
+          <div data-role="collapsible">
+            <h3>Logs</h3>
+            <p>Logs des services en cours</p>
+
+
+            <fieldset data-role="controlgroup" data-type="horizontal">
+              <input name="log-level-debug" id="log-level-debug" value="on" checked="checked" type="checkbox">
+              <label for="log-level-debug">Debug</label>
+              <input name="log-level-info" id="log-level-info" value="off" type="checkbox">
+              <label for="log-level-info">Info</label>
+              <input name="log-level-warn" id="log-level-warn" value="other" type="checkbox">
+              <label for="log-level-warn">Warn</label>
+              <input name="log-level-error" id="log-level-error" value="other" type="checkbox">
+              <label for="log-level-error">Error</label>
+              <input name="log-level-fatal" id="log-level-fatal" value="other" type="checkbox">
+              <label for="log-level-fatal">Fatal</label>
+            </fieldset>
+            <label for="log-filter">Filtre</label>
+            <input name="log-filter" type="text" value="sound/*">
+
+            <textarea cols="40" rows="25" name="textarea" id="textarea">
+            </textarea>
+          </div> <!-- collapsible -->
+        </div> <!-- collapsible-set -->
+        <div data-role="footer">
+          <div align="right">
+            <!--<button id="login" data-theme="a" type="button" href="home.html" data-mini="false" data-inline="true" >Login</button>-->
+            <a href="/logout/" data-role="button" data-icon="delete" data-iconpos="notext" data-inline="true" data-ajax="false">logout</a>
+          </div>
+        </div>
+
+      </div> <!-- content -->
+    </div> <!-- page monitor -->
+
+    <div data-role="page" id="analog0">
+      <div data-role="header">
+        <h1>Analog 0</h1>
+      </div>
+
+      <div data-role="content">
+        <div id="graph-container"></div>
+      </div> <!-- content -->
+    </div> <!-- page  -->
+
+
+  </body>
+
+<script type="text/javascript">
+  $( document ).bind( "pageinit", function( event ) {
+
+  var scheme = window.location.protocol,
+  host   = location.hostname,
+  port   = 8888, // location.port,
+  path   = '/ws';
+
+  comm = Griotte.init('ws://' + host + (port ? ':' + port : '') + path)
+  Raspberry.init(comm);
+  Raspberry.launch();
+
+  });
+</script>
+
+<script type="text/javascript">
+  // Mock
+  $( document ).bind( "pageinit", function( event ) {
+      $( "#slider-current" ).slider({ disabled: true });
+      $( "#range-nexta" ).slider({ disabled: true });
+      $( "#range-nextb" ).slider({ disabled: true });
+  });
+</script>
+
+<script type="text/javascript">
+$( "#analog0" ).on("pageshow", function() {
+    console.log("animating from pageshow");
+    var container = document.getElementById('graph-container'),
+    start = (new Date).getTime(),
+    data, graph, offset, i;
+
+    // Draw a sine curve at time t
+    function animate (t) {
+    data = [];
+    offset = 2 * Math.PI * (t - start) / 10000;
+
+    // Sample the sine function
+    for (i = 0; i < 4 * Math.PI; i += 0.2) {
+    data.push([i, Math.sin(i - offset)]);
+    }
+
+    // Draw Graph
+    graph = Flotr.draw(container, [ data ], {
+        yaxis : {
+        max : 2,
+        min : -2
+        }
+      });
+
+    // Animate
+    setTimeout(function () {
+        animate((new Date).getTime());
+        }, 50);
+    }
+
+    animate((start));
+
+});
+</script>
+
+</html>
