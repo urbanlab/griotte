@@ -25,7 +25,7 @@ class Server(tornado.websocket.WebSocketHandler):
     clients=set()
 
     def open(self):
-        print("WebSocket opened")
+        print("WebSocket opened for %s / %s " % (self.request.remote_ip, self.request.connection.address[1]))
         for con in Server.clients:
             con.write_message(json.dumps({"channel":"presence"}))
 
