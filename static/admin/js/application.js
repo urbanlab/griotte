@@ -46,13 +46,13 @@ Application = {
 
     console.log("Application initialized");
 
-    this._griotte.subscribe('ready', self.launch.bind(this));
+    this._griotte.subscribe('/internal/ready', self.launch.bind(this));
   },
 
   launch: function() {
     console.log("Application.launch called");
     console.log(self)
-    this._griotte.subscribe("sound", this.sound_in.bind(this));
+    this._griotte.subscribe("/meta/store/sound_level", this.sound_in.bind(this));
   },
 
   accept: function(message) {
@@ -64,7 +64,7 @@ Application = {
   },
 
   sound: function(state, volume) {
-    this._griotte.publish("sound", { state: state, level: parseInt(volume) } );
+    this._griotte.publish("/meta/store/sound_level", { state: state, level: parseInt(volume) } );
   },
 
   scenario_in: function(data) {
