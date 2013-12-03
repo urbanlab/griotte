@@ -38,13 +38,17 @@ categories for event : io0-3/(raising|falling), an0-3(over_threshold|below_thres
 
 e.g. :
 
-/meta/subscribe { "channel" : "/event/io1/rising" }
-/meta/store/sound_level { "sound_level" : 35 }
+/meta/subscribe { "channel" : "/event/io/1/rising" }
+/meta/store/sound_level { "value": 35 }
+/meta/store/some_complex { "value": { "complex": "data", "with": [ "array" ] } }
 /meta/store/date { "date" : 20140516, "time": "145232" }
-/meta/register { "channel" : "/meta/store/sound_level" }
+/meta/device/attach { "device" : "/dev/nfc1" }
+/meta/device/detach { "device" : "/dev/nfc1" }
+/request/an/2 { "profile???" }
 /command/video { "action" : "play", "media" : "wtf.mp4" }
 /message/video { "status" : "playing", "media" : "wtf.mp4", "progress" : "16", "length" : "49" }
-/message/an0 { "value" : 146, "profile" : { "name" : "Maxborktik EZ-1", ... }}
+/message/an/0 { "value" : 146, "profile" : { "name" : "Maxborktik EZ-1", ... }}
+/message/nfc/1 { "value": "ab133df" }
 /event/io1/raising {}
 
 All exchanged messages have a timestamp
