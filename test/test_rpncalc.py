@@ -2,8 +2,8 @@
 
 import unittest
 import socket
-import random
-from math import hypot
+from random import *
+from math import *
 
 from raspeomix.rpncalc import RPNCalc
 
@@ -16,8 +16,11 @@ def get_rand(max=100):
 class RPNCalcTests(unittest.TestCase):
 
     def setUp(self):
-        self.a,self.b = get_rand(), get_rand()
+        self.a,self.b = random()*100, random()*100
         self.rpn = RPNCalc()
+
+    def try0(self, op, result):
+        self.assertEqual(self.rpn.process(op), result)
 
     def try1(self, op, result):
         self.assertEqual(self.rpn.process(str(self.a) + " " + op), result)
@@ -111,6 +114,108 @@ class RPNCalcTests(unittest.TestCase):
         self.a = int(self.a)
         self.try1('~', ~self.a)
 
+    def test_sin(self):
+        self.a = random() % 360
+        self.try1('sin', sin(self.a))
+
+    def test_cos(self):
+        self.a = random() % 360
+        self.try1('cos', cos(self.a))
+
+    def test_tan(self):
+        self.a = random() % 360
+        self.try1('tan', tan(self.a))
+
+    def test_asin(self):
+        self.a = random()
+        self.try1('asin', asin(self.a))
+
+    def test_acos(self):
+        self.a = random()
+        self.try1('acos', acos(self.a))
+
+    def test_atan(self):
+        self.a = random()
+        self.try1('atan', atan(self.a))
+
+    def test_sinh(self):
+        self.try1('sinh', sinh(self.a))
+
+    def test_cosh(self):
+        self.try1('cosh', cosh(self.a))
+
+    def test_tanh(self):
+        self.try1('tanh', tanh(self.a))
+
+    def test_asinh(self):
+        self.a = random()
+        self.try1('asinh', asinh(self.a))
+
+    def test_acosh(self):
+        self.a = 1+random()*5
+        self.try1('acosh', acosh(self.a))
+
+    def test_atanh(self):
+        self.a = random()
+        self.try1('atanh', atanh(self.a))
+
+    def test_sqrt(self):
+        self.try1('sqrt', sqrt(self.a))
+
+    def test_log(self):
+        self.try1('log', log(self.a))
+
+    def test_exp(self):
+        self.try1('exp', exp(self.a))
+
+    def test_floor(self):
+        self.try1('floor', floor(self.a))
+
+    def test_ceil(self):
+        self.try1('ceil', ceil(self.a))
+
+    def test_erf(self):
+        self.try1('erf', erf(self.a))
+
+    def test_erfc(self):
+        self.try1('erfc', erfc(self.a))
+
+    def test_fact(self):
+        self.a = int(self.a)
+        self.try1('!', factorial(self.a))
+
+    def test_fabs(self):
+        self.try1('abs', fabs(self.a))
+
+    def test_degrees(self):
+        self.a %= 360
+        self.try1('deg', degrees(self.a))
+
+    def test_radians(self):
+        self.a %= 2*pi
+        self.try1('rad', radians(self.a))
+
+    def test_pi(self):
+        self.try0('pi', pi)
+
+    def test_e(self):
+        self.try0('e', e)
+
+    def test_swap(self):
+        # Stack :
+        # a
+        # b a
+        # SWAP b a
+        # a b
+        self.try2('s', self.a)
+
+    def test_drop(self):
+        # Stack :
+        # a
+        # b a
+        # DROP b a
+        # a
+        self.try2('d', self.a)
 
 if __name__ == "__main__":
     unittest.main()
