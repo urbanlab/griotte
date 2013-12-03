@@ -53,11 +53,16 @@ class AnalogDevice:
 
     def value(self, channel):
         val = self.device.read_channel(channel, self.profile.resolution, gain='1x')
-        # TODO: convert with formula & bound
+
+
         return val
 
 if __name__ == "__main__":
+    from datetime import datetime
+
     a = AnalogDevice(MCP342.MCP342x(), Profile('Identity'))
-    while True:
-        print("%s" % a)
+    print("%s" % a)
+
+
+
 

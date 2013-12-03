@@ -3,10 +3,10 @@
 import os
 import sys
 from glob import glob
+from setuptools import setup
 
 sys.path.insert(0, os.path.abspath('lib'))
 from raspeomix import __version__, __author__
-from distutils.core import setup
 
 setup(name='raspeomix',
       version=__version__,
@@ -15,8 +15,9 @@ setup(name='raspeomix',
       author_email='mblanc@erasme.org',
       url='http://ansibleworks.com/',
       license='GPLv3',
-      install_requires=['RPIO', 'websocket', 'quick2wire', 'tornado'],
+      install_requires=['RPIO', 'websocket', 'tornado'], # 'quick2wire' not in pip :(
       package_dir={ 'raspeomix': 'lib/raspeomix' },
+      tests_requires=['nose'],
       packages=[
          'raspeomix',
          'raspeomix.websocket',
