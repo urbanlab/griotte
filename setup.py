@@ -15,7 +15,7 @@ setup(name='raspeomix',
       author_email='mblanc@erasme.org',
       url='http://ansibleworks.com/',
       license='GPLv3',
-      install_requires=['RPIO', 'websocket'],
+      install_requires=['RPIO', 'websocket', 'quick2wire', 'tornado'],
       package_dir={ 'raspeomix': 'lib/raspeomix' },
       packages=[
          'raspeomix',
