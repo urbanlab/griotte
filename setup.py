@@ -15,9 +15,12 @@ setup(name='raspeomix',
       author_email='mblanc@erasme.org',
       url='http://ansibleworks.com/',
       license='GPLv3',
-      install_requires=['RPIO', 'websocket', 'tornado'], # 'quick2wire' not in pip :(
+      dependency_links = [
+         #'https://github.com/liris/websocket-client/tarball/py3#egg=websocket-client-0.12.0',
+         'https://github.com/quick2wire/quick2wire-python-api/tarball/master#egg=quick2wire-python-api-0.0.0.2' ],
+      install_requires=['RPIO', 'websocket-client-py3', 'tornado', 'quick2wire_api'],
       package_dir={ 'raspeomix': 'lib/raspeomix' },
-      tests_requires=['nose'],
+      tests_require=['nose'],
       packages=[
          'raspeomix',
          'raspeomix.websocket',
@@ -30,3 +33,6 @@ setup(name='raspeomix',
       ],
       data_files=glob('./static/**/*')
 )
+
+# pip install -e git://github.com/liris/websocket-client@py3#egg=websocket-client
+# pip install -e git://github.com/quick2wire/quick2wire-python-api@master#egg=quick2wire-python-api
