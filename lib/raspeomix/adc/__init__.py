@@ -17,9 +17,11 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
 import tornado.websocket
-import mcp342x as MCP342
+from raspeomix.adc.mcp342x import MCP342x
+from raspeomix.rpncalc import RPNCalc
 import json
 import pprint
+from string import Template
 pp = pprint.PrettyPrinter(depth=2)
 
 """
@@ -32,35 +34,64 @@ All exchanged messages have a timestamp
 
 """
 class Profile:
-    def __init__(self, name, description='', units='', formula='x', valrange=[0, 1024], resolution='12bits'):
+    def __init__(self, name, description='', units='', formula='$x', valrange=[0, 1024], resolution='12bits', gain='1x'):
         self.name = name
         self.description = description
         self.units = units
         self.formula = formula
         self.range = valrange
         self.resolution = resolution
+        self.gain = gain
+        self._raw_value = valrange[0]
+        self.value = valrange[0]
+
+    @property
+    def value(self):
+        return self._raw_value
+
+    @value.setter
+    def value(self, val):
+        self._raw_value = val
+        formula = Template(self.formula).substitute(x=val)
+        self._converted_value = RPNCalc().process(formula)
+
+    @property
+    def converted_value(self):
+        return self._converted_value
+
+    @property
+    def value_pair(self):
+        return [ self._raw_value,
+                 self._converted_value ]
+
 
 class AnalogDevice:
     """ ADC Interface """
+    channel = {}
 
     def __init__(self, device, profile):
         self.device = device
         self.profile  = profile
 
     def __repr__(self):
-        return "AnalogDevice(%s,%s,%s,%s)" % (self.value('an0'),self.value('an1'),
-                                              self.value('an2'),self.value('an3'))
+        return "AnalogDevice(%s,%s,%s,%s)" % (self.value('an0'),
+                                              self.value('an1'),
+                                              self.value('an2'),
+                                              self.value('an3'))
 
-    def value(self, channel):
-        val = self.device.read_channel(channel, self.profile.resolution, gain='1x')
 
 
-        return val
+    def convert(self, chanidx):
+        self.channel[chanidx] = self.device.read_channel(chanidx,
+                                                         self.profile.resolution,
+                                                         self.profile.gain)
+        self.profile.value = self.channel[chanidx]
+        return self.profile
 
 if __name__ == "__main__":
     from datetime import datetime
 
-    a = AnalogDevice(MCP342.MCP342x(), Profile('Identity'))
+    a = AnalogDevice(MCP342x(), Profile('Identity'))
     print("%s" % a)
 
 

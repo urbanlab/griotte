@@ -96,7 +96,7 @@ class MCP342x():
         return 'MCP342x(%s, {self})'.format(self=self)
 
     def read_channel(self, channel, resolution='12bits', gain='1x'):
-        self._set_channel(channel, resolution, gain)
+        self.__set_channel(channel, resolution, gain)
 
         # Check how many bytes we'll have to read
         # This depends on resolution
@@ -134,7 +134,7 @@ class MCP342x():
         return MCP342x.DIVIDER_RATIO * MCP342x.LSB[resolution] * (output_code / 2**MCP342x.GAIN[gain]) / 1000000
 
 
-    def _set_channel(self, channel, resolution, gain):
+    def __set_channel(self, channel, resolution, gain):
 
         try:
             self.bus.transaction(i2c.writing_bytes(self.address,
