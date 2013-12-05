@@ -1,0 +1,4 @@
+RPIO
+tornado
+-e git://github.com/liris/websocket-client@py3#egg=websocket-client
+-e git://github.com/quick2wire/quick2wire-python-api@master#egg=quick2wire-python-api
