@@ -217,6 +217,14 @@ class RPNCalcTests(unittest.TestCase):
         # a
         self.try2('d', self.a)
 
+    def test_integer_zero(self):
+        self.a = 0
+        self.try0("%s" % self.a, self.a)
+
+    def test_decimal_zero(self):
+        self.a = 0.0
+        self.try0("%s" % self.a, self.a)
+
 if __name__ == "__main__":
     unittest.main()
 

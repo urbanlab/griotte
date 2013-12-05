@@ -2,21 +2,28 @@
 
 import unittest
 import random
+from raspeomix.adc import AnalogDevice
+from raspeomix.adc import Profile
 
 class FakeADC():
-  def read_channel(self):
-    return random.random()*5
+  def read_channel(self, *args):
+    return random.random()*5 + 0.1
 
 class AnalogDeviceTests(unittest.TestCase):
-    def testInit(self):
-        self.failUnless(dev is AnalogDevice())
+    def setUp(self):
+        self.dev = AnalogDevice(FakeADC(), Profile('Identity'))
 
     def testIdentityRandom(self):
-        dev = AnalogDevice(FakeADC(), Profile('Identity'))
-        self.failUnless(dev.value('an0'))
-        self.failUnless(dev.value('an1'))
-        self.failUnless(dev.value('an2'))
-        self.failUnless(dev.value('an3'))
+        self.assertTrue(self.dev.convert('an0').value > 0)
+        self.assertTrue(self.dev.convert('an1').value > 0)
+        self.assertTrue(self.dev.convert('an2').value > 0)
+        self.assertTrue(self.dev.convert('an3').value > 0)
+
+    def testProfile(self):
+        profile = Profile('Doubler', formula='$x 2 *')
+        dev = AnalogDevice(FakeADC(), profile)
+        val = dev.convert('an0')
+        self.assertTrue(2 * val.value == val.converted_value)
 
 if __name__ == "__main__":
     unittest.main()
