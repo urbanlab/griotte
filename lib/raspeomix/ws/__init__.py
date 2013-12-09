@@ -18,19 +18,61 @@
 
 import json
 import socket
-from websocket import create_connection
+import time
+
+try:
+    import thread
+except ImportError:
+    import _thread as thread #Py3K changed it.
+
+import websocket
 
 class WebSocket:
     """ WebSocket client """
 
     prefix = ""
 
-    def __init__(self):
+    def __init__(self, channel, callback):
         self.prefix = socket.gethostname()
+        self.callback = callback
+        self.channel = channel
+        websocket.enableTrace(True)
+
+        self.ws = websocket.WebSocketApp("ws://127.0.0.1:8888/ws",
+                            on_message = self.on_message,
+                            on_error = self.on_error,
+                            on_close = self.on_close)
+
+        self.ws.on_open = self.on_open
+        thread.start_new_thread(self.start, ())
+
+    def start(self):
+        print("starting ws")
+        self.ws.run_forever()
+        print("forever ?")
+
+    def on_message(self, ws, message):
+        print("received : %s" % message)
+        self.callback(message)
+
+    def on_error(self):
+        print(error)
+
+    def on_close(ws):
+        print("### closed ###")
+
+    def on_open(self, ws):
+        print("### opened ###")
+        data = json.dumps( { 'channel': '/meta/register',
+                            'data': { 'channel': self.channel } } )
+
 
     def debug(self):
         print ("hello %s",__main__)
 
 if __name__ == "__main__":
-    ws = WebSocket()
-    ws.debug
+    def func(message):
+        print("in callback with %s" % message)
+    ws = WebSocket('an',func)
+
+    time.sleep(100)
