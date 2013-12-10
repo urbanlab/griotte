@@ -20,6 +20,8 @@ from raspeomix.adc.devices import *
 from raspeomix.adc.analogdevice import AnalogDevice
 from raspeomix.adc.profile import Profile
 from raspeomix.ws import WebSocket
+from time import sleep
+
 import logging
 import json
 
@@ -38,18 +40,40 @@ class AnalogHandler:
     def __init__(self):
         self.analogdevice = AnalogDevice()
 
-        self.ws = WebSocket(watchdog_interval=10)
-        self.ws.add_listener('request:analog:0', self.request, 0)
-        self.ws.add_listener('request:analog:1', self.request, 1)
-        self.ws.add_listener('request:analog:2', self.request, 2)
-        self.ws.add_listener('request:analog:3', self.request, 3)
+        self.ws = WebSocket(watchdog_interval=2)
+
+        for chan in self.analogdevice.device.channels():
+            self.ws.add_listener('request:analog:' + chan,
+                                 self.request, chan)
+
+        self.sample_rate = None
+        self.periodic_sampled_channels = ()
+
+        self.start()
 
     def request(self, channel, message):
         logging.info("Request received for channel %s with message %s" % (channel, message))
 
 
+    def start(self):
+        logging.info("Starting AnalogHandler's websocket")
+        self.ws.start()
+
+        logging.info("Starting sampling loop")
+        while True:
+            if self.sample_rate != None:
+                sleep(self.sample_rate)
+                # do sample
+                for chan in self.periodic_sampled_channels:
+                    value = self.analogdevice.convert(chan).value
+                    ws.send("message:analog:" + chan,
+                            { "value": value })
+
 
 if __name__ == "__main__":
+    import tornado.options
+    tornado.options.parse_command_line()
+
     AnalogHandler()
 
 

@@ -41,18 +41,18 @@ class WebSocket:
 
         self.ws.on_open = self.on_open
         self.watchdog_interval = watchdog_interval
+        if self.watchdog_interval > 0:
+            logging.info("Watchdog interval set to %ss" % self.watchdog_interval)
 
     def start(self):
-        if self.watchdog_interval > 0 :
-            logging.info("Starting websocket watchdog thread")
-            self.watchdog_thread = threading.Thread(target=self._watchdog, args=())
-            self.watchdog_thread.daemon = True
-            self.watchdog_thread.start()
-
         logging.info("Starting websocket client thread")
-        self.thread = threading.Thread(target=self.ws.run_forever, args=())
-        self.thread.daemon = True
-        self.thread.start()
+        self.websocket_thread = threading.Thread(target=self.ws.run_forever, args=())
+        #self.websocket_thread.daemon = True
+        self.websocket_thread.start()
+
+    def stop(self):
+        self.watchdog_interval=0
+        self.ws.close()
 
     def add_listener(self, channel, callback, *args):
         logging.debug("Adding callback for channel %s", channel)
@@ -68,31 +68,41 @@ class WebSocket:
         """ Decodes incoming message and dispatches to local callback """
         logging.debug("Received : %s" % message)
         decoded = json.loads(message)
-        if (decoded.channel in self.callbacks.keys()):
+        if (decoded['channel'] in self.callbacks.keys()):
             logging.debug("Callback found for channel %s, dispatching" % decoded.channel)
             self.callback(decoded.data)
 
     def on_error(self, ws, error):
         logging.error("Websocket error : %s" % error)
-        logging.debug("thread alive : %s" , self.thread.is_alive())
 
     def on_close(self, ws):
-        logging.debug("Websocket closed")
-        logging.debug("thread alive : %s" , self.thread.is_alive())
+        logging.warning("Websocket closed")
+
+        if self.watchdog_interval > 0 :
+            logging.info("Starting websocket watchdog thread")
+            self.watchdog_thread = threading.Thread(target=self._watchdog, args=())
+            #self.watchdog_thread.daemon = True
+            self.watchdog_thread.start()
+        else:
+            message = "Watchdog is off"
 
     def on_open(self, ws):
-        logging.debug("Websocket opened")
+        logging.info("Websocket opened")
+        # Subscribe to requested channels
         for channel in self.callbacks.keys():
-            self._register(channel)
+            self._subscribe(channel)
 
     def _watchdog(self):
+        logging.warning("Watchdog will try reconnecting in %s seconds" %self.watchdog_interval)
+
         time.sleep(self.watchdog_interval)
-        if not self.thread.is_alive():
+
+        if not self.websocket_thread.is_alive():
             logging.warning("Websocket thread is dead, restarting")
             self.start()
 
-    def _register(self, channel):
-        self.send('meta:register', { 'channel': channel })
+    def _subscribe(self, channel):
+        self.send('meta:subscribe', { 'channel': channel })
 
     def debug(self):
         print ("hello %s",__main__)
@@ -104,8 +114,6 @@ if __name__ == "__main__":
         print("in callback with %s" % message)
 
     tornado.options.parse_command_line()
-    ws = WebSocket(watchdog_interval=10)
+    ws = WebSocket(watchdog_interval=2)
     ws.add_listener('an', func)
     ws.start()
-
-    time.sleep(100)

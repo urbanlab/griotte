@@ -3,28 +3,23 @@
 from raspeomix.adc.profile import Profile
 from raspeomix.adc.devices import *
 
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
-
 class AnalogDevice:
     """ ADC Interface """
-    channel = {}
 
     def __init__(self, device=MCP342x()):
         self.device = device
         self.profiles = dict()
 
-        for chan in ['an0', 'an1', 'an2', 'an3']:
+        for chan in self.device.channels():
             self.profiles[chan] = Profile('Identity')
 
     def __repr__(self):
-        for chan in ('an0', 'an1','an2','an3'):
-            self.convert(chan)
+        str_repr = "AnalogDevice("
 
-        return "AnalogDevice(%s,%s,%s,%s)" % (self.convert('an0').value,
-                                              self.convert('an1').value,
-                                              self.convert('an2').value,
-                                              self.convert('an3').value)
+        for chan in self.device.channels():
+            str_repr += ", " + self.convert(chan).value
+
+        return str_repr + ")"
 
     def set_profile(self, channel, profile):
         if channel not in self.profiles.keys():

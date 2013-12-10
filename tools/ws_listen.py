@@ -1,33 +1,31 @@
 #!/usr/bin/env python3
 
+# Usage :
+# tools/ws_listen.py --watchdog=2 --logging=debug some:channel some:other:channel
+
 import json
 import sys
+import logging
+from tornado.options import define, options
 
-import websocket
+from raspeomix.ws import WebSocket
 
-def on_open(ws):
-  ws.send('{ "channel":"/meta/subscribe","data":{"channel":"%s"}}' % sys.argv[1])
-
-def on_message(ws, message):
-  print(message)
-
-def on_error(ws, error):
-  print(error)
-
-def on_close(ws):
-  print("### closed ###")
-
-def listen():
-  ws = websocket.WebSocketApp("ws://localhost:8888/ws",
-                              on_message = on_message,
-                              on_error = on_error,
-                              on_close = on_close)
-  ws.on_open = on_open
-  ws.run_forever()
+define("url", default="ws://127.0.0.1:8888/ws", help="Websocket server url")
+define("watchdog", default=0, help="Watchdog interval")
+define("channels", default="meta:presence", multiple = True,
+       help="Channels to watch (coma separated)")
 
 if __name__ == "__main__":
-  if (len(sys.argv) != 2 or sys.argv[1] == "-h"):
-    print("Usage: %s <channel>" % sys.argv[0])
-    exit(1)
-  else:
-    listen()
+    def on_message(message):
+        print(message)
+
+    channels = ()
+    channels = options.parse_command_line()
+
+    ws = WebSocket(watchdog_interval=options.watchdog)
+    for chan in channels:
+        ws.add_listener(chan, on_message)
+
+
+    ws.start()
+

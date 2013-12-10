@@ -17,7 +17,9 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
 import tornado.websocket
+import logging
 import json
+from time import time
 import fnmatch
 
 """
@@ -30,7 +32,7 @@ topics : meta, command, message, event
  - command : acting on something (video, actuator)
  - message : a regurlarly occuring message (sensor value, video playing progress, ...)
  - log : something logged that do not appear on the bus
-categories for meta : subscribe, unsubscribe, presence, ping, log, store
+categories for meta : subscribe, unsubscribe, join, ping, log, store
 categories for command : sound, video, image, trigger, sensor (set profile, poll freq)
 categories for message : value, video, sound
 categories for event : io0-3/(raising|falling), an0-3(over_threshold|below_threshold), video (finish, pause), sound (finish, pause)
@@ -62,39 +64,41 @@ class Server(tornado.websocket.WebSocketHandler):
     channel_watchers = {}
 
     def open(self):
-        for con in Server.clients:
-            Server.clients[con].write_message(json.dumps({"channel":"presence"}))
+        Server._dispatch_all({  "channel":"meta:join",
+                                "timestamp": time(),
+                                "data": { "client": self.key() }
+                            })
 
         key = self.key()
         Server.clients[key] = self
 
-        print("WebSocket opened for %s" % key)
-        print("Currently handling %s clients" % len(Server.clients))
+        logging.info("WebSocket opened for %s" % key)
+        logging.info("Currently handling %s clients" % len(Server.clients))
 
     def on_message(self, message):
-        print("Received : %s" % message)
+        logging.debug("Received : %s" % message)
 
         decoded = None
 
         try:
             decoded = json.loads(message)
         except ValueError:
-            print("Unable to decode crappy JSON: %s" % message)
+            logging.error("Unable to decode crappy JSON: %s" % message)
 
         if decoded is None:
             return
 
 
-        if decoded['channel'] == '/meta/subscribe':
+        if decoded['channel'] == 'meta:subscribe':
             if Server.channel_watchers.get(decoded['data']['channel'], None) == None:
                 Server.channel_watchers[decoded['data']['channel']] = set()
             # Handle subscribe
-            print("Got subscribe for channel %s" % decoded['data']['channel'])
+            logging.info("Got subscribe for channel %s" % decoded['data']['channel'])
             Server.channel_watchers[decoded['data']['channel']].add(self.key())
             Server._dump_channel_watchers()
-        elif decoded['channel'] == '/meta/unsubscribe':
+        elif decoded['channel'] == 'meta:unsubscribe':
             # Handle unsusbscribe
-            print("Got subscribe for channel %s" % decoded['data']['channel'])
+            logging.info("Got unsubscribe for channel %s" % decoded['data']['channel'])
             Server.channel_watchers[decoded['data']['channel']].remove(self.key())
         else:
             Server._dump_channel_watchers()
@@ -102,32 +106,45 @@ class Server(tornado.websocket.WebSocketHandler):
 
         #
     def on_close(self):
-        print("WebSocket closed")
+        logging.info("WebSocket closed for %s" % self.key())
         # remove client from list and from watchers
         Server._remove_channel_watcher(self.key())
+
         try:
             del(Server.clients[self.key()])
+            Server._dispatch_all({  "channel":"meta:leave",
+                                    "timestamp": time(),
+                                    "data": { "client": self.key() }
+                                })
         except Exception as ex:
-            print("Error closing connection for client : %s" % ex)
+            logging.error("Error closing connection for client : %s" % ex)
 
-        print("Currently handling %s clients" % len(Server.clients))
+        logging.info("Currently handling %s clients" % len(Server.clients))
 
     def key(self):
         return ("%s#%s" % (str(self.request.remote_ip),
                          str(self.request.connection.address[1])))
 
     @staticmethod
+    def _dispatch_all(message):
+        for con in Server.clients:
+            Server.clients[con].write_message(message)
+
+    @staticmethod
     def _dispatch(message):
         if message['channel'] not in Server.channel_watchers:
             return
         for key in Server.channel_watchers[message['channel']]:
-            print("dispatching to %s" % key)
+            logging.debug("Dispatching message to %s" % key)
             Server.clients[key].write_message(json.dumps(message))
 
     @staticmethod
     def _remove_channel_watcher(key):
+        # Remove watcher from channel
         for channel, clientset in Server.channel_watchers.items():
             clientset.discard(key)
+        # Remove unused channels
+        Server.channel_watchers = dict((k, v) for k, v in Server.channel_watchers.items() if v)
 
     @staticmethod
     def _dump_channel_watchers():

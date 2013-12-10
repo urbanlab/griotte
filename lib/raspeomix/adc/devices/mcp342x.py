@@ -95,6 +95,10 @@ class MCP342x():
     def __repr__(self):
         return 'MCP342x(%s, {self})'.format(self=self)
 
+    def channels(self):
+        """ Returns channel list """
+        return MCP342x.CHANNEL.keys()
+
     def read_channel(self, channel, resolution='12bits', gain='1x'):
         self.__set_channel(channel, resolution, gain)
 
