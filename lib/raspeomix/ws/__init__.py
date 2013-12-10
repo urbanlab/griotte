@@ -18,22 +18,18 @@
 
 import json
 import socket
-from time import time
+import time
 import raspeomix.constants as C
 import logging
 
-try:
-    import thread
-except ImportError:
-    import _thread as thread #Py3K changed it.
-
+import threading
 import websocket
 
 class WebSocket:
     """ WebSocket client """
 
 
-    def __init__(self):
+    def __init__(self, watchdog_interval=0):
         self.callbacks = dict()
         #websocket.enableTrace(True)
         url = "ws://" + C.DEFAULT_SERVER + ":" + C.DEFAULT_PORT + "/ws"
@@ -44,11 +40,19 @@ class WebSocket:
                                          on_close = self.on_close)
 
         self.ws.on_open = self.on_open
-
+        self.watchdog_interval = watchdog_interval
 
     def start(self):
+        if self.watchdog_interval > 0 :
+            logging.info("Starting websocket watchdog thread")
+            self.watchdog_thread = threading.Thread(target=self._watchdog, args=())
+            self.watchdog_thread.daemon = True
+            self.watchdog_thread.start()
+
         logging.info("Starting websocket client thread")
-        thread.start_new_thread(self.ws.run_forever(), ())
+        self.thread = threading.Thread(target=self.ws.run_forever, args=())
+        self.thread.daemon = True
+        self.thread.start()
 
     def add_listener(self, channel, callback):
         logging.debug("Adding callback for channel %s", channel)
@@ -56,7 +60,7 @@ class WebSocket:
 
     def send(self, channel, message):
         data = json.dumps( { 'channel': channel,
-                             'timestamp': time(),
+                             'timestamp': time.time(),
                              'data': message } )
         self.ws.send(data)
 
@@ -70,14 +74,22 @@ class WebSocket:
 
     def on_error(self, ws, error):
         logging.error("Websocket error : %s" % error)
+        logging.debug("thread alive : %s" , self.thread.is_alive())
 
     def on_close(self, ws):
         logging.debug("Websocket closed")
+        logging.debug("thread alive : %s" , self.thread.is_alive())
 
     def on_open(self, ws):
         logging.debug("Websocket opened")
         for channel in self.callbacks.keys():
             self._register(channel)
+
+    def _watchdog(self):
+        time.sleep(self.watchdog_interval)
+        if not self.thread.is_alive():
+            logging.warning("Websocket thread is dead, restarting")
+            self.start()
 
     def _register(self, channel):
         self.send('meta#register', { 'channel': channel })
@@ -91,8 +103,8 @@ if __name__ == "__main__":
         print("in callback with %s" % message)
 
     tornado.options.parse_command_line()
-    ws = WebSocket()
+    ws = WebSocket(watchdog_interval=10)
     ws.add_listener('an', func)
     ws.start()
 
-    time.sleep(10)
+    time.sleep(100)
