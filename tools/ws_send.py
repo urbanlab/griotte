@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+# Examples :
+# python tools/ws_send.py request:analog:an1 '{ "type": "periodic_sample", "every": 5}'
+# python tools/ws_send.py request:analog:an1 '{ "type": "set_profile", "profile": { "name": "Grove Temp", "formula": "$x 5.06 / 1024 * dup 10230000 swap - swap 10000 * / 10000 / log 3975 / 298.15 inv + inv" }}'
+
+
 import json
 import sys
 
