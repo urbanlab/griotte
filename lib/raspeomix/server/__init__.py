@@ -18,8 +18,7 @@
 
 import tornado.websocket
 import json
-import pprint
-pp = pprint.PrettyPrinter(depth=2)
+import fnmatch
 
 """
 Messages:
@@ -80,7 +79,7 @@ class Server(tornado.websocket.WebSocketHandler):
         try:
             decoded = json.loads(message)
         except ValueError:
-            print("Unable to decode crappy JSON: '%s'" + message)
+            print("Unable to decode crappy JSON: %s" % message)
 
         if decoded is None:
             return
@@ -121,7 +120,6 @@ class Server(tornado.websocket.WebSocketHandler):
     def _dispatch(message):
         if message['channel'] not in Server.channel_watchers:
             return
-        pp.pprint(Server.channel_watchers)
         for key in Server.channel_watchers[message['channel']]:
             print("dispatching to %s" % key)
             Server.clients[key].write_message(json.dumps(message))
