@@ -207,7 +207,14 @@ class RPNCalcTests(unittest.TestCase):
         # b a
         # SWAP b a
         # a b
-        self.try2('s', self.a)
+        self.try2('swap', self.a)
+
+    def test_dup(self):
+        # Stack :
+        # a
+        # DUP a
+        # a a
+        self.try2('dup', self.a)
 
     def test_drop(self):
         # Stack :
@@ -215,7 +222,7 @@ class RPNCalcTests(unittest.TestCase):
         # b a
         # DROP b a
         # a
-        self.try2('d', self.a)
+        self.try2('drop', self.a)
 
     def test_integer_zero(self):
         self.a = 0

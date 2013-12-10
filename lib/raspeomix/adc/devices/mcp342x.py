@@ -83,10 +83,10 @@ class MCP342x():
 
     # Resistors divider ratio (R20+R21)/R21 required to scale back input voltage -
     # see {https://raw.github.com/hugokernel/RaspiOMix/master/export/1.0.1/images/schema.png Schematic}
-    #
+    # All ratios yield a 0v-5.06v range
     # @note Ratio for 4k7 / 10k : 3.3
     # @note Ratio for 6k8 / 10k : 2.471
-    DIVIDER_RATIO = 3.3
+    DIVIDER_RATIO = 2.471
 
     def __init__(self, address=0x6E, bus=i2c.I2CMaster() ):
         self.bus     = bus

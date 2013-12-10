@@ -1,15 +1,20 @@
 # Part of this code is Copyright (C) 2010, Paul Lutus
 # http://www.arachnoid.com/python/RPNCalc_program.html
 
+# TODO: test invert, swap, dup, drop
+
 import sys, re, readline, types
+import logging
 from math import *
 from operator import *
 
 class RPNCalc:
 
-    def __init__(self, debug=False):
+    def invert(x):
+        return 1/x
+
+    def __init__(self):
         self.stack = []
-        self.debug = debug
 
         self.com2args = (
             ("+"   , add,        "y + x"),
@@ -46,6 +51,7 @@ class RPNCalc:
             ("acosh", acosh,    "acosh(x)"),
             ("atanh", atanh,    "atanh(x)"),
             ("sqrt" , sqrt,      "sqrt(x)"),
+            ("inv" ,  invert,        "1/x"),
             ("log"  , log,        "log(x)"),
             ("exp"  , exp,        "exp(x)"),
             ("ceil" , ceil,      "ceil(x)"),
@@ -62,8 +68,9 @@ class RPNCalc:
         self.coms = (
             ("pi", lambda: self.stack.insert(0,pi),"Pi"),
             ("e" , lambda: self.stack.insert(0,e),"e (base of natural logarithms)"),
-            ("d" , lambda: self.stack.pop(0),"Drop x"),
-            ("s" , lambda: self.stack.insert(0,self.stack.pop(1)),"Swap x <-> y"),
+            ("drop" , lambda: self.stack.pop(0),"Drop x"),
+            ("dup" , lambda: self.stack.insert(0,self.stack[0]),"Duplicate x"),
+            ("swap" , lambda: self.stack.insert(0,self.stack.pop(1)),"Swap x <-> y"),
         )
 
     def found(self,s,tup):
@@ -92,8 +99,7 @@ class RPNCalc:
     def process(self, expression):
         spregex = re.compile("\s+")
 
-        if self.debug:
-            print("expr:%s" % expression)
+        logging.debug("RPN expression : \"%s\"" % expression)
 
         for tok in spregex.split(expression):
             try:
@@ -104,11 +110,10 @@ class RPNCalc:
              #   else:
               #      self.stack.insert(0,int(tok))
 
-                if self.debug:
+                if True:
                     self.dump_stack()
             except: # it's not a number
-                if self.debug:
-                    print("looking for tok %s" % tok)
+                logging.debug("Looking for tok %s" % tok)
                 try: # look for command
                     if (self.found(tok, self.com2args)):
                         self.convert_items(self.node)
@@ -119,12 +124,17 @@ class RPNCalc:
                     elif (self.found(tok, self.coms)):
                         self.node[1]()
                     else:
-                        print("Error: token \"%s\" not found!" % tok)
+                        logging.error("Formula error : token \"%s\" not found!" % tok)
 
                 except:
-                    print("Error:", sys.exc_info()[0])
+                    err = "Current stack :"
+                    for item in self.stack:
+                        err += " %s" % item
+                    logging.error("Unknown RPN error : %s when handling tok %s" %
+                                  (sys.exc_info()[0], tok))
+                    logging.error(err)
 
-        if self.debug:
+        if True:
             self.dump_stack()
         return self.stack[0]
 
