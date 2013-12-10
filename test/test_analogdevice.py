@@ -11,7 +11,7 @@ class FakeADC():
 
 class AnalogDeviceTests(unittest.TestCase):
     def setUp(self):
-        self.dev = AnalogDevice(FakeADC(), Profile('Identity'))
+        self.dev = AnalogDevice(FakeADC())
 
     def testIdentityRandom(self):
         self.assertTrue(self.dev.convert('an0').value > 0)
@@ -20,10 +20,16 @@ class AnalogDeviceTests(unittest.TestCase):
         self.assertTrue(self.dev.convert('an3').value > 0)
 
     def testProfile(self):
-        profile = Profile('Doubler', formula='$x 2 *')
-        dev = AnalogDevice(FakeADC(), profile)
+        doubler = Profile('Doubler', formula='$x 2 *')
+        dev = AnalogDevice(FakeADC())
+        dev.set_profile('an0', doubler)
         val = dev.convert('an0')
         self.assertTrue(2 * val.value == val.converted_value)
+
+    def testWrongChannel(self):
+        doubler = Profile('Doubler', formula='$x 2 *')
+        dev = AnalogDevice(FakeADC())
+        self.assertRaises(ValueError, dev.set_profile, 'an10', doubler)
 
 if __name__ == "__main__":
     unittest.main()

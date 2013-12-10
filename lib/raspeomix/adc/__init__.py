@@ -20,13 +20,14 @@ from raspeomix.adc.mcp342x import MCP342x
 from raspeomix.adc.analogdevice import AnalogDevice
 from raspeomix.adc.profile import Profile
 from raspeomix.ws import WebSocket
+import logging
 import json
 
 """
 Messages:
 
-/request/an/2 { "profile???" }
-/message/an/0 { "value" : 146, "profile" : { "name" : "Maxborktik EZ-1", ... }}
+request:analog:2 { "profile???" }
+message:analog:0 { "value" : 146, "profile" : { "name" : "Maxborktik EZ-1", ... }}
 
 All exchanged messages have a timestamp
 
@@ -35,9 +36,19 @@ CHANNEL='an'
 
 class AnalogHandler:
     def __init__(self):
-        self.ws = WebSocket(raspeomix.adc.CHANNEL, self)
+        self.analogdevice = AnalogDevice()
 
-    def
+        self.ws = WebSocket(watchdog_interval=10)
+        self.ws.add_listener('request:analog:0', self.request, 0)
+        self.ws.add_listener('request:analog:1', self.request, 1)
+        self.ws.add_listener('request:analog:2', self.request, 2)
+        self.ws.add_listener('request:analog:3', self.request, 3)
+
+    def request(self, channel, message):
+        logging.info("Request received for channel %s with message %s" % (channel, message))
+
+
+
 if __name__ == "__main__":
     AnalogHandler()
 

@@ -54,7 +54,7 @@ class WebSocket:
         self.thread.daemon = True
         self.thread.start()
 
-    def add_listener(self, channel, callback):
+    def add_listener(self, channel, callback, *args):
         logging.debug("Adding callback for channel %s", channel)
         self.callbacks[channel] = callback
 
@@ -92,12 +92,13 @@ class WebSocket:
             self.start()
 
     def _register(self, channel):
-        self.send('meta#register', { 'channel': channel })
+        self.send('meta:register', { 'channel': channel })
 
     def debug(self):
         print ("hello %s",__main__)
 
 if __name__ == "__main__":
+    # test code
     import tornado.options
     def func(message):
         print("in callback with %s" % message)
