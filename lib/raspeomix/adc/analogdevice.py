@@ -1,7 +1,7 @@
 # vim: ts=4:sw=4
 
 from raspeomix.adc.profile import Profile
-from raspeomix.adc.mcp342x import MCP342x
+from raspeomix.adc.devices import *
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)

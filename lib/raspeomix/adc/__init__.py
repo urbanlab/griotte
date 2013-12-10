@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
-from raspeomix.adc.mcp342x import MCP342x
+from raspeomix.adc.devices import *
 from raspeomix.adc.analogdevice import AnalogDevice
 from raspeomix.adc.profile import Profile
 from raspeomix.ws import WebSocket
