@@ -18,7 +18,9 @@
 
 import json
 import socket
-import time
+from time import time
+import raspeomix.constants as C
+import logging
 
 try:
     import thread
@@ -30,49 +32,67 @@ import websocket
 class WebSocket:
     """ WebSocket client """
 
-    prefix = ""
 
-    def __init__(self, channel, callback):
-        self.prefix = socket.gethostname()
-        self.callback = callback
-        self.channel = channel
-        websocket.enableTrace(True)
-
-        self.ws = websocket.WebSocketApp("ws://127.0.0.1:8888/ws",
-                            on_message = self.on_message,
-                            on_error = self.on_error,
-                            on_close = self.on_close)
+    def __init__(self):
+        self.callbacks = dict()
+        #websocket.enableTrace(True)
+        url = "ws://" + C.DEFAULT_SERVER + ":" + C.DEFAULT_PORT + "/ws"
+        logging.info("Using server at %s" % url)
+        self.ws = websocket.WebSocketApp(url,
+                                         on_message = self.on_message,
+                                         on_error = self.on_error,
+                                         on_close = self.on_close)
 
         self.ws.on_open = self.on_open
-        thread.start_new_thread(self.start, ())
+
 
     def start(self):
-        print("starting ws")
-        self.ws.run_forever()
-        print("forever ?")
+        logging.info("Starting websocket client thread")
+        thread.start_new_thread(self.ws.run_forever(), ())
+
+    def add_listener(self, channel, callback):
+        logging.debug("Adding callback for channel %s", channel)
+        self.callbacks[channel] = callback
+
+    def send(self, channel, message):
+        data = json.dumps( { 'channel': channel,
+                             'timestamp': time(),
+                             'data': message } )
+        self.ws.send(data)
 
     def on_message(self, ws, message):
-        print("received : %s" % message)
-        self.callback(message)
+        """ Decodes incoming message and dispatches to local callback """
+        logging.debug("Received : %s" % message)
+        decoded = json.loads(message)
+        if (decoded.channel in self.callbacks.keys()):
+            logging.debug("Callback found for channel %s, dispatching" % decoded.channel)
+            self.callback(decoded.data)
 
-    def on_error(self):
-        print(error)
+    def on_error(self, ws, error):
+        logging.error("Websocket error : %s" % error)
 
-    def on_close(ws):
-        print("### closed ###")
+    def on_close(self, ws):
+        logging.debug("Websocket closed")
 
     def on_open(self, ws):
-        print("### opened ###")
-        data = json.dumps( { 'channel': '/meta/register',
-                            'data': { 'channel': self.channel } } )
+        logging.debug("Websocket opened")
+        for channel in self.callbacks.keys():
+            self._register(channel)
 
+    def _register(self, channel):
+        self.send('meta#register', { 'channel': channel })
 
     def debug(self):
         print ("hello %s",__main__)
 
 if __name__ == "__main__":
+    import tornado.options
     def func(message):
         print("in callback with %s" % message)
-    ws = WebSocket('an',func)
 
-    time.sleep(100)
+    tornado.options.parse_command_line()
+    ws = WebSocket()
+    ws.add_listener('an', func)
+    ws.start()
+
+    time.sleep(10)

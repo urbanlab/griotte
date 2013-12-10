@@ -39,8 +39,7 @@ class AnalogHandler:
 
     def
 if __name__ == "__main__":
-    a = AnalogHandler()
-    print(a)
+    AnalogHandler()
 
 
 
