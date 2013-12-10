@@ -14,7 +14,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+# along with Raspeomix. If not, see <http://www.gnu.org/licenses/>.
 
 import tornado.websocket
 import logging
@@ -39,18 +39,18 @@ categories for event : io0-3/(raising|falling), an0-3(over_threshold|below_thres
 
 e.g. :
 
-/meta/subscribe { "channel" : "/event/io/1/rising" }
-/meta/store/sound_level { "value": 35 }
-/meta/store/some_complex { "value": { "complex": "data", "with": [ "array" ] } }
-/meta/store/date { "date" : 20140516, "time": "145232" }
-/meta/device/attach { "device" : "/dev/nfc1" }
-/meta/device/detach { "device" : "/dev/nfc1" }
-/request/an/2 { "profile???" }
-/command/video { "action" : "play", "media" : "wtf.mp4" }
-/message/video { "status" : "playing", "media" : "wtf.mp4", "progress" : "16", "length" : "49" }
-/message/an/0 { "value" : 146, "profile" : { "name" : "Maxborktik EZ-1", ... }}
-/message/nfc/1 { "value": "ab133df" }
-/event/io1/raising {}
+meta:subscribe { "channel" : ":event:io:1:rising" }
+meta:store:sound_level { "value": 35 }
+meta:store:some_complex { "value": { "complex": "data", "with": [ "array" ] } }
+meta:store:date { "date" : 20140516, "time": "145232" }
+meta:device:attach { "device" : "/dev/nfc1" }
+meta:device:detach { "device" : "/dev/nfc1" }
+request:an:2 { "profile???" }
+command:video { "action" : "play", "media" : "wtf.mp4" }
+message:video { "status" : "playing", "media" : "wtf.mp4", "progress" : "16", "length" : "49" }
+message:an:0 { "value" : 146, "profile" : { "name" : "Maxborktik EZ-1", ... }}
+message:nfc:1 { "value": "ab133df" }
+event:io1:raising {}
 
 All exchanged messages have a timestamp
 
@@ -149,7 +149,8 @@ class Server(tornado.websocket.WebSocketHandler):
     @staticmethod
     def _dump_channel_watchers():
         for channel, clientset in Server.channel_watchers.items():
-            print("%s :" % channel)
+            clients = ""
             for key in clientset:
-                print("\t- %s" % key)
+                clients += "," + key
+            logging.debug("%s : {%s}" % (channel, clients[1:]))
 

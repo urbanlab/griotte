@@ -6,8 +6,11 @@ from raspeomix.adc import AnalogDevice
 from raspeomix.adc import Profile
 
 class FakeADC():
-  def read_channel(self, *args):
-    return random.random()*5 + 0.1
+    def read_channel(self, *args):
+        return random.random()*5 + 0.1
+
+    def channels(self):
+        return ['an0', 'an1', 'an2', 'an3']
 
 class AnalogDeviceTests(unittest.TestCase):
     def setUp(self):

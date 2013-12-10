@@ -47,13 +47,28 @@ class AnalogHandler:
                                  self.request, chan)
 
         self.sample_rate = None
-        self.periodic_sampled_channels = ()
+        self.periodic_sampled_channels = []
 
         self.start()
 
     def request(self, channel, message):
+        # Let's get the real analog channel from the path
+        channel = channel[channel.rfind(':')+1:]
         logging.info("Request received for channel %s with message %s" % (channel, message))
-
+        # Message types :
+        # set_profile
+        # get_value
+        # periodic_sample
+        if message['type'] == 'periodic_sample':
+            logging.debug("periodic_sample request with sample_rate %s" % self.sample_rate)
+            self.periodic_sampled_channels.append(channel)
+            self.sample_rate = message['every']
+        elif message['type'] == 'set_profile':
+            jp = message['profile']
+            logging.debug("set_profile request with profile %s" % jp['name'])
+            # Unpack dict to keywork arguments
+            profile = Profile(**jp)
+            self.analogdevice.set_profile(channel, profile)
 
     def start(self):
         logging.info("Starting AnalogHandler's websocket")
@@ -65,9 +80,9 @@ class AnalogHandler:
                 sleep(self.sample_rate)
                 # do sample
                 for chan in self.periodic_sampled_channels:
-                    value = self.analogdevice.convert(chan).value
-                    ws.send("message:analog:" + chan,
-                            { "value": value })
+                    logging.debug("Sampling %s" % chan)
+                    self.ws.send("message:analog:" + chan,
+                                self.analogdevice.convert(chan).summary())
 
 
 if __name__ == "__main__":

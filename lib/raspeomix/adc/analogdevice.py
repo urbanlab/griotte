@@ -28,8 +28,7 @@ class AnalogDevice:
         self.profiles[channel] = profile
 
     def convert(self, chanidx):
-        self.channel[chanidx] = self.device.read_channel(chanidx,
+        self.profiles[chanidx].value = self.device.read_channel(chanidx,
                                                          self.profiles[chanidx].resolution,
                                                          self.profiles[chanidx].gain)
-        self.profiles[chanidx].value = self.channel[chanidx]
         return self.profiles[chanidx]

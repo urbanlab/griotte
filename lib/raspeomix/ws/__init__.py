@@ -69,8 +69,8 @@ class WebSocket:
         logging.debug("Received : %s" % message)
         decoded = json.loads(message)
         if (decoded['channel'] in self.callbacks.keys()):
-            logging.debug("Callback found for channel %s, dispatching" % decoded.channel)
-            self.callback(decoded.data)
+            logging.debug("Callback found for channel %s, dispatching" % decoded['channel'])
+            self.callbacks[decoded['channel']](decoded['channel'], decoded['data'])
 
     def on_error(self, ws, error):
         logging.error("Websocket error : %s" % error)
