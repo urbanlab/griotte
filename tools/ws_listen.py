@@ -16,14 +16,16 @@ define("channels", default="meta:presence", multiple = True,
        help="Channels to watch (coma separated)")
 
 if __name__ == "__main__":
-    def on_message(message):
-        print(message)
+    def on_message(channel, message):
+        logging.info(" >>> On channel \"%s\" : %s" % (channel, message))
 
     channels = ()
     channels = options.parse_command_line()
 
     ws = WebSocket(watchdog_interval=options.watchdog)
     for chan in channels:
+        ws.add_listener(chan, on_message)
+    for chan in options.channels:
         ws.add_listener(chan, on_message)
 
     ws.start()
