@@ -26,6 +26,5 @@ if __name__ == "__main__":
     for chan in channels:
         ws.add_listener(chan, on_message)
 
-
     ws.start()
 

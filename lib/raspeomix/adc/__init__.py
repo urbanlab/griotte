@@ -34,7 +34,6 @@ message:analog:0 { "value" : 146, "profile" : { "name" : "Maxborktik EZ-1", ... 
 All exchanged messages have a timestamp
 
 """
-CHANNEL='an'
 
 class AnalogHandler:
     def __init__(self):
@@ -82,8 +81,7 @@ class AnalogHandler:
                 for chan in self.periodic_sampled_channels:
                     logging.debug("Sampling %s" % chan)
                     self.ws.send("message:analog:" + chan,
-                                self.analogdevice.convert(chan).summary())
-
+                                self.analogdevice.convert(chan).__dict__)
 
 if __name__ == "__main__":
     import tornado.options
