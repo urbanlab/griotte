@@ -10,7 +10,7 @@ from operator import *
 
 class RPNCalc:
 
-    def invert(x):
+    def inverse(x):
         return 1/x
 
     def __init__(self):
@@ -38,31 +38,32 @@ class RPNCalc:
         )
 
         self.com1arg = (
-            ("sin"  , sin,        "sin(x)"),
-            ("cos"  , cos,        "cos(x)"),
-            ("tan"  , tan,        "tan(x)"),
-            ("asin" , asin,      "asin(x)"),
-            ("acos" , acos,      "acos(x)"),
-            ("atan" , atan,      "atan(x)"),
-            ("sinh" , sinh,      "sinh(x)"),
-            ("cosh" , cosh,      "cosh(x)"),
-            ("tanh" , tanh,      "tanh(x)"),
-            ("asinh", asinh,    "asinh(x)"),
-            ("acosh", acosh,    "acosh(x)"),
-            ("atanh", atanh,    "atanh(x)"),
-            ("sqrt" , sqrt,      "sqrt(x)"),
-            ("inv" ,  invert,        "1/x"),
-            ("log"  , log,        "log(x)"),
-            ("exp"  , exp,        "exp(x)"),
-            ("ceil" , ceil,      "ceil(x)"),
-            ("floor", floor,    "floor(x)"),
-            ("erf"  , erf,        "erf(x)"),
-            ("erfc" , erfc,      "erfc(x)"),
-            ("!"    , factorial,      "x!", int),
-            ("abs"  , fabs,          "|x|"),
-            ("deg"  , degrees,"degrees(x)"),
-            ("rad"  , radians,"radians(x)"),
-            ("~"    , invert,       "~ x", int),
+            ("sin"  , sin,          "sin(x)"),
+            ("cos"  , cos,          "cos(x)"),
+            ("tan"  , tan,          "tan(x)"),
+            ("asin" , asin,        "asin(x)"),
+            ("acos" , acos,        "acos(x)"),
+            ("atan" , atan,        "atan(x)"),
+            ("sinh" , sinh,        "sinh(x)"),
+            ("cosh" , cosh,        "cosh(x)"),
+            ("tanh" , tanh,        "tanh(x)"),
+            ("asinh", asinh,      "asinh(x)"),
+            ("acosh", acosh,      "acosh(x)"),
+            ("atanh", atanh,      "atanh(x)"),
+            ("sqrt" , sqrt,        "sqrt(x)"),
+            ("inv" ,  RPNCalc.inverse, "1/x"),
+            ("log"  , log,          "log(x)"),
+            ("log10", log10,      "log10(x)"),
+            ("exp"  , exp,          "exp(x)"),
+            ("ceil" , ceil,        "ceil(x)"),
+            ("floor", floor,      "floor(x)"),
+            ("erf"  , erf,          "erf(x)"),
+            ("erfc" , erfc,        "erfc(x)"),
+            ("!"    , factorial,   "x!", int),
+            ("abs"  , fabs,            "|x|"),
+            ("deg"  , degrees,  "degrees(x)"),
+            ("rad"  , radians,  "radians(x)"),
+            ("~"    , invert,     "~ x", int),
         )
 
         self.coms = (
@@ -107,11 +108,9 @@ class RPNCalc:
                 # let's try to stick to ints if possible
                 #if (int(float(tok)) != float(tok)):
                 self.stack.insert(0,float(tok))
-             #   else:
-              #      self.stack.insert(0,int(tok))
 
-                if True:
-                    self.dump_stack()
+             #   if True:
+             #       self.dump_stack()
             except: # it's not a number
                 logging.debug("Looking for tok %s" % tok)
                 try: # look for command
@@ -134,8 +133,8 @@ class RPNCalc:
                                   (sys.exc_info()[0], tok))
                     logging.error(err)
 
-        if True:
-            self.dump_stack()
+#        if True:
+#            self.dump_stack()
         return self.stack[0]
 
 

@@ -13,7 +13,7 @@ class Profile:
         self.resolution = resolution
         self.gain = gain
         self._raw_value = valrange[0]
-        self.value = valrange[0]
+        #self.value = valrange[0]
 
     def summary(self):
         return { "name": self.name,

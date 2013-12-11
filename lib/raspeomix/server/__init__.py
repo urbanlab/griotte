@@ -101,7 +101,6 @@ class Server(tornado.websocket.WebSocketHandler):
             logging.info("Got unsubscribe for channel %s" % decoded['data']['channel'])
             Server.channel_watchers[decoded['data']['channel']].remove(self.key())
         else:
-            Server._dump_channel_watchers()
             Server._dispatch(decoded)
 
         #
