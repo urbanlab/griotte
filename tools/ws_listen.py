@@ -12,8 +12,6 @@ from raspeomix.ws import WebSocket
 
 define("url", default="ws://127.0.0.1:8888/ws", help="Websocket server url")
 define("watchdog", default=0, help="Watchdog interval")
-define("channels", default="meta:presence", multiple = True,
-       help="Channels to watch (coma separated)")
 
 if __name__ == "__main__":
     def on_message(channel, message):
@@ -22,10 +20,12 @@ if __name__ == "__main__":
     channels = ()
     channels = options.parse_command_line()
 
+    if not channels:
+        logging.warning("No channel specified, watching meta.presence")
+        channels.append("meta.presence")
+
     ws = WebSocket(watchdog_interval=options.watchdog)
     for chan in channels:
-        ws.add_listener(chan, on_message)
-    for chan in options.channels:
         ws.add_listener(chan, on_message)
 
     ws.start()

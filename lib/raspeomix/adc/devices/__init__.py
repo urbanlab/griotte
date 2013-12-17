@@ -1,5 +1,5 @@
 #
-# (c) 2013 ERASME
+# (c) 2013-2014 ERASME
 #
 # This file is part of Raspeomix
 #
@@ -14,7 +14,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+# along with Raspeomix. If not, see <http://www.gnu.org/licenses/>.
 
 from raspeomix.adc.devices.mcp342x import MCP342x
 

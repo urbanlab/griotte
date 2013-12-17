@@ -1,5 +1,5 @@
 #
-# (c) 2013 ERASME
+# (c) 2013-2014 ERASME
 #
 # This file is part of Raspeomix
 #
@@ -14,7 +14,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Raspeomix.  If not, see <http://www.gnu.org/licenses/>.
+# along with Raspeomix. If not, see <http://www.gnu.org/licenses/>.
+
 
 from raspeomix.multimedia.omxplayer import OMXPlayer
 from raspeomix.ws import WebSocket
@@ -39,7 +40,7 @@ class MultimediaHandler:
     def __init__(self):
         self.backend = OMXPlayer()
         self.ws = WebSocket(watchdog_interval=2)
-        self.ws.add_listener('request:video', self.request)
+        self.ws.add_listener('request.video', self.request)
 
         self.start()
 
@@ -75,7 +76,7 @@ class MultimediaHandler:
                     "volume": self.backend.volume,
                     "amplitude": self.backend.amplitude,
                     "muted": self.backend.muted }
-        self.ws.send("message:video", status)
+        self.ws.send("message.video", status)
 
     def start(self):
         logging.info("Starting MultimediaHandler's websocket")

@@ -1,5 +1,5 @@
 #
-# (c) 2013 ERASME
+# (c) 2013-2014 ERASME
 #
 # This file is part of Raspeomix
 #
@@ -15,6 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Raspeomix. If not, see <http://www.gnu.org/licenses/>.
+
 
 import tornado.websocket
 import logging
@@ -64,7 +65,7 @@ class Server(tornado.websocket.WebSocketHandler):
     channel_watchers = {}
 
     def open(self):
-        Server._dispatch_all({  "channel":"meta:join",
+        Server._dispatch_all({  "channel":"meta.join",
                                 "timestamp": time(),
                                 "data": { "client": self.key() }
                             })
@@ -89,14 +90,14 @@ class Server(tornado.websocket.WebSocketHandler):
             return
 
 
-        if decoded['channel'] == 'meta:subscribe':
+        if decoded['channel'] == 'meta.subscribe':
             if Server.channel_watchers.get(decoded['data']['channel'], None) == None:
                 Server.channel_watchers[decoded['data']['channel']] = set()
             # Handle subscribe
             logging.info("Got subscribe for channel %s" % decoded['data']['channel'])
             Server.channel_watchers[decoded['data']['channel']].add(self.key())
             Server._dump_channel_watchers()
-        elif decoded['channel'] == 'meta:unsubscribe':
+        elif decoded['channel'] == 'meta.unsubscribe':
             # Handle unsusbscribe
             logging.info("Got unsubscribe for channel %s" % decoded['data']['channel'])
             Server.channel_watchers[decoded['data']['channel']].remove(self.key())
@@ -111,7 +112,7 @@ class Server(tornado.websocket.WebSocketHandler):
 
         try:
             del(Server.clients[self.key()])
-            Server._dispatch_all({  "channel":"meta:leave",
+            Server._dispatch_all({  "channel":"meta.leave",
                                     "timestamp": time(),
                                     "data": { "client": self.key() }
                                 })

@@ -4,6 +4,7 @@ import raspeomix.server
 import raspeomix.constants as C
 import tornado.ioloop
 import tornado.web
+from setproctitle import setproctitle
 from tornado.options import define, options
 import logging
 import os
@@ -13,6 +14,7 @@ define("port", default=C.DEFAULT_PORT, help="Web server port")
 define("static", default=C.DEFAULT_STATIC, help="Static assets path")
 
 def main():
+    setproctitle("raspeomix-server")
     app = tornado.web.Application([
         (r'/ws', raspeomix.server.Server),
         (r'/(.*)', tornado.web.StaticFileHandler, { 'path': options.static,
