@@ -17,3 +17,4 @@
 # along with Raspeomix. If not, see <http://www.gnu.org/licenses/>.
 
 from raspeomix.multimedia.omxplayer import OMXPlayer
+from raspeomix.multimedia.multimediahandler import MultimediaHandler

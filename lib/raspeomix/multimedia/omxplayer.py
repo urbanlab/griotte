@@ -21,6 +21,7 @@
 import threading
 import pexpect
 import re
+import logging
 
 from threading import Thread
 from time import sleep
@@ -49,14 +50,20 @@ class OMXPlayer(object):
         self._position_thread = None
 
     def play(self, mediafile, subtitles=False):
-        self.paused = self.muted = self.subtitles_visible = False
+        self.subtitles_visible = False
+
+        # Initialize status variables
+        self.position = self.media_length = 0
+        self.playing = self.muted = False
+        self.volume = self.amplitude = 0
+
         cmd = self._LAUNCH_CMD % (mediafile)
 
         if self._position_thread is not None and self._position_thread.is_alive():
             self.stop()
             self._position_thread.join(0.5)
 
-        print("launchcmd : %s" % cmd)
+        logging.debug("launchcmd : %s" % cmd)
         #self._process = pexpect.spawn('/bin/bash', ['-c', cmd])
         self._process = pexpect.spawn(cmd)
 
@@ -97,17 +104,20 @@ class OMXPlayer(object):
             else:
                 self.position = float(self._process.match.group(2))
                 self.media_length = float(self._process.match.group(1))
-                self.state = int(self._process.match.group(3))
+                self.playing = True if self._process.match.group(3).decode('ascii') == "1" else False
                 self.volume = int(self._process.match.group(4))
                 self.amplitude = int(self._process.match.group(5))
-                self.muted = True if self._process.match.group(6) == "1" else False
-                print("%s" % self.position)
+                self.muted = True if self._process.match.group(6).decode('ascii') == "1" else False
+
+                logging.debug("position: %s, playing: %s, volume: %s" %
+                              (self.position, self.playing, self.volume))
             sleep(0.1)
-        print("ending thread")
+        logging.debug("ending _get_position thread")
 
     def toggle_pause(self):
         if self._process.send(self._PAUSE_CMD):
-            self.paused = not self.paused
+            logging.warning("sending _PAUSE_CMD")
+            self.playing = not self.playing
 
     def toggle_mute(self):
         if self._process.send(self._MUTE_CMD):
@@ -121,7 +131,7 @@ class OMXPlayer(object):
         return self._position_thread.is_alive() or self._process.isalive()
 
     def is_playing(self):
-        return not self.paused and self.is_running()
+        return not self.playing and self.is_running()
 
     def stop(self):
         self._process.send(self._QUIT_CMD)

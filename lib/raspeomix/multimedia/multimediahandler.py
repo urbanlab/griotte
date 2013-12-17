@@ -16,6 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Raspeomix. If not, see <http://www.gnu.org/licenses/>.
 
+# Example:
+# tools/ws_send.py request.video '{ "command": "play", "media": "/home/pi/kitten.mp4" }'
+
 
 from raspeomix.multimedia.omxplayer import OMXPlayer
 from raspeomix.ws import WebSocket
@@ -52,7 +55,6 @@ class MultimediaHandler:
         # toggle_mute
         # unmute
         # mute
-        logging.info("got request")
 
         if message['command'] == 'toggle_mute':
             logging.debug("toggling mute")
@@ -72,7 +74,7 @@ class MultimediaHandler:
         status = {  "type" : "status",
                     "position": self.backend.position,
                     "media_length": self.backend.media_length,
-                    "state": self.backend.state,
+                    "playing": self.backend.playing,
                     "volume": self.backend.volume,
                     "amplitude": self.backend.amplitude,
                     "muted": self.backend.muted }
@@ -81,10 +83,4 @@ class MultimediaHandler:
     def start(self):
         logging.info("Starting MultimediaHandler's websocket")
         self.ws.start()
-        sleep(100)
 
-if __name__ == "__main__":
-    import tornado.options
-    tornado.options.parse_command_line()
-
-    MultimediaHandler()
