@@ -38,6 +38,7 @@ Application = {
     this._heartbeat  = $('#heartbeat');
     this._heartbeat.hide();
 
+    this._sliderprogress = $('#slider-current');
     this._slidersound = $('#slider-sound');
     this._togglesound = $('#toggle-sound');
     this._togglescenario = $('#toggle-scenario');
@@ -46,13 +47,15 @@ Application = {
 
     console.log("Application initialized");
 
-    this._griotte.subscribe('/internal/ready', self.launch.bind(this));
+    this._griotte.subscribe('internal.ready', self.launch.bind(this));
   },
 
   launch: function() {
     console.log("Application.launch called");
     console.log(self)
-    this._griotte.subscribe("/meta/store/sound_level", this.sound_in.bind(this));
+    this._griotte.subscribe("meta.store.sound_level", this.sound_in.bind(this));
+    this._griotte.subscribe("message.video", this.video_in.bind(this));
+
   },
 
   accept: function(message) {
@@ -60,11 +63,11 @@ Application = {
   },
 
   scenario: function(state) {
-    this._griotte.publish('/' + this._prefix + '/scenario', { command: state });
+    this._griotte.publish('.' + this._prefix + '.scenario', { command: state });
   },
 
   sound: function(state, volume) {
-    this._griotte.publish("/meta/store/sound_level", { state: state, level: parseInt(volume) } );
+    this._griotte.publish("meta.store.sound_level", { state: state, level: parseInt(volume) } );
   },
 
   scenario_in: function(data) {
@@ -83,6 +86,22 @@ Application = {
     this._togglescenario.prop({ value: data['command'] });
     this._togglescenario.slider('refresh');
   },
+
+  video_in: function(message) {
+    data = message.data
+    console.log("video event in");
+    console.log(data);
+    if (data['type'] == 'status') {
+      this._sliderprogress.prop({ value: Math.floor(data.position/1000) });
+      this._sliderprogress.prop({ max: Math.floor(data.media_length/1000) });
+    } else if (data['type'] == 'play') {
+      this._sliderprogress.prop({ max: data.media_length });
+    } else if (data['type'] == 'stop') {
+      this._sliderprogress.prop({ value: Math.floor(data.media_length/1000) });
+    }
+    this._sliderprogress.slider('refresh');
+  },
+
 
   sound_in: function(message) {
     data = message.data

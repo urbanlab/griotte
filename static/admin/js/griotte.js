@@ -11,7 +11,7 @@ Griotte = {
       //self._ws.send("Websocket connected to " + url);
       console.log("Websocket connected");
       self.ready = true;
-      self.dispatch({"channel": "/internal/ready"});
+      self.dispatch({"channel": "internal.ready"});
     };
 
     self._ws.onmessage = function(message) {
@@ -45,12 +45,12 @@ Griotte = {
     self._events[channel] = callback;
     console.log("subscribing to " + channel);
 
-    if (channel == "/internal/ready" && self.ready) {
+    if (channel == ".internal.ready" && self.ready) {
       console.log("Immediate dispatch for ready");
-      self.dispatch({"channel": "/internal/ready"});
+      self.dispatch({"channel": "internal.ready"});
     }
 
-    self.publish("/meta/subscribe", { channel: channel });
+    self.publish("meta.subscribe", { channel: channel });
   },
 
   unsubscribe: function(channel) {
@@ -61,7 +61,7 @@ Griotte = {
     delete self._events[channel];
     console.log("unsubscribing from " + channel);
 
-    self.publish("/meta/subscribe", { channel: channel });
+    self.publish("meta.subscribe", { channel: channel });
   },
 
   publish: function(channel, data) {

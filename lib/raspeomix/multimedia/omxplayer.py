@@ -26,7 +26,6 @@ from threading import Thread
 from time import sleep
 
 import sys
-import pprint
 
 class OMXPlayer(object):
 
@@ -89,9 +88,10 @@ class OMXPlayer(object):
         if x <=   190: return 110
         return 120
 
-    def __init__(self):
+    def __init__(self, status_callback):
         self._position_thread = None
         self._process = None
+        self._status_callback = status_callback
 
     def play(self, mediafile, subtitles=False):
         self.subtitles_visible = False
@@ -153,7 +153,6 @@ class OMXPlayer(object):
             elif index in (2, 3): break
             elif index == 0:
                 matches = self._process.match.groups()
-                pprint.pprint(matches)
                 self.position = float(matches[1])
                 self.media_length = float(matches[0])
                 self.playing = True if matches[2].decode('ascii') == "1" else False
@@ -163,6 +162,7 @@ class OMXPlayer(object):
 
                 logging.debug("position: %s, playing: %s, volume: %s" %
                               (self.position, self.playing, self.volume))
+                self._status_callback('status')
             sleep(0.1)
         logging.debug("ending _get_position thread")
         self.stop()
@@ -171,14 +171,25 @@ class OMXPlayer(object):
         logging.warning("sending _PAUSE_CMD")
         if self._process.send(self._PAUSE_CMD):
             self.playing = not self.playing
+            self._status_callback('toggle_pause')
 
-    def toggle_mute(self):
-        if self._process.send(self._MUTE_CMD):
+    def mute(self, sound="toggle"):
+        if sound == "toggle":
+            self._toggle_mute()
+        elif sound == 'off' and not self.muted:
+            self._toggle_mute()
+        elif sound == 'on' and self.muted:
+            self._toggle_mute()
+
+    def _toggle_mute(self):
+        logging.debug("sending mute command %s" % self._TOGGLE_MUTE_CMD)
+        if self._process.send(self._TOGGLE_MUTE_CMD):
             self.muted = not self.muted
 
     def toggle_subtitles(self):
         if self._process.send(self._TOGGLE_SUB_CMD):
             self.subtitles_visible = not self.subtitles_visible
+            self._status_callback('toggle_subtitles')
 
     def is_running(self):
         return self._position_thread.is_alive() or self._process.isalive()
@@ -190,6 +201,7 @@ class OMXPlayer(object):
         logging.debug("stopping omxplayer")
         self._process.send(self._QUIT_CMD)
         self._process.close(force=True)
+        self._status_callback('stop')
 
     def set_speed(self):
         raise NotImplementedError
@@ -204,8 +216,13 @@ class OMXPlayer(object):
         raise NotImplementedError
 
     def set_volume(self, volume):
+        # Nothing to do if we're muted
+        # this is important : omxplayer will reset muting state if volume changes
+        # when mute is off
+        if self.muted: return
         logging.debug("sending volume command %s" % OMXPlayer.percent_to_command(volume))
-        self._process.send(OMXPlayer.percent_to_command(volume))
+        if self._process.send(OMXPlayer.percent_to_command(volume)):
+            self._status_callback('set_volume')
 
     def seek(self, minutes):
         raise NotImplementedError

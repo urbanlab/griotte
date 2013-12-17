@@ -41,41 +41,41 @@ All exchanged messages have a timestamp
 
 class MultimediaHandler:
     def __init__(self):
-        self.backend = OMXPlayer()
+        self.backend = OMXPlayer(self.send_status)
         self.ws = WebSocket(watchdog_interval=2)
-        self.ws.add_listener('request.video', self.request)
+        self.ws.add_listener('request.video', self.video_request)
+        self.ws.add_listener('meta.store.sound_level', self.sound_level)
 
         self.start()
 
-    def request(self, channel, message):
+    def sound_level(self, channel, message):
+        # toggle_mute
+        # unmute
+        # mute
+        # set_volume
+        if message['level']:
+            self.backend.set_volume(message['level'])
+        if message['state']:
+            self.backend.mute(message['state'])
+
+    def video_request(self, channel, message):
         # Message types :
         # toggle_pause
         # play
         # stop
-        # toggle_mute
-        # unmute
-        # mute
-
-        if message['command'] == 'toggle_mute':
-            logging.debug("toggling mute")
-            self.backend.toggle_mute()
-            self.send_status()
-        elif message['command'] == 'pause':
+        if message['command'] == 'pause':
             logging.debug("pausing media")
             self.backend.toggle_pause()
-            self.send_status()
+            self.send_status('toggle_pause')
         elif message['command'] == 'play':
             logging.debug("playing media %s" % message['media'])
             self.backend.play(message['media'])
-            self.send_status()
-        elif message['command'] == 'set_volume':
-            logging.debug("setting volume to %s %%" % message['volume'])
-            self.backend.set_volume(message['volume'])
-            self.send_status()
+            self.send_status('play')
 
-    def send_status(self):
+
+    def send_status(self, status = "status"):
         logging.debug("sending status")
-        status = {  "type" : "status",
+        status = {  "type" : status,
                     "position": self.backend.position,
                     "media_length": self.backend.media_length,
                     "playing": self.backend.playing,
