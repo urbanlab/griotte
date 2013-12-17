@@ -68,6 +68,10 @@ class MultimediaHandler:
             logging.debug("playing media %s" % message['media'])
             self.backend.play(message['media'])
             self.send_status()
+        elif message['command'] == 'set_volume':
+            logging.debug("setting volume to %s %%" % message['volume'])
+            self.backend.set_volume(message['volume'])
+            self.send_status()
 
     def send_status(self):
         logging.debug("sending status")

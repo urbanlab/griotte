@@ -22,16 +22,20 @@ import threading
 import pexpect
 import re
 import logging
-
 from threading import Thread
 from time import sleep
+
+import sys
+import pprint
 
 class OMXPlayer(object):
 
     #_FILEPROP_REXP = re.compile(b".*audio streams (\d+) video streams (\d+) chapters (\d+) subtitles (\d+).*")
-    _VIDEOPROP_REXP = re.compile(b".*Video codec ([\w-]+) width (\d+) height (\d+) profile (\d+) fps ([\d.]+).*")
+    _VIDEOPROP_REXP = re.compile(b"Video codec ([\w-]+) width (\d+) height (\d+) profile (\d+) fps ([\d.]+)")
     _AUDIOPROP_REXP = re.compile(b"Audio codec (\w+) channels (\d+) samplerate (\d+) bitspersample (\d+).*")
-    _STATUS_REXP = re.compile(b"duration:(\d+),pos:(\d+),state:(\d+),volume:(\d+),amplitude:(\d+),muted:(\d+)")
+    _SUBTITLES_REXP = re.compile(b"Subtitle count: (\d+), state: (\w+), index: (\d+), delay: (\d+)")
+    _STATUS_REXP = re.compile(b".*duration:(\d+),pos:(\d+),state:(\d+),volume:([-]?\d+),amplitude:(\d+),muted:(\d+)")
+    _WILDCARD_REXP = re.compile(b"(.*)")
 
     #duration:11005,pos:276,state:1,volume:0,amplitude:100,muted:0
 
@@ -46,8 +50,48 @@ class OMXPlayer(object):
     _INFO_CMD = '?'
     _QUIT_CMD = 'q'
 
+
+    # def percent_to_millibels(x):
+    #     # Cubic fit from {0,-6000}, {10,-4605}, {20,-3218},{30,-2407},{40,-1832},{50,-1386},{60,-1021},{70,-713},{80,-446},{90,-210},{100,0},{110,190},{120,364}
+    #     return 0.00603904*x**3-1.59426*x**2+157.732*x-5956.12
+
+    def percent_to_command(x):
+        # Converts a percentage to a specific OMXPlayer command
+        if x<=0:       return 'A'
+        if 0<x<=10:    return 'B'
+        if 10<x<=20:   return 'C'
+        if 20<x<=30:   return 'D'
+        if 30<x<=40:   return 'E'
+        if 40<x<=50:   return 'F'
+        if 50<x<=60:   return 'G'
+        if 60<x<=70:   return 'H'
+        if 70<x<=80:   return 'I'
+        if 80<x<=90:   return 'J'
+        if 90<x<=100:  return 'K'
+        if 100<x<=110: return 'L'
+        return 'M'
+
+    def millibels_to_percent(x):
+        # Quadratic fit from {-6000,0},{-4605,10},{-3218,20},{-2407,30},{-1832,40},{-1386,50},{-1021,60},{-713,70},{-446,80},{-210,90},{0,100},{190,110},{364,120} doesn't work
+        #return 3.77886*10**-6*x**2+0.0383572*x+99.3722
+
+        if x <= -6000: return   0
+        if x <= -4605: return  10
+        if x <= -3218: return  20
+        if x <= -2407: return  30
+        if x <= -1832: return  40
+        if x <= -1386: return  50
+        if x <= -1021: return  60
+        if x <=  -713: return  70
+        if x <=  -446: return  80
+        if x <=  -210: return  90
+        if x <=     0: return 100
+        if x <=   190: return 110
+        return 120
+
     def __init__(self):
         self._position_thread = None
+        self._process = None
 
     def play(self, mediafile, subtitles=False):
         self.subtitles_visible = False
@@ -59,16 +103,15 @@ class OMXPlayer(object):
 
         cmd = self._LAUNCH_CMD % (mediafile)
 
-        if self._position_thread is not None and self._position_thread.is_alive():
-            self.stop()
-            self._position_thread.join(0.5)
-
         logging.debug("launchcmd : %s" % cmd)
         #self._process = pexpect.spawn('/bin/bash', ['-c', cmd])
         self._process = pexpect.spawn(cmd)
+        fout = open('mylog.txt','bw')
+        self._process.logfile = fout
 
         self.video = dict()
         self.audio = dict()
+        self.subtitles = dict()
 
         # Get video properties
         video_props = self._VIDEOPROP_REXP.match(self._process.readline()).groups()
@@ -81,9 +124,14 @@ class OMXPlayer(object):
         self.audio['decoder'] = audio_props[0]
         (self.audio['channels'], self.audio['rate'],
         self.audio['bps']) = [int(x) for x in audio_props[1:]]
+        # Get subtitles properties
+        subtitles_props = self._SUBTITLES_REXP.match(self._process.readline()).groups()
+        self.subtitles['count'] = audio_props[0]
+        self.subtitles['state'] = audio_props[1]
+        self.subtitles['index'] = audio_props[2]
+        self.subtitles['delay'] = audio_props[3]
 
         self._position_thread = threading.Thread(target=self._get_position, args=())
-        #self._position_thread = Thread(target=self._get_position)
         self._position_thread.daemon = True
         self._position_thread.start()
 
@@ -93,30 +141,35 @@ class OMXPlayer(object):
     def _get_position(self):
         while True:
             self._process.send(self._INFO_CMD)
-            index = self._process.expect([self._STATUS_REXP,
+            index = self._process.expect_list([self._STATUS_REXP,
                                             pexpect.TIMEOUT,
                                             pexpect.EOF,
                                             self._DONE_REXP],
                                             timeout=1)
 
+            logging.debug("expect returned position: %s" % index)
+
             if index == 1: continue
             elif index in (2, 3): break
-            else:
-                self.position = float(self._process.match.group(2))
-                self.media_length = float(self._process.match.group(1))
-                self.playing = True if self._process.match.group(3).decode('ascii') == "1" else False
-                self.volume = int(self._process.match.group(4))
-                self.amplitude = int(self._process.match.group(5))
-                self.muted = True if self._process.match.group(6).decode('ascii') == "1" else False
+            elif index == 0:
+                matches = self._process.match.groups()
+                pprint.pprint(matches)
+                self.position = float(matches[1])
+                self.media_length = float(matches[0])
+                self.playing = True if matches[2].decode('ascii') == "1" else False
+                self.volume = OMXPlayer.millibels_to_percent(int(matches[3]))
+                self.amplitude = int(matches[4])
+                self.muted = True if matches[5].decode('ascii') == "1" else False
 
                 logging.debug("position: %s, playing: %s, volume: %s" %
                               (self.position, self.playing, self.volume))
             sleep(0.1)
         logging.debug("ending _get_position thread")
+        self.stop()
 
     def toggle_pause(self):
+        logging.warning("sending _PAUSE_CMD")
         if self._process.send(self._PAUSE_CMD):
-            logging.warning("sending _PAUSE_CMD")
             self.playing = not self.playing
 
     def toggle_mute(self):
@@ -134,8 +187,9 @@ class OMXPlayer(object):
         return not self.playing and self.is_running()
 
     def stop(self):
+        logging.debug("stopping omxplayer")
         self._process.send(self._QUIT_CMD)
-        self._process.terminate(force=True)
+        self._process.close(force=True)
 
     def set_speed(self):
         raise NotImplementedError
@@ -150,7 +204,8 @@ class OMXPlayer(object):
         raise NotImplementedError
 
     def set_volume(self, volume):
-        raise NotImplementedError
+        logging.debug("sending volume command %s" % OMXPlayer.percent_to_command(volume))
+        self._process.send(OMXPlayer.percent_to_command(volume))
 
     def seek(self, minutes):
         raise NotImplementedError
