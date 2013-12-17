@@ -89,7 +89,7 @@ class Server(tornado.websocket.WebSocketHandler):
         if decoded is None:
             return
 
-
+        # Check server-related messages
         if decoded['channel'] == 'meta.subscribe':
             if Server.channel_watchers.get(decoded['data']['channel'], None) == None:
                 Server.channel_watchers[decoded['data']['channel']] = set()
@@ -104,7 +104,6 @@ class Server(tornado.websocket.WebSocketHandler):
         else:
             Server._dispatch(decoded)
 
-        #
     def on_close(self):
         logging.info("WebSocket closed for %s" % self.key())
         # remove client from list and from watchers
@@ -132,11 +131,17 @@ class Server(tornado.websocket.WebSocketHandler):
 
     @staticmethod
     def _dispatch(message):
-        if message['channel'] not in Server.channel_watchers:
-            return
-        for key in Server.channel_watchers[message['channel']]:
-            logging.debug("Dispatching message to %s" % key)
-            Server.clients[key].write_message(json.dumps(message))
+        # We have to check the wildcards
+        message_channel = message['channel']
+
+        # Clients can watch wildcard channels
+        for watched_channel in Server.channel_watchers:
+            if fnmatch.fnmatch(message_channel, watched_channel):
+                # We had a match for watched_channel key
+                # We have to iterate over client list for this channel
+                for key in Server.channel_watchers[watched_channel]:
+                    logging.debug("Dispatching message to %s" % key)
+                    Server.clients[key].write_message(json.dumps(message))
 
     @staticmethod
     def _remove_channel_watcher(key):

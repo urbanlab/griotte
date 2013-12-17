@@ -51,7 +51,7 @@ class AnalogHandler:
 
     def request(self, channel, message):
         # Let's get the real analog channel from the path
-        channel = channel[channel.rfind(':')+1:]
+        channel = channel[channel.rfind('.')+1:]
         logging.info("Request received for channel %s with message %s" % (channel, message))
         # Message types :
         # set_profile
@@ -75,7 +75,7 @@ class AnalogHandler:
         logging.info("Starting sampling loop")
         while True:
             if self.sample_rate != None:
-                sleep(self.sample_rate)
+                sleep(float(self.sample_rate))
                 # do sample
                 for chan in self.periodic_sampled_channels:
                     logging.debug("Sampling %s" % chan)

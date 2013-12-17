@@ -102,7 +102,7 @@ class WebSocket:
             self.start()
 
     def _subscribe(self, channel):
-        self.send('meta:subscribe', { 'channel': channel })
+        self.send('meta.subscribe', { 'channel': channel })
 
     def debug(self):
         print ("hello %s",__main__)
