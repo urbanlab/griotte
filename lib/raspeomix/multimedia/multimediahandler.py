@@ -53,9 +53,9 @@ class MultimediaHandler:
         # unmute
         # mute
         # set_volume
-        if message['level']:
+        if 'level' in message:
             self.backend.set_volume(message['level'])
-        if message['state']:
+        if 'state' in message:
             self.backend.mute(message['state'])
 
     def video_request(self, channel, message):

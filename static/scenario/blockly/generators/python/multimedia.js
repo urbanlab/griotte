@@ -12,7 +12,7 @@ Blockly.Python['multimedia_video'] = function(block) {
   //     Blockly.JavaScript.ORDER_MEMBER) || '\'\'';
   // var code = argument1 + '.' + operator + '(' + argument0 + ') + 1';
   // return [code, Blockly.JavaScript.ORDER_MEMBER];
-  Blockly.Python.definitions_['import_raspeomix_scenario_multimedia'] = 'import raspeomix.scenario.multimedia';
+  Blockly.Python.definitions_['from_raspeomix_scenario_multimedia_play_video'] = 'from raspeomix.scenario.multimedia import play_video';
 
   var media = Blockly.Python.quote_(block.getTitleValue('VIDEO'));
   var code = 'play_video(' + media + ')\n'
