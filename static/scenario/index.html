@@ -1,0 +1,259 @@
+
+  <div style="display: none">
+    <span id="Code_badXml">{msg meaning="Code.badXml" desc="alert - Message shown when the user tries switching from the XML tab after entering XML text that could not be parsed.  This asks whether they wish to abandon the XML they added.  If they select 'OK' (or the translated equivalent), the XML is cleared, and the other tab is shown.  If they select 'Cancel', they remain on the XML tab with the bad XML.\n\nUsed in JavaScript \u003Ccode\u003Ewindow.confirm()\u003C/code\u003E."}Error parsing XML:\n%1\n\nSelect 'OK' to abandon your changes or 'Cancel' to further edit the XML.{/msg}</span>
+    <span id="Code_badCode">{msg meaning="Code.badCode" desc="alert - Message shown if an error occurs while interpreting the user program.  The error description follows."}Program error:\n%1{/msg}</span>
+    <span id="Code_timeout">{msg meaning="Code.timeout" desc="alert - Message shown if the program has run for more than the permitted number of steps.  This exists so that programs with infinite loops do not run forever."}Maximum execution iterations exceeded.{/msg}</span>
+    <span id="Code_discard">{msg meaning="Code.discard" desc="alert - Message shown after the user clicks on the 'discard all' icon.  Selecting 'OK' (or the translated equivalent) causes all of the blocks to be discarded.  Selecting 'Cancel' prevents blocks from being deleted.\n\nParameters:\n* %1 - number of blocks to be deleted. It is always an integer greater than or equal to 2."}Delete all %1 blocks?{/msg}</span>
+  </div>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="common.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="blockly/blockly_compressed.js"></script>
+    <script type="text/javascript" src="blockly/blocks_compressed.js"></script>
+    <script type="text/javascript" src="blockly/blocks/analog.js"></script>
+    <script type="text/javascript" src="blockly/blocks/digital.js"></script>
+    <script type="text/javascript" src="blockly/blocks/multimedia.js"></script>
+    <script type="text/javascript" src="blockly/generators/python_compressed.js"></script>
+    <script type="text/javascript" src="blockly/generators/python/analog.js"></script>
+    <script type="text/javascript" src="blockly/generators/python/digital.js"></script>
+    <script type="text/javascript" src="blockly/generators/python/multimedia.js"></script>
+    <script type="text/javascript" src="blockly/msg/js/fr.js"></script>
+    <script type="text/javascript" src="blockly/scenario.js"></script>
+  </head>
+
+  <body>
+
+  <table width="100%" height="100%">
+    <tr>
+      <td colspan=2>
+        <h1>
+          <span id="title">
+            Scénarios
+          </span>
+        </h1>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2>
+        <table width="100%">
+          <tr id="tabRow" height="1em">
+            <td id="tab_blocks" class="tabon">Blocks</td>
+            <td class="tabmin">&nbsp;</td>
+            <td id="tab_python" class="taboff">Python</td>
+            <td class="tabmin">&nbsp;</td>
+            <td id="tab_xml" class="taboff">XML</td>
+            <td class="tabmax">
+              <button id="trashButton" class="notext" title="Poubelle">
+                <img src='media/1x1.gif' class="trash icon21">
+              </button>
+              <button id="linkButton" class="notext" title="Enregistrer">
+                <img src='media/1x1.gif' class="link icon21">
+              </button>
+              <button id="runButton" class="notext primary" title="Exécuter">
+                <img src='media/1x1.gif' class="run icon21">
+              </button>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="99%" colspan=2 id="content_area">
+          <div id="blockly"></div>
+      </td>
+    </tr>
+  </table>
+  <div id="content_blocks" class="content"></div>
+  <pre id="content_javascript" class="content"></pre>
+  <pre id="content_python" class="content"></pre>
+  <textarea id="content_xml" class="content" wrap="off"></textarea>
+  <div id="dialogShadow" class="dialogAnimate"></div>
+  <div id="dialogBorder"></div>
+  <div id="dialog"></div>
+
+    <xml id="toolbox" style="display: none">
+      <category name="Capteurs">
+        <block type="capteur_analogique"></block>
+        <block type="capteur_digital"></block>
+      </category>
+      <category name="Multimédia">
+        <block type="multimedia_video"></block>
+        <block type="multimedia_sound"></block>
+        <block type="multimedia_image"></block>
+        <block type="multimedia_volume"></block>
+      </category>
+      <category name="Logique">
+        <block type="controls_if"></block>
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean"></block>
+        <block type="logic_null"></block>
+        <block type="logic_ternary"></block>
+      </category>
+      <category name="Boucles">
+        <block type="controls_repeat_ext">
+          <value name="TIMES">
+            <block type="math_number">
+              <title name="NUM">10</title>
+            </block>
+          </value>
+        </block>
+        <block type="controls_whileUntil"></block>
+        <block type="controls_for">
+          <value name="FROM">
+            <block type="math_number">
+              <title name="NUM">1</title>
+            </block>
+          </value>
+          <value name="TO">
+            <block type="math_number">
+              <title name="NUM">10</title>
+            </block>
+          </value>
+          <value name="BY">
+            <block type="math_number">
+              <title name="NUM">1</title>
+            </block>
+          </value>
+        </block>
+        <block type="controls_forEach"></block>
+        <block type="controls_flow_statements"></block>
+      </category>
+      <category name="Math">
+        <block type="math_number"></block>
+        <block type="math_arithmetic"></block>
+        <block type="math_single"></block>
+        <block type="math_trig"></block>
+        <block type="math_constant"></block>
+        <block type="math_number_property"></block>
+        <block type="math_change">
+          <value name="DELTA">
+            <block type="math_number">
+              <title name="NUM">1</title>
+            </block>
+          </value>
+        </block>
+        <block type="math_round"></block>
+        <block type="math_on_list"></block>
+        <block type="math_modulo"></block>
+        <block type="math_constrain">
+          <value name="LOW">
+            <block type="math_number">
+              <title name="NUM">1</title>
+            </block>
+          </value>
+          <value name="HIGH">
+            <block type="math_number">
+              <title name="NUM">100</title>
+            </block>
+          </value>
+        </block>
+        <block type="math_random_int">
+          <value name="FROM">
+            <block type="math_number">
+              <title name="NUM">1</title>
+            </block>
+          </value>
+          <value name="TO">
+            <block type="math_number">
+              <title name="NUM">100</title>
+            </block>
+          </value>
+        </block>
+        <block type="math_random_float"></block>
+      </category>
+      <category name="Texte">
+        <block type="text"></block>
+        <block type="text_join"></block>
+        <block type="text_append">
+          <value name="TEXT">
+            <block type="text"></block>
+          </value>
+        </block>
+        <block type="text_length"></block>
+        <block type="text_isEmpty"></block>
+        <block type="text_indexOf">
+          <value name="VALUE">
+            <block type="variables_get">
+              <title name="VAR">texte</title>
+            </block>
+          </value>
+        </block>
+        <block type="text_charAt">
+          <value name="VALUE">
+            <block type="variables_get">
+              <title name="VAR">texte</title>
+            </block>
+          </value>
+        </block>
+        <block type="text_getSubstring">
+          <value name="STRING">
+            <block type="variables_get">
+              <title name="VAR">texte</title>
+            </block>
+          </value>
+        </block>
+        <block type="text_changeCase"></block>
+        <block type="text_trim"></block>
+        <block type="text_print"></block>
+        <block type="text_prompt"></block>
+      </category>
+      <category name="Listes">
+        <block type="lists_create_empty"></block>
+        <block type="lists_create_with"></block>
+        <block type="lists_repeat">
+          <value name="NUM">
+            <block type="math_number">
+              <title name="NUM">5</title>
+            </block>
+          </value>
+        </block>
+        <block type="lists_length"></block>
+        <block type="lists_isEmpty"></block>
+        <block type="lists_indexOf">
+          <value name="VALUE">
+            <block type="variables_get">
+              <title name="VAR">liste</title>
+            </block>
+          </value>
+        </block>
+        <block type="lists_getIndex">
+          <value name="VALUE">
+            <block type="variables_get">
+              <title name="VAR">liste</title>
+            </block>
+          </value>
+        </block>
+        <block type="lists_setIndex">
+          <value name="LIST">
+            <block type="variables_get">
+              <title name="VAR">liste</title>
+            </block>
+          </value>
+        </block>
+        <block type="lists_getSublist">
+          <value name="LIST">
+            <block type="variables_get">
+              <title name="VAR">liste</title>
+            </block>
+          </value>
+        </block>
+      </category>
+      <category name="Couleur">
+        <block type="colour_picker"></block>
+        <block type="colour_random"></block>
+        <block type="colour_rgb"></block>
+        <block type="colour_blend"></block>
+      </category>
+      <category name="Variables" custom="VARIABLE"></category>
+      <category name="Procédures" custom="PROCEDURE"></category>
+    </xml>
+  </body>
+</html>
+
+

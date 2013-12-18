@@ -7,6 +7,15 @@
         height: 200px;
         margin: 8px auto;
       }
+
+      #blockly-iframe {
+          position:relative;
+          left: 0px;
+          width: 100%;
+          top: 0px;
+          height: 100%;
+      }
+</style>
     </style>
     <link rel="icon" type="image/png" href="/img/raspberry_pi.png">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
@@ -89,10 +98,6 @@
     </div> <!-- /page control -->
 
     <div data-role="page" id="scenario">
-      <div data-role="panel" id="scenario-panel">
-        <!-- panel content goes here -->
-      </div><!-- /panel -->
-
       <div data-role="header">
 
         <h1>Raspeomix</h1>
@@ -106,30 +111,16 @@
             <li><a href="#monitor" data-icon="alert">Moniteur</a></li>
           </ul>
         </div><!-- /navbar -->
-
-        <div data-role="footer">
-          <a href="#scenario-panel" data-icon="plus" class="ui-btn-right">Ajouter</a>
-        </div>
-      </div>
+      </div><!-- eader -->
 
       <div data-role="content">
-
-        <div id="plumb">
-          <div id="render"></div>
-          <div class="w" id="start-0">Départ<div class="ep"></div></div>
-          <div class="w" id="start-1">Départ<div class="ep"></div></div>
-          <div class="w" id="start-2">Départ<div class="ep"></div></div>
-          <div class="w" id="analog0-0">Capteur AN0<div class="ep"></div></div>
-          <div class="w" id="video-0">Lecture vidéo<div class="ep"></div></div>
-          <div class="w" id="sound-0">Lecture son<div class="ep"></div></div>
-          <div class="w" id="image-0">Lecture son<div class="ep"></div></div>
-          <div class="w" id="pause-0">Pause<div class="ep"></div></div>
-          <div class="w" id="io-0">Capteur IO0<div class="ep"></div></div>
-          <div class="w" id="io-1">Capteur IO1<div class="ep"></div></div>
-          <div class="w" id="time-1">Heure<div class="ep"></div></div>
-        </div>
-
+        <iframe id="blockly-iframe" src="blockly.html"></iframe>
       </div> <!-- content -->
+
+      <div data-role="footer">
+        <a href="#scenario-panel" data-icon="plus" class="ui-btn-right">Ajouter</a>
+      </div>
+
     </div> <!-- page scenario-->
 
     <div data-role="page" id="cartels">
@@ -331,6 +322,13 @@ while (new Date() < ms){}
       $( "#range-nexta" ).slider({ disabled: true });
       $( "#range-nextb" ).slider({ disabled: true });
   });
+</script>
+
+<script>
+  function blocklyLoaded(blockly) {
+    // Called once Blockly is fully loaded.
+    window.Blockly = blockly;
+  }
 </script>
 
 <script type="text/javascript">
