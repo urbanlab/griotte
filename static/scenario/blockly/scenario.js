@@ -881,6 +881,16 @@ Code.renderContent = function() {
 Code.init = function() {
   BlocklyApps.init();
 
+  var scheme = window.location.protocol,
+    host   = location.hostname,
+    port   = 8888, // location.port,
+    path   = '/ws';
+
+  Griotte.init('ws://' + host + (port ? ':' + port : '') + path);
+  Code.griotte = Griotte
+  Code.scenario = null;
+  Code.griotte.subscribe('meta.storage.scenario', Code.cb_restoreFromWS);
+
   var rtl = BlocklyApps.isRtl();
   var toolbox = document.getElementById('toolbox');
   Blockly.inject(document.getElementById('content_blocks'),
@@ -950,3 +960,28 @@ Code.discard = function() {
     window.location.hash = '';
   }
 };
+
+Code.SaveToWS = function(name) {
+  var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+  Griotte.publish('meta.storage.scenario.set', { "code" : Blockly.Xml.domToText(xml) })
+};
+
+Code.restoreFromWS = function(name) {
+  Code.scenario = name;
+  Griotte.publish('meta.storage.scenario.get', { "name": name } )
+};
+
+Code.cb_restoreFromWS = function(message) {
+  // python tools/ws_send.py meta.storage.scenario '{ "name": "test", "code": "<xml><block type=\"capteur_analogique\" x=\"143\" y=\"51\"><title name=\"NAME\">AN0</title><title name=\"Profil\">IDENTITY</title></block></xml>"}'
+  var data = message.data;
+  console.log("cb_restoreFromWS called for " + data['name']);
+  if (Code.scenario && data['name'] == Code.scenario) {
+    console.log("restoring scenario" + data['name']);
+
+    var xml = Blockly.Xml.textToDom(data['code'])
+    Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(), xml);
+  }
+};
+
+
+

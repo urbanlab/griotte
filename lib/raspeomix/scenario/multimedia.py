@@ -18,7 +18,7 @@ def play_sound(media):
 
 def set_volume(level):
     send('meta.store.sound_level',
-         "{ \"level\":\"%s\" }" % int(level))
+         '{ "level":"%s" }' % int(level))
 
 def send(channel, data, close=True, ws=None):
     # Open websocket if we're not given one
