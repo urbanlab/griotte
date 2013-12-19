@@ -268,21 +268,6 @@ BlocklyApps.init = function() {
     return 0;
   };
 
-  // Disable the link button if page isn't backed by App Engine storage.
-  var linkButton = document.getElementById('linkButton');
-  if ('BlocklyStorage' in window) {
-    BlocklyStorage['HTTPREQUEST_ERROR'] =
-        BlocklyApps.getMsg('httpRequestError');
-    BlocklyStorage['LINK_ALERT'] = BlocklyApps.getMsg('linkAlert');
-    BlocklyStorage['HASH_ERROR'] = BlocklyApps.getMsg('hashError');
-    BlocklyStorage['XML_ERROR'] = BlocklyApps.getMsg('xmlError');
-    // Swap out the BlocklyStorage's alert() for a nicer dialog.
-    BlocklyStorage.alert = BlocklyApps.storageAlert;
-    BlocklyApps.bindClick('linkButton', BlocklyStorage.link);
-  } else if (linkButton) {
-    linkButton.className = 'disabled';
-  }
-
   if (document.getElementById('codeButton')) {
     BlocklyApps.bindClick('codeButton', BlocklyApps.showCode);
   }

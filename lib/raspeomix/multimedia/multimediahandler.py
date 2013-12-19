@@ -44,7 +44,7 @@ class MultimediaHandler:
         self.backend = OMXPlayer(self.send_status)
         self.ws = WebSocket(watchdog_interval=2)
         self.ws.add_listener('request.video', self.video_request)
-        self.ws.add_listener('meta.store.sound_level', self.sound_level)
+        self.ws.add_listener('meta.store.sound_level.set', self.sound_level)
 
         self.start()
 

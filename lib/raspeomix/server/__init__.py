@@ -41,9 +41,9 @@ categories for event : io0-3/(raising|falling), an0-3(over_threshold|below_thres
 e.g. :
 
 meta:subscribe { "channel" : ":event:io:1:rising" }
-meta:store:sound_level { "value": 35 }
-meta:store:some_complex { "value": { "complex": "data", "with": [ "array" ] } }
-meta:store:date { "date" : 20140516, "time": "145232" }
+meta:store:sound_level:set { "value": 35 }
+meta:store:some_complex:set { "value": { "complex": "data", "with": [ "array" ] } }
+meta:store:date:set { "date" : 20140516, "time": "145232" }
 meta:device:attach { "device" : "/dev/nfc1" }
 meta:device:detach { "device" : "/dev/nfc1" }
 request:an:2 { "profile???" }

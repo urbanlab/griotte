@@ -17,7 +17,7 @@ def play_sound(media):
     expect(ws, 'message.video', type='stop')
 
 def set_volume(level):
-    send('meta.store.sound_level',
+    send('meta.store.sound_level.set',
          '{ "level":"%s" }' % int(level))
 
 def send(channel, data, close=True, ws=None):

@@ -53,7 +53,7 @@ Application = {
   launch: function() {
     console.log("Application.launch called");
     console.log(self)
-    this._griotte.subscribe("meta.store.sound_level", this.sound_in.bind(this));
+    this._griotte.subscribe("meta.store.sound_level.set", this.sound_in.bind(this));
     this._griotte.subscribe("message.video", this.video_in.bind(this));
 
   },
@@ -67,7 +67,7 @@ Application = {
   },
 
   sound: function(state, volume) {
-    this._griotte.publish("meta.store.sound_level", { state: state, level: parseInt(volume) } );
+    this._griotte.publish("meta.store.sound_level.set", { state: state, level: parseInt(volume) } );
   },
 
   scenario_in: function(data) {
