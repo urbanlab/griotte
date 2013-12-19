@@ -245,9 +245,6 @@ BlocklyApps.languagePack = function() {
  * Common startup tasks for all apps.
  */
 BlocklyApps.init = function() {
-  // Set the page title with the content of the H1 title.
-  document.title = document.getElementById('title').textContent;
-
   // Set the HTML's language and direction.
   // document.dir fails in Mozilla, use document.body.parentNode.dir instead.
   // https://bugzilla.mozilla.org/show_bug.cgi?id=151407
@@ -916,6 +913,7 @@ Code.init = function() {
   Code.tabClick(Code.selected);
   Blockly.fireUiEvent(window, 'resize');
 
+  BlocklyApps.bindClick('linkButton', Code.saveScenario);
   BlocklyApps.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
   BlocklyApps.bindClick('runButton', Code.runJS);
@@ -944,6 +942,10 @@ Code.discard = function() {
     Blockly.mainWorkspace.clear();
     window.location.hash = '';
   }
+};
+
+Code.saveScenario = function() {
+
 };
 
 Code.SaveToWS = function(name) {
