@@ -901,7 +901,7 @@ Code.init = function() {
           // Account for the 19 pixel margin and on each side.
     }
   };
-  window.addEventListener('resize', onresize, false);
+  //window.addEventListener('resize', onresize, false);
 
   BlocklyApps.loadBlocks('');
 

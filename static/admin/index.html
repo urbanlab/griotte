@@ -122,59 +122,37 @@
       </div><!-- eader -->
 
       <div data-role="content">
-        <table width="100%" height="100%">
-          <tr>
-            <td colspan=2>
-              <h1>
-                <span id="title">
-                  Scénarios
-                </span>
-              </h1>
-            </td>
-          </tr>
-          <tr>
-            <td colspan=2 height="600px">
-              <table width="100%">
-                <tr id="tabRow" height="1em">
-                  <td id="tab_blocks" class="tabon">Blocks</td>
-                  <td class="tabmin">&nbsp;</td>
-                  <td id="tab_python" class="taboff">Python</td>
-                  <td class="tabmin">&nbsp;</td>
-                  <td id="tab_xml" class="taboff">XML</td>
-                  <td class="tabmax">
 
-                  <div data-role="controlgroup" data-type="horizontal">
-                    <a href="index.html" data-role="button" data-inline="true" id="trashButton" data-icon="delete">Poubelle</a>
-                    <a href="index.html" data-role="button" data-inline="true" id="openButton" data-icon="arrow-d">Ouvrir</a>
-                    <a href="index.html" data-role="button" data-inline="true" id="linkButton" data-icon="arrow-u">Enregistrer</a>
-                    <a href="index.html" data-role="button" data-inline="true" id="runButton" data-icon="check">Exécuter</a>
-                  </div>
+        <div data-role="collapsible-set">
+          <div data-role="collapsible" data-collapsed="false" id="tab_blocks" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+            <h3>Blocks</h3>
+            <div id="content_area">
+              <div id="blockly"></div>
+            </div>
+            <div id="content_blocks" class="content"></div>
+          </div>
 
-                      <img src='media/1x1.gif' class="trash icon21">
-                    </button>
-                      <img src='media/1x1.gif' class="link icon21">
-                    </button>
-                      <img src='media/1x1.gif' class="run icon21">
-                    </button>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td height="99%" colspan=2 id="content_area">
-                <div id="blockly"></div>
-            </td>
-          </tr>
-        </table>
-        <div id="content_blocks" class="content"></div>
-        <pre id="content_javascript" class="content"></pre>
-        <pre id="content_python" class="content"></pre>
-        <textarea id="content_xml" class="content" wrap="off"></textarea>
+          <div data-role="collapsible" data-collapsed="true" id="tab_python" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+            <h3>Python</h3>
+            <pre id="content_python" class="content"></pre>
+          </div>
+
+          <div data-role="collapsible" data-collapsed="true" id="tab_xml" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+            <h3>XML</h3>
+            <textarea id="content_xml" class="content" wrap="off"></textarea>
+          </div>
+
+        </div>
+
       </div> <!-- content -->
 
       <div data-role="footer">
-        <a href="#scenario-panel" data-icon="plus" class="ui-btn-right">Ajouter</a>
+        <div data-role="controlgroup" data-type="horizontal">
+          <a href="index.html" data-role="button" data-inline="true" id="openButton" data-icon="arrow-d">Ouvrir</a>
+          <a href="index.html" data-role="button" data-inline="true" id="linkButton" data-icon="arrow-u">Enregistrer</a>
+          <a href="index.html" data-role="button" data-inline="true" id="runButton" data-icon="check">Exécuter</a>
+          <a href="index.html" data-role="button" data-inline="true" id="trashButton" data-icon="delete">Poubelle</a>
+        </div>
       </div>
 
     </div> <!-- page scenario-->
