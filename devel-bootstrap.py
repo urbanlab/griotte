@@ -1822,7 +1822,6 @@ def after_install(options, home_dir):
         'install', '-r', 'devel-requirements.txt'
     ])
 
-
 def convert(s):
     b = base64.b64decode(s.encode('ascii'))
     return zlib.decompress(b).decode('utf-8')
