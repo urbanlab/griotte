@@ -15,6 +15,7 @@ Contents:
    messages
    formulas
 
+.. automodule:: griotte
 
 Indices and tables
 ==================

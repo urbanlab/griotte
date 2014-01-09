@@ -7,12 +7,7 @@ PYTHON = python
 .PHONY: all clean html latexpdf epub htmlhelp
 
 # Dependencies to perform before running other builds.
-SPHINX_DEPENDENCIES = \
-    en/Makefile
-
-# Copy-paste the english Makefile everwhere its needed.
-%/Makefile : en/Makefile
-		$(PYTHON) -c "import shutil; shutil.copyfile('$<', '$@')"
+# SPHINX_DEPENDENCIES =
 
 # Make the HTML version of the documentation with correctly nested language folders.
 html: $(SPHINX_DEPENDENCIES)

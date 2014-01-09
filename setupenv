@@ -1,14 +1,3 @@
-# Usage : source setupenv
-
-echo -n "Activating virtualenv..."
-python bootstrap.py
-#source env/bin/activate
-echo "done"
-
 echo -n "Setting PYTHONPATH......"
 export PYTHONPATH=${PWD}/src/lib:$PYTHONPATH
 echo "done"
-
-#echo -n "Installing requirements."
-#pip install -r requirements.txt
-#echo "done"

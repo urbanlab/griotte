@@ -1,4 +1,7 @@
 NOSETESTS := nosetests
+PYTHON = /usr/bin/python3
+
+.PHONY: docs
 
 # tests:
 # 	@for i in `ls test/test_*.py`; do \
@@ -13,10 +16,21 @@ tests:
 cov:
 	$(NOSETESTS) -d -v -P --with-coverage --cover-package=raspeomix
 
+docs:
+	cd docs && make
+
+_devel:
+	$(PYTHON) devel-bootstrap.py
+
+production:
+	$(PYTHON) production-bootstrap.py
+
+devel: _devel production
+
 clean:
 	@echo "Cleaning up byte compiled python stuff"
 	find . -type f -regex ".*\.py[co]$$" -delete
 	@echo "Cleaning up editor backup files"
 	find . -type f \( -name "*~" -or -name "#*" \) -delete
 	find . -type f \( -name "*.swp" \) -delete
-
+	cd docs && make clean

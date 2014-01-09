@@ -20,8 +20,41 @@ Applications include museum players (that can react to visitors for instance),
 educational tools (learning about programming or sensors), home automation,
 lighting systems, ...
 
+# Requirements
+
+You need :
+- a Raspberry Pi (but you can run/develop non-hardware related anywhere)
+- python3
+
+
 # Getting started
 
-TBD
+    git clone ... griotte
+    cd griotte
+
+In the commands below, replace `python` by `python3` if python3 is not your
+default python interpreter.
+
+    python production-bootstrap.py
+    python devel-bootstrap.py # if you need development libraries
+    source bin/activate
+    export PYTHONPATH=${PWD}/src/lib:$PYTHONPATH
+
+You can then start the server with :
+
+    src/bin/server
+
+Head to [the server](http://localhost:8888) (change localhost if you installed
+it somewhere else).
+
+# Documentation
+
+Documentation is in `docs/` in rst format. Il you installed development
+dependencies, you can generate documentation by running :
+
+    cd docs && make html
+
+
+
 
 
