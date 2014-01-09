@@ -592,6 +592,7 @@ BlocklyApps.matchBorder_ = function(element, animate, opacity) {
   if (!element) {
     return;
   }
+  console.warn("BlocklyApps.matchBorder_ called");
   var border = document.getElementById('dialogBorder');
   var bBox = BlocklyApps.getBBox_(element);
   function change() {
@@ -618,6 +619,8 @@ BlocklyApps.matchBorder_ = function(element, animate, opacity) {
  * @private
  */
 BlocklyApps.getBBox_ = function(element) {
+  console.warn("BlocklyApps.getBBox_ called");
+
   if (element.getBBox) {
     // SVG element.
     var bBox = element.getBBox();
@@ -787,82 +790,83 @@ var Code = {};
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', 'python', 'xml'];
+// Code.TABS_ = ['blocks', 'python', 'xml'];
 
-Code.selected = 'blocks';
+// Code.selected = 'blocks';
 
 /**
  * Switch the visible pane when a tab is clicked.
  * @param {string} clickedName Name of tab clicked.
  */
-Code.tabClick = function(clickedName) {
+// Code.tabClick = function(clickedName) {
   // If the XML tab was open, save and render the content.
-  if (document.getElementById('tab_xml').className == 'tabon') {
-    var xmlTextarea = document.getElementById('content_xml');
-    var xmlText = xmlTextarea.value;
-    var xmlDom = null;
-    try {
-      xmlDom = Blockly.Xml.textToDom(xmlText);
-    } catch (e) {
-      var q =
-          window.confirm(BlocklyApps.getMsg('Code_badXml').replace('%1', e));
-      if (!q) {
-        // Leave the user on the XML tab.
-        return;
-      }
-    }
-    if (xmlDom) {
-      Blockly.mainWorkspace.clear();
-      Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
-    }
-  }
+  // if (document.getElementById('tab_xml').className == 'tabon') {
+  //   var xmlTextarea = document.getElementById('content_xml');
+  //   var xmlText = xmlTextarea.value;
+  //   var xmlDom = null;
+  //   try {
+  //     xmlDom = Blockly.Xml.textToDom(xmlText);
+  //   } catch (e) {
+  //     var q =
+  //         window.confirm(BlocklyApps.getMsg('Code_badXml').replace('%1', e));
+  //     if (!q) {
+  //       // Leave the user on the XML tab.
+  //       return;
+  //     }
+  //   }
+  //   if (xmlDom) {
+  //     Blockly.mainWorkspace.clear();
+  //     Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+  //   }
+  // }
 
-  // Deselect all tabs and hide all panes.
-  for (var i = 0; i < Code.TABS_.length; i++) {
-    var name = Code.TABS_[i];
-    document.getElementById('tab_' + name).className = 'taboff';
-    document.getElementById('content_' + name).style.visibility = 'hidden';
-  }
+  // // Deselect all tabs and hide all panes.
+  // for (var i = 0; i < Code.TABS_.length; i++) {
+  //   var name = Code.TABS_[i];
+  //   document.getElementById('tab_blocks' + name).className = 'taboff';
+  //   document.getElementById('content_' + name).style.visibility = 'hidden';
+  // }
 
-  // Select the active tab.
-  Code.selected = clickedName;
-  document.getElementById('tab_' + clickedName).className = 'tabon';
-  // Show the selected pane.
-  document.getElementById('content_' + clickedName).style.visibility =
-      'visible';
-  Code.renderContent();
-  Blockly.fireUiEvent(window, 'resize');
-};
+  // // Select the active tab.
+  // Code.selected = clickedName;
+  // document.getElementById('tab_' + clickedName).className = 'tabon';
+  // // Show the selected pane.
+  // document.getElementById('content_' + clickedName).style.visibility =
+  //     'visible';
+//   Code.renderContent();
+//   Blockly.fireUiEvent(window, 'resize');
+// };
 
 /**
  * Populate the currently selected pane with content generated from the blocks.
  */
-Code.renderContent = function() {
-  var content = document.getElementById('content_' + Code.selected);
-  // Initialize the pane.
-  if (content.id == 'content_xml') {
-    var xmlTextarea = document.getElementById('content_xml');
-    var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-    var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-    xmlTextarea.value = xmlText;
-    xmlTextarea.focus();
-  } else if (content.id == 'content_python') {
-    var code = Blockly.Python.workspaceToCode();
-    content.textContent = code;
-    if (typeof prettyPrintOne == 'function') {
-      code = content.innerHTML;
-      code = prettyPrintOne(code, 'py');
-      content.innerHTML = code;
-    }
-  }
-};
+// Code.renderContent = function() {
+//   var content = document.getElementById('content_' + Code.selected);
+//   // Initialize the pane.
+//   if (content.id == 'content_xml') {
+//     var xmlTextarea = document.getElementById('content_xml');
+//     var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+//     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+//     xmlTextarea.value = xmlText;
+//     xmlTextarea.focus();
+//   } else if (content.id == 'content_python') {
+//     var code = Blockly.Python.workspaceToCode();
+//     content.textContent = code;
+//     if (typeof prettyPrintOne == 'function') {
+//       code = content.innerHTML;
+//       code = prettyPrintOne(code, 'py');
+//       content.innerHTML = code;
+//     }
+//   }
+// };
 
 /**
  * Initialize Blockly.  Called on page load.
  */
-Code.init = function() {
+Code.init = function(container) {
   BlocklyApps.init();
-
+  console.warn(container);
+  console.warn(document.getElementById(container));
   var scheme = window.location.protocol,
     host   = location.hostname,
     port   = 8888, // location.port,
@@ -875,33 +879,34 @@ Code.init = function() {
 
   var rtl = BlocklyApps.isRtl();
   var toolbox = document.getElementById('toolbox');
-  Blockly.inject(document.getElementById('content_blocks'),
-      {path: './',
-       rtl: rtl,
-       toolbox: toolbox});
+  //Blockly.inject(document.getElementById('content_blocks'),
+  // Blockly.inject(//document.getElementById('content_area'),
+  Blockly.inject(document.getElementById(container),
+                 { path: './',
+                   rtl: rtl,
+                   toolbox: toolbox});
 
-  var container = document.getElementById('content_area');
-  var onresize = function(e) {
-    var bBox = BlocklyApps.getBBox_(container);
-    for (var i = 0; i < Code.TABS_.length; i++) {
-      var el = document.getElementById('content_' + Code.TABS_[i]);
-      el.style.top = bBox.y + 'px';
-      el.style.left = bBox.x + 'px';
-      // Height and width need to be set, read back, then set again to
-      // compensate for scrollbars.
-      el.style.height = bBox.height + 'px';
-      el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
-      el.style.width = bBox.width + 'px';
-      el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
-    }
-    // Make the 'Blocks' tab line up with the toolbox.
-    if (Blockly.Toolbox.width) {
-      document.getElementById('tab_blocks').style.minWidth =
-          (Blockly.Toolbox.width - 38) + 'px';
-          // Account for the 19 pixel margin and on each side.
-    }
-  };
-  //window.addEventListener('resize', onresize, false);
+  //var container = document.getElementById('#page-scenario').parent();
+  // var onresize = function(e) {
+  //   var bBox = BlocklyApps.getBBox_(container);
+  //   var el = document.getElementById('content_blocks');
+  //   el.style.top = bBox.y + 'px';
+  //   el.style.left = bBox.x + 'px';
+  //   // Height and width need to be set, read back, then set again to
+  //   // compensate for scrollbars.
+  //   el.style.height = bBox.height + 'px';
+  //   el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
+  //   el.style.width = bBox.width + 'px';
+  //   el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+
+  //   // // Make the 'Blocks' tab line up with the toolbox.
+  //   // if (Blockly.Toolbox.width) {
+  //   //   document.getElementById('tab_blocks').style.minWidth =
+  //   //       (Blockly.Toolbox.width - 38) + 'px';
+  //   //       // Account for the 19 pixel margin and on each side.
+  //   // }
+  // };
+  // //window.addEventListener('resize', onresize, false);
 
   BlocklyApps.loadBlocks('');
 
@@ -910,27 +915,20 @@ Code.init = function() {
     BlocklyStorage.backupOnUnload();
   }
 
-  Code.tabClick(Code.selected);
-  Blockly.fireUiEvent(window, 'resize');
+  //Code.tabClick(Code.selected);
+  //Blockly.fireUiEvent(window, 'resize');
 
   BlocklyApps.bindClick('linkButton', Code.saveScenario);
   BlocklyApps.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
   BlocklyApps.bindClick('runButton', Code.runJS);
-
-  for (var i = 0; i < Code.TABS_.length; i++) {
-    var name = Code.TABS_[i];
-    BlocklyApps.bindClick('tab_' + name,
-        function(name_) {return function() {Code.tabClick(name_);};}(name));
-  }
-
 };
 
-if (window.location.pathname.match(/readonly.html$/)) {
+/*if (window.location.pathname.match(/readonly.html$/)) {
   window.addEventListener('load', BlocklyApps.initReadonly);
 } else {
   window.addEventListener('load', Code.init);
-}
+}*/
 
 /**
  * Discard all blocks from the workspace.

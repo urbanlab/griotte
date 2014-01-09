@@ -16,32 +16,32 @@
     </style>
 
     <link rel="stylesheet" href="/css/jquery-ui-1.9.2.css" type="text/css" media="screen">
-    <link rel="stylesheet" href="/css/jquery.mobile-1.3.2.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="/css/jquery.mobile-1.4.0-rc.1.css" type="text/css" media="screen">
     <link rel="stylesheet" type="text/css" href="css/common.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <script type="text/javascript" src="/js/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.9.2-min.js"></script>
-    <script type="text/javascript" src="/js/jquery.mobile-1.3.1.js"></script>
+    <script type="text/javascript" src="/js/jquery.mobile-1.4.0-rc.1.js"></script>
     <script type="text/javascript" src="/js/flotr2.min.js"></script>
 
     <script type="text/javascript" src="js/application.js"></script>
     <script type="text/javascript" src="js/griotte.js"></script>
-    <script type="text/javascript" src="blockly/blockly_compressed.js"></script>
+    <script type="text/javascript" src="blockly/blockly_uncompressed.js"></script>
     <script type="text/javascript" src="blockly/blocks_compressed.js"></script>
-    <script type="text/javascript" src="blockly/blocks/analog.js"></script>
-    <script type="text/javascript" src="blockly/blocks/digital.js"></script>
-    <script type="text/javascript" src="blockly/blocks/multimedia.js"></script>
-    <script type="text/javascript" src="blockly/generators/python_compressed.js"></script>
-    <script type="text/javascript" src="blockly/generators/python/analog.js"></script>
-    <script type="text/javascript" src="blockly/generators/python/digital.js"></script>
-    <script type="text/javascript" src="blockly/generators/python/multimedia.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/analog.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/digital.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/multimedia.js"></script>
+    <script type="text/javascript" src="blockly/python_compressed.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/analog.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/digital.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/multimedia.js"></script>
     <script type="text/javascript" src="blockly/msg/js/fr.js"></script>
     <script type="text/javascript" src="js/scenario.js"></script>
 
   </head>
   <body>
-    <div data-role="page" id="control">
+    <div data-role="page" id="page-control">
       <div data-role="header">
 
         <h1>Raspeomix</h1>
@@ -49,10 +49,10 @@
 
         <div data-role="navbar" data-iconpos="bottom">
           <ul>
-            <li><a href="#" data-icon="grid" class="ui-state-persist ui-btn-active">Contrôle</a></li>
-            <li><a href="#scenario" data-icon="gear">Scenario</a></li>
-            <li><a href="#cartels" data-icon="info">Cartels</a></li>
-            <li><a href="#monitor" data-icon="alert">Moniteur</a></li>
+            <li><a href="#page-control" data-icon="grid" class="ui-state-persist ui-btn-active">Contrôle</a></li>
+            <li><a href="#page-scenario" data-icon="gear">Scenario</a></li>
+            <li><a href="#page-cartels" data-icon="info">Cartels</a></li>
+            <li><a href="#page-monitor" data-icon="alert">Moniteur</a></li>
           </ul>
         </div> <!-- /navbar -->
       </div> <!-- header -->
@@ -100,12 +100,12 @@
       </div> <!-- content -->
 
       <div data-role="footer">
-        <h4>&copy ERASME 2013</h4>
+        <h4>&copy; ERASME 2013</h4>
       </div><!-- /footer -->
 
-    </div> <!-- /page control -->
+    </div> <!-- /page page-control -->
 
-    <div data-role="page" id="scenario">
+    <div data-role="page" id="page-scenario" height="100%">
       <div data-role="header">
 
         <h1>Raspeomix</h1>
@@ -113,40 +113,20 @@
 
         <div data-role="navbar" data-iconpos="bottom">
           <ul>
-            <li><a href="#control" data-icon="grid">Contrôle</a></li>
-            <li><a href="#scenario" data-icon="gear" class="ui-state-persist ui-btn-active">Scenario</a></li>
-            <li><a href="#cartels" data-icon="info">Cartels</a></li>
-            <li><a href="#monitor" data-icon="alert">Moniteur</a></li>
+            <li><a href="#page-control" data-icon="grid">Contrôle</a></li>
+            <li><a href="#page-scenario" data-icon="gear" class="ui-state-persist ui-btn-active">Scenario</a></li>
+            <li><a href="#page-cartels" data-icon="info">Cartels</a></li>
+            <li><a href="#page-monitor" data-icon="alert">Moniteur</a></li>
           </ul>
         </div><!-- /navbar -->
-      </div><!-- eader -->
+      </div><!-- header -->
 
       <div data-role="content">
-
-        <div data-role="collapsible-set">
-          <div data-role="collapsible" data-collapsed="false" id="tab_blocks" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-            <h3>Blocks</h3>
-            <div id="content_area">
-              <div id="blockly"></div>
-            </div>
-            <div id="content_blocks" class="content"></div>
-          </div>
-
-          <div data-role="collapsible" data-collapsed="true" id="tab_python" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-            <h3>Python</h3>
-            <pre id="content_python" class="content"></pre>
-          </div>
-
-          <div data-role="collapsible" data-collapsed="true" id="tab_xml" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-            <h3>XML</h3>
-            <textarea id="content_xml" class="content" wrap="off"></textarea>
-          </div>
-
+        <div id="content_area" height="100%">
         </div>
-
       </div> <!-- content -->
 
-      <div data-role="footer">
+      <div data-role="footer" data-position="fixed">
         <div data-role="controlgroup" data-type="horizontal">
           <a href="index.html" data-role="button" data-inline="true" id="openButton" data-icon="arrow-d">Ouvrir</a>
           <a href="index.html" data-role="button" data-inline="true" id="linkButton" data-icon="arrow-u">Enregistrer</a>
@@ -155,9 +135,9 @@
         </div>
       </div>
 
-    </div> <!-- page scenario-->
+    </div> <!-- page page-scenario-->
 
-    <div data-role="page" id="cartels">
+    <div data-role="page" id="page-cartels">
       <div data-role="header">
 
         <h1>Raspeomix</h1>
@@ -165,10 +145,10 @@
         <a href="index.html" data-icon="delete" data-mini="true" class="ui-btn-right">Logout</a>
         <div data-role="navbar" data-iconpos="bottom">
           <ul>
-            <li><a href="#control" data-icon="grid">Contrôle</a></li>
-            <li><a href="#scenario" data-icon="gear">Scenario</a></li>
-            <li><a href="#cartels" data-icon="info" class="ui-state-persist ui-btn-active">Cartels</a></li>
-            <li><a href="#monitor" data-icon="alert">Moniteur</a></li>
+            <li><a href="#page-control" data-icon="grid">Contrôle</a></li>
+            <li><a href="#page-scenario" data-icon="gear">Scenario</a></li>
+            <li><a href="#page-cartels" data-icon="info" class="ui-state-persist ui-btn-active">Cartels</a></li>
+            <li><a href="#page-monitor" data-icon="alert">Moniteur</a></li>
           </ul>
         </div><!-- /navbar -->
 
@@ -186,9 +166,9 @@
           </ul>
         </div>
       </div> <!-- content -->
-    </div> <!-- page cartels-->
+    </div> <!-- page page-cartels-->
 
-    <div data-role="page" id="monitor">
+    <div data-role="page" id="page-monitor">
       <div data-role="header">
 
         <h1>Raspeomix</h1>
@@ -196,10 +176,10 @@
 
         <div data-role="navbar" data-iconpos="bottom">
           <ul>
-            <li><a href="#control" data-icon="grid">Contrôle</a></li>
-            <li><a href="#scenario" data-icon="gear">Scenario</a></li>
-            <li><a href="#cartels" data-icon="info">Cartels</a></li>
-            <li><a href="#monitor" data-icon="alert" class="ui-state-persist ui-btn-active">Moniteur</a></li>
+            <li><a href="#page-control" data-icon="grid">Contrôle</a></li>
+            <li><a href="#page-scenario" data-icon="gear">Scenario</a></li>
+            <li><a href="#page-cartels" data-icon="info">Cartels</a></li>
+            <li><a href="#page-monitor" data-icon="alert" class="ui-state-persist ui-btn-active">Moniteur</a></li>
           </ul>
         </div><!-- /navbar -->
 
@@ -315,7 +295,7 @@
         </div>
 
       </div> <!-- content -->
-    </div> <!-- page monitor -->
+    </div> <!-- page page-monitor -->
 
     <div data-role="page" id="analog0">
       <div data-role="header">
@@ -336,6 +316,10 @@
         <block type="multimedia_video"></block>
         <block type="multimedia_sound"></block>
         <block type="multimedia_image"></block>
+        <block type="multimedia_video_stop"></block>
+        <block type="multimedia_sound_stop"></block>
+        <block type="multimedia_black"></block>
+        <block type="multimedia_wait"></block>
         <block type="multimedia_volume"></block>
       </category>
       <category name="Logique">
@@ -508,40 +492,25 @@
 
   </body>
 
-<script type="text/javascript">
-  $( document ).bind( "pageinit", function( event ) {
-
-function pausecomp(ms) {
-ms += new Date().getTime();
-while (new Date() < ms){}
-}
+  <script type="text/javascript">
+$( document ).bind("pageinit", function( event ) {
+  // function pausecomp(ms) {
+  //   ms += new Date().getTime();
+  //   while (new Date() < ms){}
+  // }
 
   var scheme = window.location.protocol,
-  host   = location.hostname,
-  port   = 8888, // location.port,
-  path   = '/ws';
+      host   = location.hostname,
+      port   = 8888, // location.port,
+      path   = '/ws';
 
-  Griotte.init('ws://' + host + (port ? ':' + port : '') + path)
-  application = Application.init(Griotte);
-  //Application.launch();
+  Griotte.init('ws://' + host + (port ? ':' + port : '') + path);
+  Application.init();
+  Code.init("content_area");
+  $("#page-scenario").trigger('refresh');
   });
 </script>
 
-<script type="text/javascript">
-  // Mock
-  $( document ).bind( "pageinit", function( event ) {
-      $( "#slider-current" ).slider({ disabled: true });
-      $( "#range-nexta" ).slider({ disabled: true });
-      $( "#range-nextb" ).slider({ disabled: true });
-  });
-</script>
-
-<script>
-  function blocklyLoaded(blockly) {
-    // Called once Blockly is fully loaded.
-    window.Blockly = blockly;
-  }
-</script>
 
 <script type="text/javascript">
 $( "#analog0" ).on("pageshow", function() {

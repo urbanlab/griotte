@@ -11,12 +11,14 @@ __pycache__/
 # Sublime text
 *.sublime-*
 
-# Distribution / packaging
+# Distribution / packaging / virtualenv
+bin/
 build/
 develop-eggs/
 dist/
 eggs/
 lib64/
+lib/
 parts/
 sdist/
 var/
@@ -35,19 +37,10 @@ pip-delete-this-directory.txt
 nosetests.xml
 coverage.xml
 
-# Translations
-*.mo
-
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
-# Django stuff:
-*.log
-*.pot
-
 # Sphinx documentation
 docs/_build/
 
+# Blockly
+static/admin/blockly*
+static/admin/closure-library-read-only/
 

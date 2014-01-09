@@ -29,62 +29,41 @@ Application = {
    * an open HTTP connection with the server.
    */
 
-  init: function(griotte) {
-    var self = this;
-    this._griotte = griotte;
+  init: function() {
+    console.log("griotte state : " + Griotte.ready);
 
-    console.log("griotte state : " + griotte.ready);
+    Application.sliderprogress = $('#slider-current');
+    Application.slidersound    = $('#slider-sound');
+    Application.togglesound    = $('#toggle-sound');
+    Application.togglescenario = $('#toggle-scenario');
 
-    this._heartbeat  = $('#heartbeat');
-    this._heartbeat.hide();
-
-    this._sliderprogress = $('#slider-current');
-    this._slidersound = $('#slider-sound');
-    this._togglesound = $('#toggle-sound');
-    this._togglescenario = $('#toggle-scenario');
-
-    this._prefix = location.hostname.split('.')[0];
+    Application.prefix = location.hostname.split('.')[0];
 
     console.log("Application initialized");
 
-    this._griotte.subscribe('internal.ready', self.launch.bind(this));
+    Griotte.subscribe('internal.ready', Application.launch);
   },
 
   launch: function() {
     console.log("Application.launch called");
     console.log(self)
-    this._griotte.subscribe("meta.store.sound_level.set", this.sound_in.bind(this));
-    this._griotte.subscribe("message.video", this.video_in.bind(this));
-
-  },
-
-  accept: function(message) {
-    this._heartbeat.fadeIn(500, function() { $(this).fadeOut(500); } );
+    Griotte.subscribe("meta.store.sound_level.set", Application.sound_in);
+    Griotte.subscribe("message.video", Application.video_in);
   },
 
   scenario: function(state) {
-    this._griotte.publish('.' + this._prefix + '.scenario', { command: state });
+    Griotte.publish('.' + Application.prefix + '.scenario', { command: state });
   },
 
   sound: function(state, volume) {
-    this._griotte.publish("meta.store.sound_level.set", { state: state, level: parseInt(volume) } );
+    Griotte.publish("meta.store.sound_level.set", { state: state, level: parseInt(volume) } );
   },
 
   scenario_in: function(data) {
     console.log("scenario event in");
     console.log(data);
-
-    // Toggle
-  //    console.log(this._togglesound);
-  //    this._togglesound.slider({ value: data['state'] });
-  /*    if (data['state'] == 'play') {
-      state = 'on';
-    } else {
-      state = 'off'
-    }
-  */
-    this._togglescenario.prop({ value: data['command'] });
-    this._togglescenario.slider('refresh');
+    Application.togglescenario.prop({ value: data['command'] });
+    Application.togglescenario.slider('refresh');
   },
 
   video_in: function(message) {
@@ -92,14 +71,14 @@ Application = {
     console.log("video event in");
     console.log(data);
     if (data['type'] == 'status') {
-      this._sliderprogress.prop({ value: Math.floor(data.position/1000) });
-      this._sliderprogress.prop({ max: Math.floor(data.media_length/1000) });
+      Application.sliderprogress.prop({ value: Math.floor(data.position/1000) });
+      Application.sliderprogress.prop({ max: Math.floor(data.media_length/1000) });
     } else if (data['type'] == 'play') {
-      this._sliderprogress.prop({ max: data.media_length });
+      Application.sliderprogress.prop({ max: data.media_length });
     } else if (data['type'] == 'stop') {
-      this._sliderprogress.prop({ value: Math.floor(data.media_length/1000) });
+      Application.sliderprogress.prop({ value: Math.floor(data.media_length/1000) });
     }
-    this._sliderprogress.slider('refresh');
+    Application.sliderprogress.slider('refresh');
   },
 
 
@@ -109,21 +88,21 @@ Application = {
     console.log(data);
 
     // Toggle
-    console.log(this._togglesound);
-  //    this._togglesound.slider({ value: data['state'] });
-    this._togglesound.prop({ value: data.state });
-    this._togglesound.slider('refresh');
+    console.log(Application.togglesound);
+  //    Application.togglesound.slider({ value: data['state'] });
+    Application.togglesound.prop({ value: data.state });
+    Application.togglesound.slider('refresh');
 
-    console.log(this._slidersound);
+    console.log(Application.slidersound);
     if (data['state'] == 'off') {
-      this._slidersound.slider('disable');
+      Application.slidersound.slider('disable');
     } else {
-      this._slidersound.slider('enable');
+      Application.slidersound.slider('enable');
     }
 
     // Slider
     console.log("setting value prop for slider to " + data.level);
-    this._slidersound.prop({ value: data['level'] });
-    this._slidersound.slider('refresh');
+    Application.slidersound.prop({ value: data['level'] });
+    Application.slidersound.slider('refresh');
   },
 };
