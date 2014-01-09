@@ -6,16 +6,24 @@
 Welcome to Griotte's documentation!
 ===================================
 
-Contents:
+Contents
+--------
 
 .. toctree::
-   :maxdepth: 2
+  :maxdepth: 2
 
-   architecture
-   messages
-   formulas
+  installation
+  architecture
+  messages
+  profiles
 
-.. automodule:: griotte
+API
+---
+.. toctree::
+  :maxdepth: 4
+
+  modules
+
 
 Indices and tables
 ==================

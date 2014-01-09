@@ -19,6 +19,12 @@
 # Part of this code is Copyright (C) 2010, Paul Lutus
 # http://www.arachnoid.com/python/RPNCalc_program.html
 
+""" RPN calculator implementation
+
+.. moduleauthor:: Michel Blanc <mblanc@erasme.org
+.. note:: This code is based on Paul Lutus' implementation http://www.arachnoid.com/python/RPNCalc_program.html
+"""
+
 import sys, re, readline, types
 import logging
 from math import *

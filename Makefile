@@ -17,7 +17,11 @@ cov:
 	$(NOSETESTS) -d -v -P --with-coverage --cover-package=raspeomix
 
 docs:
+	sphinx-apidoc -o docs/en/ src/lib/griotte/
 	cd docs && make
+
+rtfm:
+	xdg-open docs/_build/html/en/index.html
 
 _devel:
 	$(PYTHON) devel-bootstrap.py -p /usr/bin/python3

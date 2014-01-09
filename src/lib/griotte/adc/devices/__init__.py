@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Raspeomix. If not, see <http://www.gnu.org/licenses/>.
 
-from raspeomix.adc.devices.mcp342x import MCP342x
+from griotte.adc.devices.mcp342x import MCP342x
 
 
 

@@ -2,6 +2,9 @@
 Architecture
 ************
 
+.. image:: images/architecture.*
+   :align: center
+
 Griotte uses Tornado as a web/websockets server. All clients (server side
 clients like analog sensors handlers, web interface, ...) communicate using
 websockets in a pub/sub fashion, making it easy to add more clients, more server

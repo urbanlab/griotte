@@ -16,7 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Raspeomix. If not, see <http://www.gnu.org/licenses/>.
 
-import quick2wire.i2c as i2c
+try:
+    import quick2wire.i2c as i2c
+except:
+    sys.stderr.write("Unable to load quick2wire.Not on Raspberry ? Going on anyway.")
+
 import tornado.websocket
 import json
 
@@ -88,8 +92,14 @@ class MCP342x():
     # @note Ratio for 6k8 / 10k : 2.471
     DIVIDER_RATIO = 2.471
 
-    def __init__(self, address=0x6E, bus=i2c.I2CMaster() ):
-        self.bus     = bus
+    def __init__(self, address=0x6E, bus = None ):
+        # This is a kind of trick so we can generate the documentation
+        # on other platforms
+        try:
+            self.bus = bus | i2c.I2CMaster()
+        except FileNotFoundError:
+            self.bus = None
+
         self.address = address
 
     def __repr__(self):

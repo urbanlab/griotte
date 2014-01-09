@@ -20,8 +20,6 @@ from griotte.adc.profile import Profile
 from griotte.adc.devices import *
 
 class AnalogDevice:
-    """ ADC Interface """
-
     def __init__(self, device=MCP342x()):
         self.device = device
         self.profiles = dict()

@@ -8,7 +8,7 @@ import sys
 import logging
 from tornado.options import define, options
 
-from raspeomix.ws import WebSocket
+from griotte.ws import WebSocket
 
 define("url", default="ws://127.0.0.1:8888/ws", help="Websocket server url")
 define("watchdog", default=0, help="Watchdog interval")

@@ -26,10 +26,11 @@ You need :
 - a Raspberry Pi (but you can run/develop non-hardware related anywhere)
 - python3
 - pip
+- virtualenv
 
 On a Raspbian :
 
-    sudo apt-get install python3-pip
+    sudo apt-get install python3-pip python-virtualenv
 
 should be enough to install all dependencies.
 
@@ -55,7 +56,7 @@ it somewhere else).
 
 # Documentation
 
-Documentation is in `docs/` in rst format. Il you installed development
+Documentation is in `docs/` in rst format. If you installed development
 dependencies, you can generate documentation by running :
 
     cd docs && make html
