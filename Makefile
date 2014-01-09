@@ -20,10 +20,10 @@ docs:
 	cd docs && make
 
 _devel:
-	$(PYTHON) devel-bootstrap.py
+	$(PYTHON) devel-bootstrap.py -p /usr/bin/python3
 
 production:
-	$(PYTHON) production-bootstrap.py
+	$(PYTHON) production-bootstrap.py -p /usr/bin/python3
 
 devel: _devel production
 

@@ -25,7 +25,13 @@ lighting systems, ...
 You need :
 - a Raspberry Pi (but you can run/develop non-hardware related anywhere)
 - python3
+- pip
 
+On a Raspbian :
+
+    sudo apt-get install python3-pip
+
+should be enough to install all dependencies.
 
 # Getting started
 
