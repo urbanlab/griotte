@@ -117,6 +117,7 @@ class OMXPlayer(object):
     def play(self, mediafile, subtitles=False):
         self.playing = False
         self.position = self.media_length = 0
+        self.media = mediafile
 
         cmd = self._LAUNCH_CMD % (self.volume, mediafile)
 

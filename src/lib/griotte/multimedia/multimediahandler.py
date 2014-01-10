@@ -75,7 +75,8 @@ class MultimediaHandler:
                     "playing": self.backend.playing,
                     "volume": self.backend.volume,
                     "amplitude": self.backend.amplitude,
-                    "muted": self.backend.muted }
+                    "muted": self.backend.muted,
+                    "media": self.backend.media }
 
         self.ws.send("video.event." + status, message)
 

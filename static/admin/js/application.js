@@ -35,6 +35,9 @@ Application = {
     Application.togglesound    = $('#toggle-sound');
     Application.togglescenario = $('#toggle-scenario');
 
+    Application.media_duration = $('#media-duration');
+    Application.media_name     = $('#media-name');
+
     Application.prefix = location.hostname.split('.')[0];
 
     console.log("Application initialized");
@@ -72,10 +75,14 @@ Application = {
       Application.sliderprogress.prop({ value: Math.floor(data.position/1000) });
       Application.sliderprogress.prop({ max: Math.floor(data.media_length/1000) });
     } else if (message.channel == 'video.event.play') {
+      Application.media_name = data.media_name;
       Application.sliderprogress.prop({ max: data.media_length });
     } else if (message.channel == 'video.event.stop') {
+      Application.media_name.text('N/A');
       Application.sliderprogress.prop({ value: Math.floor(data.media_length/1000) });
     }
+    Application.media_duration.text(data.media_length);
+
     Application.sliderprogress.slider('refresh');
   },
 
