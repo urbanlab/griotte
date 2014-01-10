@@ -72,16 +72,19 @@ Application = {
     console.log("video event in");
     console.log(data);
     if (message.channel == 'video.event.status') {
+      Application.media_duration.text(data.media_length/1000);
+      Application.media_name = data.media_name;
       Application.sliderprogress.prop({ value: Math.floor(data.position/1000) });
       Application.sliderprogress.prop({ max: Math.floor(data.media_length/1000) });
     } else if (message.channel == 'video.event.play') {
+      Application.media_duration.text(data.media_length/1000);
       Application.media_name = data.media_name;
       Application.sliderprogress.prop({ max: data.media_length });
     } else if (message.channel == 'video.event.stop') {
-      Application.media_name.text('N/A');
+      Application.media_name.text('Aucun');
+      Application.media_duration.text('N/A');
       Application.sliderprogress.prop({ value: Math.floor(data.media_length/1000) });
     }
-    Application.media_duration.text(data.media_length/1000);
 
     Application.sliderprogress.slider('refresh');
   },
