@@ -45,6 +45,7 @@ Special vars : ``volume``, ``sound_mute``, ``videos``, ``audios``, ``images``
 * <video|audio|image>.event.pause
 * <video|audio|image>.event.resume
 * <video|audio|image>.event.status
+* <video|audio|image>.event.changed_volume
 
 * <video|audio|image>.command.start : loads and play media
 * <video|audio|image>.command.stop : stops media playback completely

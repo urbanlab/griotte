@@ -316,7 +316,7 @@ or if you need development libraries :
 Then, activate virtualenv :
 
     source bin/activate
-    export PYTHONPATH=${PWD}/src/lib:$PYTHONPATH
+    export PYTHONPATH=${PWD}/griotte/lib:$PYTHONPATH
 
 .. note:: You might need to adjust your python3 path in the top-level Makefile.
 
@@ -337,16 +337,16 @@ Start the server with :
 
 .. code-block:: bash
 
-    src/bin/server
+    griotte/bin/server
 
 Start the required handlers like so :
 
 .. code-block:: bash
 
-    src/bin/adc
-    src/bin/gpio
-    src/bin/multimedia
-    src/bin/director
+    griotte/bin/adc
+    griotte/bin/gpio
+    griotte/bin/multimedia
+    griotte/bin/director
 
 Head to [the server](http://localhost:8888) (change localhost if you installed
 it somewhere else), and start playing with the application !

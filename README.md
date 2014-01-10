@@ -47,23 +47,29 @@ or if you need development libraries :
 Then, activate virtualenv :
 
     source bin/activate
-    export PYTHONPATH=${PWD}/src/lib:$PYTHONPATH
+    export PYTHONPATH=${PWD}/griotte/lib:$PYTHONPATH
 
 You might need to adjust your python3 path in the top-level Makefile.
 
 You can then start the server with :
 
-    src/bin/server
+    griotte/bin/server
 
 Head to [the server](http://localhost:8888) (change localhost if you installed
 it somewhere else).
+
+Now to make something "real", please head to the
+[documentation](http://griotte.erasme.org).
 
 # Documentation
 
 Documentation is in `docs/` in rst format. If you installed development
 dependencies, you can generate documentation by running :
 
-    cd docs && make html
+    make docs
+
+Then `make rtfm` to read the docs,
+
 
 
 
