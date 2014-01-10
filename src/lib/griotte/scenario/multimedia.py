@@ -146,5 +146,5 @@ def _expect(ws, channel, type=None):
     while not found:
         message = ws.recv()
         decoded = json.loads(message)
-        if decoded['channel'] == channel and decoded['data']['type'] == type:
+        if decoded['channel'] == channel:
             found = True;
