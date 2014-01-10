@@ -17,8 +17,8 @@ Blockly.Blocks['multimedia_audio_play'] = {
         .appendTitle(new Blockly.FieldDropdown([["none","none"]]), "MEDIA");
     this.appendDummyInput()
         .appendTitle(new Blockly.FieldDropdown([
-             ["et attendre la fin", "SYNC"],
-             ["et passer à la suite", "ASYNC"]]), "METHOD");
+             ["et attendre la fin", "True"],
+             ["et passer à la suite", "False"]]), "SYNC");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('Joue le son sélectionné une seule fois');
@@ -37,8 +37,8 @@ Blockly.Blocks['multimedia_video_play'] = {
                      ["il_fait_bon.ogv", "il_fait_bon.ogv"]]), "MEDIA");
     this.appendDummyInput()
     .appendTitle(new Blockly.FieldDropdown([
-                 ["et attendre la fin", "SYNC"],
-                 ["et passer à la suite", "ASYNC"]]), "METHOD");
+                 ["et attendre la fin", "True"],
+                 ["et passer à la suite", "False"]]), "SYNC");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('Joue la vidéo sélectionnée une seule fois');

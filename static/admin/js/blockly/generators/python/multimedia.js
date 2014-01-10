@@ -7,17 +7,7 @@ Blockly.Python['multimedia_video_play'] = function(block) {
   Blockly.Python.definitions_['from_griotte_scenario_multimedia_play_video'] = 'from griotte.scenario.multimedia import play_video';
 
   var media = Blockly.Python.quote_(block.getTitleValue('MEDIA'));
-  var method = Blockly.Python.quote_(block.getTitleValue('METHOD'));
-
-  var code = 'play_video(' + media + ', sync='
-
-  if (method == 'SYNC') {
-    code += 'True';
-  } else {
-    code += 'False';
-  }
-
-  code += ')\n'
+  var code = 'play_video(' + media + ', sync=' + block.getTitleValue('SYNC') + ')\n'
 
   return code;
 };
@@ -26,15 +16,7 @@ Blockly.Python['multimedia_audio_play'] = function(block) {
   Blockly.Python.definitions_['from_griotte_scenario_multimedia_play_audio'] = 'from griotte.scenario.multimedia import play_audio';
 
   var media = Blockly.Python.quote_(block.getTitleValue('MEDIA'));
-  var method = Blockly.Python.quote_(block.getTitleValue('METHOD'));
-
-  var code = 'play_video(' + media + ', sync='
-
-  if (method == 'SYNC') {
-    code += 'True';
-  } else {
-    code += 'False';
-  }
+  var code = 'play_video(' + media + ', sync=' + block.getTitleValue('SYNC') + ')\n'
 
   return code;
 };
