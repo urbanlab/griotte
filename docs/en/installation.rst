@@ -2,10 +2,7 @@
 Installation
 ************
 
-Whole scoop on installing a full featured Griotte device with :
-
-  * AP capability (no ethernet bridging or forwarding though)
-  *
+Whole scoop on installing a full featured Griotte device with AP capability (no ethernet bridging or forwarding though).
 
 Image & base config
 ===================
@@ -291,7 +288,7 @@ DNSMasq
 interface=wlan0
 dhcp-range=192.168.166.10,192.168.166.20,12h
 
-.. note : YMMV. If you use multiple SSID you might want to tweak the ``interface`` setting.
+.. note:: YMMV. If you use multiple SSID you might want to tweak the ``interface`` setting.
 
 Reboot !
 ========
@@ -310,10 +307,28 @@ Installation
 
     git clone https://github.com/erasme/griotte.git
     cd griotte
-    python3 production-bootstrap.py
-    python3 devel-bootstrap.py # if you need development libraries
+    make production
+
+or if you need development libraries :
+
+    make devel
+
+Then, activate virtualenv :
+
     source bin/activate
     export PYTHONPATH=${PWD}/src/lib:$PYTHONPATH
+
+.. note:: You might need to adjust your python3 path in the top-level Makefile.
+
+You can list all available targets in the makefile by invoking `make` :
+
+* **clean** : cleans generated files, including doc
+* **cov** : runs test suite with coverage
+* **dev,devel** : installs developpment dependencies
+* **doc,docs** : generates documentation
+* **prod,production** : installs production dependencies
+* **rtfm** : opens local documentation in browser
+* **tests** : runs test suite
 
 Services
 --------
@@ -326,9 +341,12 @@ Start the server with :
 
 Start the required handlers like so :
 
+.. code-block:: bash
+
     src/bin/adc
     src/bin/gpio
     src/bin/multimedia
+    src/bin/director
 
 Head to [the server](http://localhost:8888) (change localhost if you installed
 it somewhere else), and start playing with the application !

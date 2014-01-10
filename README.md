@@ -36,16 +36,20 @@ should be enough to install all dependencies.
 
 # Getting started
 
-    git clone ... griotte
+    git clone https://github.com/erasme/griotte.git
     cd griotte
+    make production
 
-In the commands below, replace `python` by `python3` if python3 is not your
-default python interpreter.
+or if you need development libraries :
 
-    python production-bootstrap.py
-    python devel-bootstrap.py # if you need development libraries
+    make devel
+
+Then, activate virtualenv :
+
     source bin/activate
     export PYTHONPATH=${PWD}/src/lib:$PYTHONPATH
+
+You might need to adjust your python3 path in the top-level Makefile.
 
 You can then start the server with :
 

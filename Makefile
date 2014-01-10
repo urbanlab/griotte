@@ -1,14 +1,31 @@
-NOSETESTS := nosetests
-PYTHON = /usr/bin/python3
+# Adjust your python path here if needed
+PYTHON 								:= /usr/bin/python3
 
-.PHONY: docs
+# sphinx-apidoc options
+#  members : documents members functions
+#  undoc-members : includes undocumented members in output
+#  show-inheritance :
+#  private-members : includes members starting with _
+#  special-members : includes members like __foo__
+#
+SPHINX_APIDOC_OPTIONS := members,undoc-members,show-inheritance,private-members,special-members
 
-# tests:
-# 	@for i in `ls test/test_*.py`; do \
-# 		echo "$$i =>" ; \
-# 		PYTHONPATH=".:lib" python $$i ; \
-# 		echo ; \
-# 	done
+NOSETESTS 						:= nosetests
+
+.PHONY: docs tests cov rtfm _devel production clean
+
+default:
+	@echo
+	@echo "Available targets :"
+	@echo
+	@echo "           clean : cleans generated files, including doc"
+	@echo "             cov : runs test suite with coverage"
+	@echo "       dev,devel : installs developpment dependencies"
+	@echo "            docs : generates documentation"
+	@echo " prod,production : installs production dependencies"
+	@echo "            rtfm : opens local documentation in browser"
+	@echo "           tests : runs test suite"
+	@echo
 
 tests:
 	$(NOSETESTS) -d -v -P
@@ -16,20 +33,29 @@ tests:
 cov:
 	$(NOSETESTS) -d -v -P --with-coverage --cover-package=raspeomix
 
-docs:
-	sphinx-apidoc -o docs/en/ src/lib/griotte/
+doc docs:
+	SPHINX_APIDOC_OPTIONS=$(SPHINX_APIDOC_OPTIONS) sphinx-apidoc -f -o docs/en/ src/lib/griotte/
 	cd docs && make
 
 rtfm:
 	xdg-open docs/_build/html/en/index.html
 
 _devel:
-	$(PYTHON) devel-bootstrap.py -p /usr/bin/python3
+	$(PYTHON) devel-bootstrap.py -p $(PYTHON)
 
-production:
-	$(PYTHON) production-bootstrap.py -p /usr/bin/python3
+_production:
+	$(PYTHON) production-bootstrap.py -p $(PYTHON)
 
-devel: _devel production
+devel dev: _devel _production _message
+
+production prod: _production _message
+
+_message:
+	@echo -e "\n====================================\n"
+	@echo -e "Please run :\n"
+	@echo "source bin/activate"
+	@echo 'export PYTHONPATH=${PWD}/src/lib:$$PYTHONPATH'
+	@echo
 
 clean:
 	@echo "Cleaning up byte compiled python stuff"

@@ -20,4 +20,25 @@ channel when multiple clients interact with the Griotte system.
 Server side clients run in their own process, so they can easily be started,
 stopped, restarted without impacting the whole system.
 
+Components
+==========
 
+Server
+------
+    src/bin/server
+
+Analog Handler
+--------------
+    src/bin/adc
+
+Digital Handler
+---------------
+    src/bin/gpio
+
+Multimedia Handler
+------------------
+    src/bin/multimedia
+
+Director
+--------
+    src/bin/director

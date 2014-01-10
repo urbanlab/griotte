@@ -16,4 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
+"""Server-side blocks implementation
+
+This module implements server-side code generated for blockly blocks.
+
+.. moduleauthor:: Michel Blanc <mblanc@erasme.org>
+
+"""
+
 import griotte.scenario.multimedia
