@@ -68,12 +68,12 @@ Application = {
     data = message.data
     console.log("video event in");
     console.log(data);
-    if (message.channel == 'status') {
+    if (message.channel == 'video.event.status') {
       Application.sliderprogress.prop({ value: Math.floor(data.position/1000) });
       Application.sliderprogress.prop({ max: Math.floor(data.media_length/1000) });
-    } else if (message.channel == 'play') {
+    } else if (message.channel == 'video.event.play') {
       Application.sliderprogress.prop({ max: data.media_length });
-    } else if (message.channel == 'stop') {
+    } else if (message.channel == 'video.event.stop') {
       Application.sliderprogress.prop({ value: Math.floor(data.media_length/1000) });
     }
     Application.sliderprogress.slider('refresh');
