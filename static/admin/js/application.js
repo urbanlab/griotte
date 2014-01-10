@@ -81,7 +81,7 @@ Application = {
       Application.media_name.text('N/A');
       Application.sliderprogress.prop({ value: Math.floor(data.media_length/1000) });
     }
-    Application.media_duration.text(data.media_length);
+    Application.media_duration.text(data.media_length/1000);
 
     Application.sliderprogress.slider('refresh');
   },
