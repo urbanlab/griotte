@@ -22,6 +22,8 @@ import time
 import griotte.constants as C
 import logging
 
+import fnmatch
+
 import threading
 import websocket
 
@@ -55,6 +57,16 @@ class WebSocket:
         self.ws.close()
 
     def add_listener(self, channel, callback, *args):
+        """ Adds a listener to a specific or wildcar channel
+
+        :param channel: Channel to watch
+        :param callback: Callback method
+        :param args: Callback additionnal arguments
+        :type args: array
+
+        .. note:: There can be only one listener on a specific channel
+        """
+
         logging.debug("Adding callback for channel %s", channel)
         self.callbacks[channel] = callback
 
@@ -64,13 +76,28 @@ class WebSocket:
                              'data': message } )
         self.ws.send(data)
 
+    # def on_message(self, ws, message):
+    #     """ Decodes incoming message and dispatches to local callback """
+    #     logging.debug("Received : %s" % message)
+    #     decoded = json.loads(message)
+    #     if (decoded['channel'] in self.callbacks.keys()):
+    #         logging.debug("Callback found for channel %s, dispatching" % decoded['channel'])
+    #         self.callbacks[decoded['channel']](decoded['channel'], decoded['data'])
+
     def on_message(self, ws, message):
         """ Decodes incoming message and dispatches to local callback """
         logging.debug("Received : %s" % message)
         decoded = json.loads(message)
-        if (decoded['channel'] in self.callbacks.keys()):
-            logging.debug("Callback found for channel %s, dispatching" % decoded['channel'])
-            self.callbacks[decoded['channel']](decoded['channel'], decoded['data'])
+
+        # We have to check the wildcards
+        message_channel = decoded['channel']
+
+        # Clients can watch wildcard channels
+        for watched_channel in self.callbacks.keys():
+            if fnmatch.fnmatch(message_channel, watched_channel):
+                # We had a match for watched_channel key
+                logging.debug("Dispatching message for channel %s" % message_channel)
+                self.callbacks[watched_channel](decoded['channel'], decoded['data'])
 
     def on_error(self, ws, error):
         logging.error("Websocket error : %s" % error)
