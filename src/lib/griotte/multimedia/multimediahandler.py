@@ -71,7 +71,7 @@ class MultimediaHandler:
     def send_status(self, status = "status"):
         logging.debug("sending status")
         message = { "position": self.backend.position,
-                    "media_length": self.backend.media_length,
+                    "duration": self.backend.media_length,
                     "playing": self.backend.playing,
                     "volume": self.backend.volume,
                     "amplitude": self.backend.amplitude,
