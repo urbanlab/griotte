@@ -47,8 +47,9 @@ Application = {
   launch: function() {
     console.log("Application.launch called");
     console.log(self)
-    Griotte.subscribe("meta.store.sound_level.set", Application.sound_in);
-    Griotte.subscribe("message.video", Application.video_in);
+    Griotte.subscribe("store.set.sound_level", Application.sound_in);
+    Griotte.subscribe("video.event.status", Application.video_in);
+    Griotte.subscribe("video.event.stop", Application.video_in);
   },
 
   scenario: function(state) {
@@ -56,7 +57,7 @@ Application = {
   },
 
   sound: function(state, volume) {
-    Griotte.publish("meta.store.sound_level.set", { state: state, level: parseInt(volume) } );
+    Griotte.publish("store.set.sound_level", { state: state, level: parseInt(volume) } );
   },
 
   scenario_in: function(data) {
@@ -70,12 +71,12 @@ Application = {
     data = message.data
     console.log("video event in");
     console.log(data);
-    if (data['type'] == 'status') {
+    if (message.channel == 'status') {
       Application.sliderprogress.prop({ value: Math.floor(data.position/1000) });
       Application.sliderprogress.prop({ max: Math.floor(data.media_length/1000) });
-    } else if (data['type'] == 'play') {
+    } else if (message.channel == 'play') {
       Application.sliderprogress.prop({ max: data.media_length });
-    } else if (data['type'] == 'stop') {
+    } else if (message.channel == 'stop') {
       Application.sliderprogress.prop({ value: Math.floor(data.media_length/1000) });
     }
     Application.sliderprogress.slider('refresh');
