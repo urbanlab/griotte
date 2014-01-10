@@ -25,6 +25,11 @@ implement your own channels if needed.
 
 The timestamp is in Python's time.time() format.
 
+Debugging messages
+==================
+
+TBD
+
 Current channel list and message definitions
 ============================================
 

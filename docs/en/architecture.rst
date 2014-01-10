@@ -37,6 +37,7 @@ Digital Handler
 
 NFC Handler
 -----------
+    griotte/bin/nfc
 
 Multimedia Handler
 ------------------
