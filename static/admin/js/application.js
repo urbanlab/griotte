@@ -73,6 +73,7 @@ Application = {
     console.log(data);
     if (message.channel == 'video.event.status') {
       Application.media_duration.text(data.duration/1000);
+      console.log("data.media is " + data.media);
       Application.media_name.text(data.media);
       Application.sliderprogress.prop({ value: Math.floor(data.position/1000) });
       Application.sliderprogress.prop({ max: Math.floor(data.duration/1000) });
