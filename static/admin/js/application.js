@@ -73,12 +73,12 @@ Application = {
     console.log(data);
     if (message.channel == 'video.event.status') {
       Application.media_duration.text(data.duration/1000);
-      Application.media_name.text(data.name);
+      Application.media_name.text(data.media);
       Application.sliderprogress.prop({ value: Math.floor(data.position/1000) });
       Application.sliderprogress.prop({ max: Math.floor(data.duration/1000) });
     } else if (message.channel == 'video.event.play') {
       Application.media_duration.text(data.duration/1000);
-      Application.media_name.text(data.name);
+      Application.media_name.text(data.media);
       Application.sliderprogress.prop({ max: data.duration });
     } else if (message.channel == 'video.event.stop') {
       Application.media_name.text('Aucun');
