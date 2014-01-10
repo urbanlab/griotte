@@ -30,8 +30,6 @@ Application = {
    */
 
   init: function() {
-    console.log("griotte state : " + Griotte.ready);
-
     Application.sliderprogress = $('#slider-current');
     Application.slidersound    = $('#slider-sound');
     Application.togglesound    = $('#toggle-sound');
@@ -46,7 +44,6 @@ Application = {
 
   launch: function() {
     console.log("Application.launch called");
-    console.log(self)
     Griotte.subscribe("store.set.sound_level", Application.sound_in);
     Griotte.subscribe("video.event.status", Application.video_in);
     Griotte.subscribe("video.event.stop", Application.video_in);

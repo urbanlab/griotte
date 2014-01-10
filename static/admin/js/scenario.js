@@ -865,14 +865,12 @@ var Code = {};
  */
 Code.init = function(container) {
   BlocklyApps.init();
-  console.warn(container);
-  console.warn(document.getElementById(container));
   var scheme = window.location.protocol,
     host   = location.hostname,
     port   = 8888, // location.port,
     path   = '/ws';
 
-  Griotte.init('ws://' + host + (port ? ':' + port : '') + path);
+  //Griotte.init('ws://' + host + (port ? ':' + port : '') + path);
   Code.griotte = Griotte
   Code.scenario = null;
   Code.griotte.subscribe('meta.storage.scenario', Code.cb_restoreFromWS);
