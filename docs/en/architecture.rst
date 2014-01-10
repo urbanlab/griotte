@@ -25,20 +25,27 @@ Components
 
 Server
 ------
-    src/bin/server
+    griotte/bin/server
 
 Analog Handler
 --------------
-    src/bin/adc
+    griotte/bin/adc
 
 Digital Handler
 ---------------
-    src/bin/gpio
+    griotte/bin/gpio
+
+NFC Handler
+-----------
 
 Multimedia Handler
 ------------------
-    src/bin/multimedia
+    griotte/bin/multimedia
 
 Director
 --------
-    src/bin/director
+    griotte/bin/director
+
+Storage
+-------
+    griotte/bin/storage

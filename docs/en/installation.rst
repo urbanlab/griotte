@@ -1,6 +1,5 @@
-************
-Installation
-************
+Installation from scratch
+*************************
 
 Whole scoop on installing a full featured Griotte device with AP capability (no ethernet bridging or forwarding though).
 

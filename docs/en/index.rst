@@ -6,19 +6,33 @@
 Welcome to Griotte's documentation!
 ===================================
 
-Contents
---------
+User's guides
+-------------
 
 .. toctree::
   :maxdepth: 2
 
   installation
+
+Advanced guides
+---------------
+.. toctree::
+  :maxdepth: 2
+
   architecture
+
+Developper's guides
+-------------------
+
+.. toctree::
+  :maxdepth: 2
+
   messages
   profiles
 
 API
----
+^^^
+
 .. toctree::
   :maxdepth: 4
 

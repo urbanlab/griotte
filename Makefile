@@ -12,7 +12,7 @@ SPHINX_APIDOC_OPTIONS := members,undoc-members,show-inheritance,private-members,
 
 NOSETESTS 						:= nosetests
 
-.PHONY: docs tests cov rtfm _devel production clean
+.PHONY: docs tests cov rtfm _devel _production devel dev production prod clean
 
 default:
 	@echo
@@ -34,7 +34,7 @@ cov:
 	$(NOSETESTS) -d -v -P --with-coverage --cover-package=raspeomix
 
 doc docs:
-	SPHINX_APIDOC_OPTIONS=$(SPHINX_APIDOC_OPTIONS) sphinx-apidoc -f -o docs/en/ src/lib/griotte/
+	SPHINX_APIDOC_OPTIONS=$(SPHINX_APIDOC_OPTIONS) sphinx-apidoc -f -o docs/en/ griotte/lib/griotte/
 	cd docs && make
 
 rtfm:

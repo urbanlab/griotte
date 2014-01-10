@@ -79,7 +79,7 @@ class AnalogHandler:
                 # do sample
                 for chan in self.periodic_sampled_channels:
                     logging.debug("Sampling %s" % chan)
-                    self.ws.send("message.analog." + chan,
+                    self.ws.send(chan + "event.sample",
                                 self.analogdevice.convert(chan).__dict__)
 
 
