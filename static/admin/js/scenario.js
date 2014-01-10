@@ -778,7 +778,7 @@ BlocklyApps.LANGUAGES = [
   'nl', 'pt-br', 'ro', 'ru', 'sv', 'tr', 'uk', 'vi', 'zh-hans', 'zh-hant'];
 BlocklyApps.LANG = BlocklyApps.getLang();
 
-document.write('<script type="text/javascript" src="blockly/msg/js/' +
+document.write('<script type="text/javascript" src="js/blockly/msg/' +
                BlocklyApps.LANG + '.js"></script>\n');
 
 /**
