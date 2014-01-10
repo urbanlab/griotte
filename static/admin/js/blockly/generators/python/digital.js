@@ -3,7 +3,7 @@
 goog.provide('Blockly.Python.digital');
 goog.require('Blockly.Python');
 
-Blockly.Python['capteur_digital'] = function(block) {
+Blockly.Python['digital_sensor'] = function(block) {
   // Search the text for a substring.
   // var operator = block.getTitleValue('END') == 'FIRST' ? 'indexOf' : 'lastIndexOf';
   // var argument0 = Blockly.JavaScript.valueToCode(block, 'FIND',
@@ -12,7 +12,7 @@ Blockly.Python['capteur_digital'] = function(block) {
   //     Blockly.JavaScript.ORDER_MEMBER) || '\'\'';
   // var code = argument1 + '.' + operator + '(' + argument0 + ') + 1';
   // return [code, Blockly.JavaScript.ORDER_MEMBER];
-  var code = 'print("Python generator for capteur_digital")'
+  var code = 'print("Python generator for digital_sensor")'
   console.log(code)
   return [code, Blockly.Python.ORDER_MEMBER];
 };

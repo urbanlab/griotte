@@ -918,10 +918,10 @@ Code.init = function(container) {
   //Code.tabClick(Code.selected);
   //Blockly.fireUiEvent(window, 'resize');
 
-  BlocklyApps.bindClick('linkButton', Code.saveScenario);
-  BlocklyApps.bindClick('trashButton',
+  BlocklyApps.bindClick('scenario-save', Code.saveScenario);
+  BlocklyApps.bindClick('scenario-trash',
       function() {Code.discard(); Code.renderContent();});
-  BlocklyApps.bindClick('runButton', Code.runJS);
+  BlocklyApps.bindClick('scenario-run', Code.runJS);
 };
 
 /*if (window.location.pathname.match(/readonly.html$/)) {
@@ -934,6 +934,8 @@ Code.init = function(container) {
  * Discard all blocks from the workspace.
  */
 Code.discard = function() {
+  console.log("Trashing scenario");
+
   var count = Blockly.mainWorkspace.getAllBlocks().length;
   if (count < 2 ||
       window.confirm(BlocklyApps.getMsg('Code_discard').replace('%1', count))) {
@@ -942,7 +944,35 @@ Code.discard = function() {
   }
 };
 
+Code.wrapScenario = function(code) {
+  var lines = code.split('\n');
+
+  code = "def run():";
+  code += "\n";
+
+  for(var i = 0; i < lines.length; i++) {
+    code += "  " + lines[i] + "\n";
+  }
+
+  code += "\n";
+
+  var tail = [
+    '',
+    'if __name__ == "__main__":',
+    '  run()',
+    ].join('\n');
+
+  code = code + tail;
+  console.log(code);
+
+  return code;
+};
+
 Code.saveScenario = function() {
+  console.log("Saving scenario");
+  var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+  var code = Code.wrapScenario(Blockly.Python.workspaceToCode());
+  console.log(xml);
 
 };
 
@@ -957,7 +987,7 @@ Code.restoreFromWS = function(name) {
 };
 
 Code.cb_restoreFromWS = function(message) {
-  // python tools/ws_send.py meta.storage.scenario '{ "name": "test", "code": "<xml><block type=\"capteur_analogique\" x=\"143\" y=\"51\"><title name=\"NAME\">AN0</title><title name=\"Profil\">IDENTITY</title></block></xml>"}'
+  // python tools/ws_send.py meta.storage.scenario '{ "name": "test", "code": "<xml><block type=\"analog_sensor\" x=\"143\" y=\"51\"><title name=\"NAME\">AN0</title><title name=\"Profil\">IDENTITY</title></block></xml>"}'
   var data = message.data;
   console.log("cb_restoreFromWS called for " + data['name']);
   if (Code.scenario && data['name'] == Code.scenario) {

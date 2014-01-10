@@ -4,7 +4,7 @@ goog.provide('Blockly.Blocks.multimedia');
 
 goog.require('Blockly.Blocks');
 
-Blockly.Blocks['multimedia_sound'] = {
+Blockly.Blocks['multimedia_audio_play'] = {
   init: function() {
     this.setHelpUrl('http://www.erasme.org/');
     this.setColour(65);
@@ -13,8 +13,8 @@ Blockly.Blocks['multimedia_sound'] = {
         // .appendTitle(new Blockly.FieldDropdown([
         //              ["il_fait_chaud.ogg", "il_fait_chaud.ogg"],
         //              ["il_fait_froid.ogg", "il_fait_froid.ogg"],
-        //              ["il_fait_bon.ogg", "il_fait_bon.ogg"]]), "SOUND");
-        .appendTitle(new Blockly.FieldDropdown([["none","none"]]), "SOUND");
+        //              ["il_fait_bon.ogg", "il_fait_bon.ogg"]]), "audio_play");
+        .appendTitle(new Blockly.FieldDropdown([["none","none"]]), "MEDIA");
     this.appendDummyInput()
         .appendTitle(new Blockly.FieldDropdown([
              ["et attendre la fin", "SYNC"],
@@ -22,11 +22,10 @@ Blockly.Blocks['multimedia_sound'] = {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('Joue le son sélectionné une seule fois');
-    console.log(this.getTitle_('SOUND'));
   },
 };
 
-Blockly.Blocks['multimedia_video'] = {
+Blockly.Blocks['multimedia_video_play'] = {
   init: function() {
     this.setHelpUrl('http://www.erasme.org/');
     this.setColour(65);
@@ -35,7 +34,7 @@ Blockly.Blocks['multimedia_video'] = {
         .appendTitle(new Blockly.FieldDropdown([
                      ["il_fait_chaud.ogv", "il_fait_chaud.ogv"],
                      ["il_fait_froid.ogv", "il_fait_froid.ogv"],
-                     ["il_fait_bon.ogv", "il_fait_bon.ogv"]]), "VIDEO");
+                     ["il_fait_bon.ogv", "il_fait_bon.ogv"]]), "MEDIA");
     this.appendDummyInput()
     .appendTitle(new Blockly.FieldDropdown([
                  ["et attendre la fin", "SYNC"],
@@ -46,7 +45,7 @@ Blockly.Blocks['multimedia_video'] = {
   }
 };
 
-Blockly.Blocks['multimedia_image'] = {
+Blockly.Blocks['multimedia_image_play'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(65);
@@ -96,7 +95,7 @@ Blockly.Blocks['multimedia_video_stop'] = {
   }
 };
 
-Blockly.Blocks['multimedia_sound_stop'] = {
+Blockly.Blocks['multimedia_audio_stop'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(65);

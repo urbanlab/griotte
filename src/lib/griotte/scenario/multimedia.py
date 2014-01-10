@@ -31,31 +31,49 @@ import json
 import sys
 import time
 
+import logging
+
 from websocket import create_connection
 
-def play_video(media):
+def play_video(media, sync=True):
     """ Plays video synchronously
 
     Plays video and wait for completion
 
     :param media: The media to play, relative to the media root folder
     """
-    ws = _send('request.video',
-              '{ "command": "play", "media": "' + media + '" }',
+    ws = _send('video.command.start',
+              '{ "media": "' + media + '" }',
               close=False)
-    _expect(ws, 'message.video', type='stop')
+    if sync:
+        _expect(ws, 'video.event.stop')
 
-def play_sound(media):
+def play_audio(media, sync=True):
     """ Plays sound synchronously
 
     Plays sound and wait for completion
 
     :param media: The media to play, relative to the media root folder
     """
-    ws = _send('request.video',
-              '{ "command": "play", "media": "' + media + '" }',
+    ws = _send('video.command.start',
+              '{ "media": "' + media + '" }',
               close=False)
-    _expect(ws, 'message.video', type='stop')
+    if sync:
+        _expect(ws, 'video.event.stop')
+
+def play_image(media, duration=0):
+    """ Displays an image
+
+    Displays an image for some time, or forever
+
+    :param media: The media to play, relative to the media root folder
+    :type media: str
+    :param duration: The media to play, relative to the media root folder
+    :type duration: int -- 0 for infinite
+    """
+    ws = _send('image.command.start',
+              '{ "media": "' + media + '" }',
+              close=False)
 
 def set_volume(level):
     """ Changes global volume
@@ -67,7 +85,21 @@ def set_volume(level):
     _send('meta.store.sound_level.set',
          '{ "level":"%s" }' % int(level))
 
-def _send(channel, data, close=True, ws=None):
+def stop_video():
+    """ Stops currently playing video
+
+    Sends a ws message asking for the video to stop
+    """
+    _send('video.command.stop')
+
+def stop_audio():
+    """ Stops currently playing video
+
+    Sends a ws message asking for the video to stop
+    """
+    _send('audio.command.stop')
+
+def _send(channel, data = '{}', close=True, ws=None):
     """ Sends a message over websocket
 
     Utility function that wraps websocket message sending and takes care of

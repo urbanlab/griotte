@@ -24,11 +24,11 @@
     <script type="text/javascript" src="/js/jquery-ui-1.9.2-min.js"></script>
     <script type="text/javascript" src="/js/jquery.mobile-1.4.0-rc.1.js"></script>
     <script type="text/javascript" src="/js/flotr2.min.js"></script>
-
+    <script type="text/javascript" src="blockly/blockly_compressed.js"></script>
+    <script type="text/javascript" src="blockly/blocks_compressed.js"></script>
+    <script type="text/javascript" src="js/scenario.js"></script>
     <script type="text/javascript" src="js/application.js"></script>
     <script type="text/javascript" src="js/griotte.js"></script>
-    <script type="text/javascript" src="blockly/blockly_uncompressed.js"></script>
-    <script type="text/javascript" src="blockly/blocks_compressed.js"></script>
     <script type="text/javascript" src="js/blockly/blocks/analog.js"></script>
     <script type="text/javascript" src="js/blockly/blocks/digital.js"></script>
     <script type="text/javascript" src="js/blockly/blocks/multimedia.js"></script>
@@ -36,7 +36,6 @@
     <script type="text/javascript" src="js/blockly/generators/python/analog.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/digital.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/multimedia.js"></script>
-    <script type="text/javascript" src="blockly/msg/js/fr.js"></script>
     <script type="text/javascript" src="js/scenario.js"></script>
 
   </head>
@@ -128,10 +127,10 @@
 
       <div data-role="footer" data-position="fixed">
         <div data-role="controlgroup" data-type="horizontal">
-          <a href="index.html" data-role="button" data-inline="true" id="openButton" data-icon="arrow-d">Ouvrir</a>
-          <a href="index.html" data-role="button" data-inline="true" id="linkButton" data-icon="arrow-u">Enregistrer</a>
-          <a href="index.html" data-role="button" data-inline="true" id="runButton" data-icon="check">Exécuter</a>
-          <a href="index.html" data-role="button" data-inline="true" id="trashButton" data-icon="delete">Poubelle</a>
+          <a href="#" data-role="button" data-inline="true" id="scenario-open" data-icon="arrow-d">Ouvrir</a>
+          <a href="#" data-role="button" data-inline="true" id="scenario-save" data-icon="arrow-u">Enregistrer</a>
+          <a href="#" data-role="button" data-inline="true" id="scenario-run" data-icon="check">Exécuter</a>
+          <a href="#" data-role="button" data-inline="true" id="scenario-trash" data-icon="delete">Poubelle</a>
         </div>
       </div>
 
@@ -309,15 +308,15 @@
 
     <xml id="toolbox" style="display: none">
       <category name="Capteurs">
-        <block type="capteur_analogique"></block>
-        <block type="capteur_digital"></block>
+        <block type="analog_sensor"></block>
+        <block type="digital_sensor"></block>
       </category>
       <category name="Multimédia">
-        <block type="multimedia_video"></block>
-        <block type="multimedia_sound"></block>
-        <block type="multimedia_image"></block>
+        <block type="multimedia_video_play"></block>
+        <block type="multimedia_audio_play"></block>
+        <block type="multimedia_image_play"></block>
         <block type="multimedia_video_stop"></block>
-        <block type="multimedia_sound_stop"></block>
+        <block type="multimedia_audio_stop"></block>
         <block type="multimedia_black"></block>
         <block type="multimedia_wait"></block>
         <block type="multimedia_volume"></block>

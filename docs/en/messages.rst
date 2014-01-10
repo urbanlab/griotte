@@ -44,10 +44,10 @@ Special vars : ``volume``, ``sound_mute``, ``videos``, ``audios``, ``images``
 * <video|audio|image>.event.stop
 * <video|audio|image>.event.status
 
-* <video|audio|image>.command.start
-* <video|audio|image>.command.stop
-* <video|audio|image>.command.pause
-* <video|audio|image>.command.rewind
+* <video|audio|image>.command.start : loads and play media
+* <video|audio|image>.command.stop : stops media playback completely
+* <video|audio|image>.command.pause : pauses media playback
+* <video|audio|image>.command.rewind : restarts media playback
 
 * <analog|digital>.event.sample.<an[0-3]|io[0-3]>
 * <analog|digital>.event.edge.<an[0-3]|io[0-3]>

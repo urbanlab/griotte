@@ -4,7 +4,7 @@ goog.provide('Blockly.Blocks.digital');
 
 goog.require('Blockly.Blocks');
 
-Blockly.Blocks['capteur_digital'] = {
+Blockly.Blocks['digital_sensor'] = {
   init: function() {
     this.setHelpUrl('http://www.erasme.org/');
     this.setColour(65);
