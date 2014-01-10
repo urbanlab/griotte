@@ -188,7 +188,11 @@ class OMXPlayer(object):
         logging.warning("sending _PAUSE_CMD")
         if self._process.send(self._PAUSE_CMD):
             self.playing = not self.playing
-            self._status_callback('toggle_pause')
+
+        if self.playing:
+            self._status_callback('resume')
+        else:
+            self._status_callback('pause')
 
     def mute(self, sound="toggle"):
         if sound == "toggle":
@@ -242,7 +246,7 @@ class OMXPlayer(object):
         if self.is_playing():
             logging.debug("sending volume command %s" % OMXPlayer.percent_to_command(volume))
             if self._process.send(OMXPlayer.percent_to_command(volume)):
-                self._status_callback('set_volume')
+                self._status_callback('changed_volume')
 
     def seek(self, minutes):
         raise NotImplementedError

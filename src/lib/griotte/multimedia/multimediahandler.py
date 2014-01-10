@@ -28,14 +28,6 @@ import logging
 import json
 
 """
-Messages:
-
-request:video { "status???" }
-request:video { "command": "pause" }
-
-message:video { "status" : "playing", "time" : 12 ... }
-
-All exchanged messages have a timestamp
 
 """
 
@@ -43,7 +35,7 @@ class MultimediaHandler:
     def __init__(self):
         self.backend = OMXPlayer(self.send_status)
         self.ws = WebSocket(watchdog_interval=2)
-        self.ws.add_listener('video.command', self.video_request)
+        self.ws.add_listener('video.command.*', self.video_request)
         self.ws.add_listener('meta.store.sound_level.set', self.sound_level)
 
         self.start()
@@ -63,28 +55,29 @@ class MultimediaHandler:
         # toggle_pause
         # play
         # stop
-        if message['command'] == 'pause':
+        if channel == 'video.command.pause':
             logging.debug("pausing media")
             self.backend.toggle_pause()
-            # self.send_status('toggle_pause') => send by cb
-        elif message['command'] == 'play':
+            #self.send_status('toggle_pause') => send by cb
+        elif channel == 'video.command.start':
             logging.debug("playing media %s" % message['media'])
             self.backend.play(message['media'])
-            self.send_status('play')
-        elif message['command'] == 'stop':
+            self.send_status('start')
+        elif channel == 'video.command.stop':
             logging.debug("stopping current media")
             self.backend.stop()
+            #self.send_status('stop')
 
     def send_status(self, status = "status"):
         logging.debug("sending status")
-        status = {  "type" : status,
-                    "position": self.backend.position,
+        message = { "position": self.backend.position,
                     "media_length": self.backend.media_length,
                     "playing": self.backend.playing,
                     "volume": self.backend.volume,
                     "amplitude": self.backend.amplitude,
                     "muted": self.backend.muted }
-        self.ws.send("message.video", status)
+
+        self.ws.send("video.event." + status, message)
 
     def start(self):
         logging.info("Starting MultimediaHandler's websocket")
