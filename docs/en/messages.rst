@@ -216,7 +216,7 @@ is emitted in response to a resume command.
 Restarts media playback from the beginning. No specific event is emitted after a
 resume command.
 
-analog/digital converted commands
+analog/digital converter commands
 ---------------------------------
 
 Messages sent to the analog handling subsystem. The port must end with the
@@ -272,11 +272,18 @@ Example, assigning a thermistor-type profile to analog 0 port :
         }
     }
 
+digital converter commands
+--------------------------
+
+TBD : outputs, pull-ups, pwm
 
 storage commands
 ----------------
 
-Special vars : ``volume``, ``sound_volume``, ``videos``, ``audios``, ``images``
+Special vars : ``volume``, ``videos``, ``audios``, ``images``, ``scenarios``
+Special namespaces ``videos.*``, ``audios.*``, ``images.*``, ``scenarios.*``
+TBD
+
 
 store.get.<var>
 ^^^^^^^^^^^^^^^
@@ -293,13 +300,3 @@ store.push.<var>
 
 .. note:: TBD
 
-
-
-
-
-
-
-* <analog|digital>.command.profile.<an[0-3]|io[0-3]>
-* ``<analog|digital>.command.sample.<an[0-3]|io[0-3]>``
-
-``mlqjkdfsdf``

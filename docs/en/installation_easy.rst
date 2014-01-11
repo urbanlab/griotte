@@ -22,7 +22,7 @@ Image & base config
 
 .. note:: If you don't have ``dfcldd``, the classic alternative ``sudo dd if=griotte-0.0.9.img of=/dev/sdc bs=1m && sync`` will work.
 
-* Plug a supported Wireless dongle in your Raspberry
+* Plug a supported Wireless dongle in your Raspberry (or use Ethernet if you prefer)
 * Boot !
 * Join the wireless network `griotte` (open)
 * Head your browser to http://192.168.3.1:8888/admin/

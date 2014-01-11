@@ -12,6 +12,7 @@ User's guides
 .. toctree::
   :maxdepth: 2
 
+  intro
   installation_easy
   installation
 
