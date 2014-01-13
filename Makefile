@@ -54,7 +54,7 @@ _message:
 	@echo -e "\n====================================\n"
 	@echo -e "Please run :\n"
 	@echo "source bin/activate"
-	@echo 'export PYTHONPATH=${PWD}/src/lib:$$PYTHONPATH'
+	@echo 'export PYTHONPATH=${PWD}/griotte/lib:$$PYTHONPATH'
 	@echo
 
 clean:

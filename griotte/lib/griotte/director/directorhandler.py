@@ -16,18 +16,24 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-"""Storage module
+"""Scenario spawner module
 
-This module handle storing and yielding data.
-It can store whatever is send on the wire in the store channel.
-
-The message format is documented in :doc:`messages`.
-
+This module spawns required scenarios.
+It can be invoked at boot or at runtime.
 
 .. moduleauthor:: Michel Blanc <mblanc@erasme.org>
 
+.. note:: Use http://docs.python.org/3.3/library/multiprocessing.html ?
 """
 
-from griotte.storage.storagehandler import StorageHandler
+import threading
+import logging
 
+class DirectorHandler:
+    """ Scenario handling class
 
+    Spawns and kills scenario on demand
+    """
+
+    def __init__(self):
+        logging.error("To Be Written")
