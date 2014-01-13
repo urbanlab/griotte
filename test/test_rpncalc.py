@@ -5,7 +5,7 @@ import socket
 from random import *
 from math import *
 
-from raspeomix.rpncalc import RPNCalc
+from griotte.rpncalc import RPNCalc
 
 a,b = 0,0
 rpn = RPNCalc()

@@ -2,8 +2,8 @@
 
 import unittest
 import random
-from raspeomix.adc import AnalogDevice
-from raspeomix.adc import Profile
+from griotte.adc import AnalogDevice
+from griotte.adc import Profile
 
 class FakeADC():
     def read_channel(self, *args):

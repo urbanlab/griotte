@@ -3,7 +3,7 @@
 import unittest
 import socket
 
-from raspeomix.ws import WebSocket
+from griotte.ws import WebSocket
 
 class WebSocketTests(unittest.TestCase):
 
