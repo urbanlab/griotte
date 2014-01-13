@@ -12,18 +12,18 @@ __pycache__/
 *.sublime-*
 
 # Distribution / packaging / virtualenv
-bin/
-build/
-develop-eggs/
-dist/
-eggs/
-include/
-lib64/
+/bin/
+/build/
+/develop-eggs/
+/dist/
+/eggs/
+/include/
+/lib64/
 /lib/
-man/
-parts/
-sdist/
-var/
+/man/
+/parts/
+/sdist/
+/var/
 *.egg-info/
 .installed.cfg
 *.egg

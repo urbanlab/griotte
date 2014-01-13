@@ -34,6 +34,8 @@ class StorageHandler:
         self._ws.add_listener('store.set.*', self.set)
         self._ws.add_listener('store.get.*', self.get)
 
+        self.start()
+
     def get(self, channel, message):
         """ Callback for the get operation
 
@@ -75,6 +77,10 @@ class StorageHandler:
 
         if 'persistent' in message:
             self._freeze(variable)
+
+    def start(self):
+        logging.info("Starting StorageHandler's websocket")
+        self._ws.start()
 
     def _get_variable(self, channel):
         """ Converts channel name into a variable
