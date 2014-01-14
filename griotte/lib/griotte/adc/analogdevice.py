@@ -20,8 +20,10 @@ from griotte.adc.profile import Profile
 from griotte.adc.devices import *
 
 class AnalogDevice:
-    def __init__(self, device=MCP342x()):
-        self.device = device
+    def __init__(self, device=None):
+        # using MCP342x() instead of None in the arguments breaks sphinx
+        # thus, this construct
+        self.device = device or MCP342x()
         self.profiles = dict()
 
         for chan in self.device.channels():

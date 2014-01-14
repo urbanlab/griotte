@@ -281,8 +281,8 @@ storage commands
 ----------------
 
 Storage commands allow to get/set variable values. Variables can contain
-whatever you want, since it will hold the content of the `data` field in the
-message.
+whatever you want, since it will hold the content of the `data['value']` field
+in the message.
 
 For instance, the channel `store.set.foo` will set the value for the variable
 `foo`. If you pass this message :
@@ -290,9 +290,11 @@ For instance, the channel `store.set.foo` will set the value for the variable
 .. code-block:: json
 
     {
-        "channel": "store.set.foo",
-        "timestamp": <timestamp>,
-        "data":
+      "channel": "store.set.foo",
+      "timestamp": <timestamp>,
+      "data":
+        {
+          "value" :
             {
               "bar": "baz",
               "fizz": "buzz",
@@ -304,8 +306,8 @@ For instance, the channel `store.set.foo` will set the value for the variable
 then the variable `foo` will hold a hash variable with keys `bar`, `fizz`, `number`.
 
 With the `store.get` operation, sending in `store.get.foo` will trigger a
-`store.event.foo` message containing the `foo` variable value in the data variable.
-
+`store.event.foo` message containing the `foo` variable value in the data
+variable.
 
 .. warning::  There is no atomic operations : if you get a value (`store.get`,
               followed by a `store.event`), add a new key (`store.set`), and
@@ -356,9 +358,9 @@ store.event.<var> response.
 store.set.<var>
 ^^^^^^^^^^^^^^^
 
-Sets the <var> value. The value to set must be in the `data` field. If the field
-contains a `persistent` key and is set to true, the variable will be stored on
-disk and read at startup.
+Sets the <var> value. The value to set must be in the `data` field, under the
+`value` key. If the `data` field contains a `persistent` key and is set to true,
+the variable will be stored on disk and read at startup.
 
 Note that if you set a value twice, but the last update has no `persistent` flag
 turned on, the last value won't be used at startup. Only the last value set with
@@ -379,9 +381,11 @@ back a `store.event.foo` message like :
 .. code-block:: json
 
     {
-        "channel": "store.event.foo",
-        "timestamp": <timestamp>,
-        "data":
+      "channel": "store.event.foo",
+      "timestamp": <timestamp>,
+      "data":
+        {
+          "value" :
             {
               "bar": "baz",
               "fizz": "buzz",

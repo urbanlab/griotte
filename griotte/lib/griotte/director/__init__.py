@@ -25,6 +25,6 @@ It can be invoked at boot or at runtime.
 
 """
 
-from griotte.storage.directorhandler import DirectorHandler
+from griotte.director.directorhandler import DirectorHandler
 
 

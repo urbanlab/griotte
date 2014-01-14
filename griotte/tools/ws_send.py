@@ -8,6 +8,8 @@
 import json
 import sys
 
+from time import time
+
 from websocket import create_connection
 
 def send(channel, data):
@@ -15,7 +17,7 @@ def send(channel, data):
 
   decoded = json.loads(sys.argv[2])
 
-  data = json.dumps( { 'channel': sys.argv[1], 'data': decoded } )
+  data = json.dumps( { 'channel': sys.argv[1], 'timestamp': time(), 'data': decoded } )
   print("In channel %s sending %s" % (sys.argv[1], data))
   ws.send(data)
   ws.close()

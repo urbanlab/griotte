@@ -43,34 +43,34 @@ class StorageHandlerTests(unittest.TestCase):
         self.store.stop()
 
     def testGet(self):
-        self.store.set("store.set.foo", { 'data' : 'baz' })
+        self.store.set("store.set.foo", { 'value' : 'baz' })
         self.store.get("store.set.foo", "")
         self.assertEqual(self.store._ws.times('send'), 1)
         self.assertEqual(self.store._ws.args('send'), ["store.event.foo", "baz"])
 
     def testGetComplex(self):
-        self.store.set("store.set.foo.fizz", { 'data' : 'buz' })
+        self.store.set("store.set.foo.fizz", { 'value' : 'buz' })
         self.store.get("store.set.foo", "")
         self.assertEqual(self.store._ws.times('send'), 1)
         self.assertEqual(self.store._ws.args('send'), ["store.event.foo", { 'fizz' : 'buz' } ])
 
     def testSet(self):
-        self.store.set("store.set.foo", { 'data' : 'baz' })
+        self.store.set("store.set.foo", { 'value' : 'baz' })
         self.assertEqual(self.store._store['foo'], 'baz')
 
     def testSetNested(self):
-        self.store.set("store.set.foo", { 'data' : {'bar': { 'fizz' : 'fuzz' }}})
+        self.store.set("store.set.foo", { 'value' : {'bar': { 'fizz' : 'fuzz' }}})
         self.assertEqual(self.store._store['foo']['bar']['fizz'], 'fuzz')
 
     def testSetDeep(self):
-        self.store.set("store.set.foo.bar.fizz", { 'data' : 'deep' })
+        self.store.set("store.set.foo.bar.fizz", { 'value' : 'deep' })
         self.assertEqual(self.store._store['foo']['bar']['fizz'], 'deep')
 
     def testSetMerges(self):
-        self.store.set("store.set.foo.bar.fizz", { 'data' : 'deep' })
-        self.store.set("store.set.foo.bar.fuzz", { 'data' : 'bizz' })
-        self.store.set("store.set.foo.bar", { 'data' : { 'fizz' : 'overriden' }})
-        self.store.set("store.set.foo.bar.baz", { 'data' : 'baz' })
+        self.store.set("store.set.foo.bar.fizz", { 'value' : 'deep' })
+        self.store.set("store.set.foo.bar.fuzz", { 'value' : 'bizz' })
+        self.store.set("store.set.foo.bar", { 'value' : { 'fizz' : 'overriden' }})
+        self.store.set("store.set.foo.bar.baz", { 'value' : 'baz' })
         from pprint import pprint
         pprint(self.store._store)
         self.assertEqual(self.store._store['foo']['bar']['fizz'], 'overriden')
@@ -79,7 +79,7 @@ class StorageHandlerTests(unittest.TestCase):
 
     def testSetPersistent(self):
         self.store.set("store.set.foo",
-                       {'data': 'fizz',
+                       {'value': 'fizz',
                         'persistent': True})
 
         self.store = mock_storage(self.store)
@@ -87,7 +87,7 @@ class StorageHandlerTests(unittest.TestCase):
 
     def testSetNestedPersistent(self):
         self.store.set("store.set.foo",
-                       { 'data' : {'bar': { 'fizz' : 'fuzz' }},
+                       { 'value' : {'bar': { 'fizz' : 'fuzz' }},
                         'persistent': True})
 
         self.store = mock_storage(self.store)
@@ -98,7 +98,13 @@ class StorageHandlerTests(unittest.TestCase):
         self.store._ws = Mock('send')
         self.assertEqual(self.store._store, {})
 
-
+    def testWrongMessage(self):
+        self.store = StorageHandler()
+        # The first should not raise, but catch and log the error
+        self.store.set("store.set.foo", { 'omg_wrong_key' : 'deep' })
+        with self.assertRaises(KeyError):
+            # But this one should raise
+            self.store._store['foo']
 
 if __name__ == "__main__":
     unittest.main()

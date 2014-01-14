@@ -8,6 +8,13 @@ The message format is documented in :doc:`messages`.
 
 .. moduleauthor:: Michel Blanc <mblanc@erasme.org>
 .. versionadded:: 0.0.1
+
+Test me with :
+
+.. code-block:: bash
+
+    griotte/tools//ws_send.py store.set.wtf '{ "value" : { "a": { "b": "z" } }, "persistent": true }'
+
 """
 
 import logging
@@ -51,15 +58,15 @@ class StorageHandler:
         return_channel = "store.event." + ".".join(self._get_variable_from_channel(channel))
         self._ws.send(return_channel, variable)
 
-    def set(self, channel, message):
+    def set(self, channel, data):
         """ Callback for the set operation
 
         Data, passed via a dict, can come in two flavors :
-        * { 'data': value } : single valued data
-        * { 'data' : { 'a' : { 'b' : 'c' } } } : deep structure
+        * value : single valued data
+        * { 'a' : { 'b' : 'c' } } : deep structure
 
-        The later is the same as publishing { 'data' : 'c' } in the
-        `store.set.a.b.c` channel.
+        The later is the same as publishing 'c' in the
+        `store.set.a.b` channel.
 
         :param channel: The name of the channel containing the set request
         :type channel: str
@@ -67,13 +74,15 @@ class StorageHandler:
         :type message: dict
         """
 
-        nested = self._set_struct(self._get_variable_from_channel(channel),
-                                  message['data'])
+        if 'value' in data:
+            nested = self._set_struct(self._get_variable_from_channel(channel),
+                                      data['value'])
+            self._store = dict_merge(self._store, nested)
 
-        self._store = dict_merge(self._store, nested)
-
-        if 'persistent' in message:
-            self._freeze(nested)
+            if 'persistent' in data:
+                self._freeze(nested)
+        else:
+            logging.error("A client sent a message without a valid 'value' field")
 
     def start(self):
         logging.info("Starting StorageHandler's websocket")
