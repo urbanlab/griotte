@@ -59,7 +59,7 @@ Head to [the server](http://localhost:8888) (change localhost if you installed
 it somewhere else).
 
 Now to make something "real", please head to the
-[documentation](http://griotte.erasme.org).
+[documentation](http://griotte.erasme.org/docs/).
 
 # Documentation
 
