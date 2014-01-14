@@ -82,6 +82,10 @@ class StorageHandler:
         logging.info("Starting StorageHandler's websocket")
         self._ws.start()
 
+    def stop(self):
+        logging.info("Starting StorageHandler's websocket")
+        self._ws.stop()
+
     def _get_variable(self, channel):
         """ Converts channel name into a variable
 

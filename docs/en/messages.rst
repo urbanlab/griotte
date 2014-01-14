@@ -167,8 +167,8 @@ value.
 * **raw_value** : raw value in mV
 * **converted_value** : value after converion (in units specified in the profile)
 
-<an[0-3]|io[0-3]>.event.edge.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<an[0-3]|io[0-3]>.event.edge
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note:: TBD
 
@@ -280,10 +280,6 @@ digital converter commands
 storage commands
 ----------------
 
-Special vars : ``volume``, ``videos``, ``audios``, ``images``, ``scenarios``
-Special namespaces ``videos.*``, ``audios.*``, ``images.*``, ``scenarios.*``
-TBD
-
 Storage commands allow to get/set variable values. Variables can contain whatever you want, since it will hold the content of the `data` field in the message.
 
 For instance, the channel `store.set.foo` will set the value for the variable
@@ -313,7 +309,30 @@ With the `store.get` operation, sending in `store.get.foo` will trigger a
               add a new key (`store.set`), and send it back, you might override
               another change that occured between the get and the set operation.
               Hash/List based operations (push, pop, ...) might be implemented
-              in the future to overcome this.
+              in the future to overcome this. In the mean time, first level
+              subkeys can be used.
+
+Some known vars with a special purpose :
+* volume : global sound level in percent (range : 0-120)
+* videos : videos media list
+* audios : audio media list
+* images : images media list
+* scenarios : scenario list
+* profiles : profiles list
+
+While vars can contain any arbitrary deep structure, a subkey (first level only)
+can be used in the channel name to address a particular item in a hash. For
+instance, the channel `store.set.scenarios.scenario1` will address the scenario
+names `scenario1` in the scenario hash.
+
+Thus, you can save a scenario without having to push all the scenarions in the
+`store.set.scenarios` hash. While this does not prevent collision when multiple
+clients work on the same scenario, it will help minimizing conflicts.
+
+.. note:: Only the fist subkey is used (e.g. `store.set.key.subkey`). If subkey
+          contains a separator (dot '.'), it will be treated as one subkey only
+          (e.g. `store.set.key.subkey.with.dots` will lookup the key
+          `subkey.with.dots` will lookup the key` in the `key` variable)
 
 store.get.<var>
 ^^^^^^^^^^^^^^^
@@ -339,6 +358,8 @@ store.event.<var>
 ^^^^^^^^^^^^^^^^^
 
 Returns the value for variable`<var>`, in the `data` field, e.g. :
+
+.. code-block:: json
 
     {
         "channel": "store.event.foo",

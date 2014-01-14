@@ -112,9 +112,8 @@ class RPNCalc:
         if (len(tup) == 5 and tup[4] is not None):
             self.stack.insert(1,tup[4](self.stack.pop(1)))
 
-    def dump_stack(self):
+    def dump_stack(self): #pragma: no cover
         print("---stack bottom---")
-
         for e in reversed(self.stack):
             print (e)
         print("---stack top---")
@@ -155,12 +154,10 @@ class RPNCalc:
                                   (sys.exc_info()[0], tok))
                     logging.error(err)
 
-#        if True:
-#            self.dump_stack()
-        return self.stack[0]
+        if len(self.stack) > 0:
+            return self.stack[0]
 
-
-if __name__ == "__main__":
+if __name__ == "__main__": #pragma: no cover
     expr = sys.argv[1]
     a = RPNCalc().process(expr)
     print("%s => %s" % (expr, a))

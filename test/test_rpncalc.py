@@ -31,6 +31,9 @@ class RPNCalcTests(unittest.TestCase):
     def test_init(self):
         self.assertTrue(isinstance(rpn, RPNCalc))
 
+    def test_inv(self):
+        self.try1('inv', 1/self.a)
+
     def test_add(self):
         self.try2('+', self.a + self.b)
 
@@ -214,7 +217,7 @@ class RPNCalcTests(unittest.TestCase):
         # a
         # DUP a
         # a a
-        self.try2('dup', self.a)
+        self.try1('dup', self.a)
 
     def test_drop(self):
         # Stack :
@@ -231,6 +234,14 @@ class RPNCalcTests(unittest.TestCase):
     def test_decimal_zero(self):
         self.a = 0.0
         self.try0("%s" % self.a, self.a)
+
+    def test_ignores(self):
+        # Should take out the wrong arg and leave the rest of the stack
+        self.try1('wtf', self.a)
+
+    def test_zerodiv(self):
+        # Using try2 to extend the coverage in the stack dumping loop
+        self.try2('0 /', None)
 
 if __name__ == "__main__":
     unittest.main()

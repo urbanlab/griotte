@@ -54,6 +54,7 @@ class WebSocket:
 
     def stop(self):
         self.watchdog_interval=0
+        logging.info("Closing websocket")
         self.ws.close()
 
     def add_listener(self, channel, callback, *args):
@@ -134,6 +135,7 @@ class WebSocket:
     def debug(self):
         print ("hello %s",__main__)
 
+#pragma: no cover
 if __name__ == "__main__":
     # test code
     import tornado.options

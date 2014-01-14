@@ -28,10 +28,10 @@ default:
 	@echo
 
 tests:
-	$(NOSETESTS) -d -v -P
+	$(NOSETESTS) -d -v -P --processes=1
 
 cov:
-	$(NOSETESTS) -d -v -P --with-coverage --cover-package=raspeomix
+	$(NOSETESTS) -d -v -P --with-coverage --cover-package=griotte --cover-html --cover-html-dir docs/_build/html/en/coverage/
 
 doc docs:
 	SPHINX_APIDOC_OPTIONS=$(SPHINX_APIDOC_OPTIONS) sphinx-apidoc -f -o docs/en/ griotte/lib/griotte/

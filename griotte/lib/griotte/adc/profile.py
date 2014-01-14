@@ -35,7 +35,7 @@ class Profile:
 
     @property
     def value(self):
-        return self._raw_value
+        return self.raw_value
 
     @value.setter
     def value(self, val):
