@@ -17,6 +17,7 @@ import griotte.constants as C
 import sys
 
 from griotte.ws import WebSocket
+from griotte.utils import dict_merge
 
 class StorageHandler:
     """ Storage handling class
@@ -45,12 +46,10 @@ class StorageHandler:
         :type message: dict -- not used
         """
 
-        variable = self._get_variable(channel)
-        value = None
-        if variable in self._store:
-            value = self._store[variable]
+        variable = self._get_struct(self._get_variable_from_channel(channel), self._store)
 
-        self._ws.send("store.event." + variable, value)
+        return_channel = "store.event." + ".".join(self._get_variable_from_channel(channel))
+        self._ws.send(return_channel, variable)
 
     def set(self, channel, message):
         """ Callback for the set operation
@@ -59,24 +58,22 @@ class StorageHandler:
         * { 'data': value } : single valued data
         * { 'data' : { 'a' : { 'b' : 'c' } } } : deep structure
 
+        The later is the same as publishing { 'data' : 'c' } in the
+        `store.set.a.b.c` channel.
+
         :param channel: The name of the channel containing the set request
         :type channel: str
         :param message: The message received over the channel
         :type message: dict
         """
-        variable = self._get_variable(channel)
-        # We need to check if it's a single value or a dict
-        if isinstance(message["data"], dict):
-            # Dict
-            self._store[variable] = dict()
-            for x in message["data"].keys():
-                self._store[variable][x] = message["data"][x]
-        else:
-            # Single value
-            self._store[variable] = message["data"]
+
+        nested = self._set_struct(self._get_variable_from_channel(channel),
+                                  message['data'])
+
+        self._store = dict_merge(self._store, nested)
 
         if 'persistent' in message:
-            self._freeze(variable)
+            self._freeze(nested)
 
     def start(self):
         logging.info("Starting StorageHandler's websocket")
@@ -86,16 +83,56 @@ class StorageHandler:
         logging.info("Starting StorageHandler's websocket")
         self._ws.stop()
 
-    def _get_variable(self, channel):
+    def _get_struct(self, chanarr, value):
+        """ Converts a channel and variable to a nested structure starting at
+        root recursing over subkeys
+
+        For instance, if { 'value' : 42 } is passed in channel
+        `store.set.some.deep.structure`, `_get_struct` will return a dict :
+        { 'some' : { 'deep' : { 'structure' : 42 }}}
+
+        :param chanarr: Array containing subkeys
+        :type chanarr: array
+        :param value: Value received for the channel
+        :type message: str
+        """
+        if len(chanarr) > 0:
+            value = self._get_struct(chanarr[1:], value[chanarr[0]])
+
+        return value
+
+    def _set_struct(self, chanarr, variable):
+        """ Converts a channel and variable to a nested structure starting at
+        root recursing over subkeys
+
+        For instance, if { 'value' : 42 } is passed in channel
+        `store.set.some.deep.structure`, `_set_struct` will return a dict :
+        { 'some' : { 'deep' : { 'structure' : 42 }}}
+
+        :param chanarr: Array containing subkeys
+        :type chanarr: array
+        :param value: Value received for the channel
+        :type message: str
+        """
+
+        value = {}
+        if len(chanarr) != 0:
+            value[chanarr[0]] = self._set_struct(chanarr[1:], variable)
+        elif variable:
+            value = variable
+
+        return value
+
+    def _get_variable_from_channel(self, channel):
         """ Converts channel name into a variable
 
         Extracted so it's easy to refactor if needed
 
-        :rtype: str
+        :rtype: array -- array of consecutive subkeys
 
         .. note:: may be this should be shared in griotte for other modules
         """
-        return ','.join(channel.split('.')[2:])
+        return channel.split('.')[2:]
 
     def _thaw(self):
         """ Reads store from disk and returns it
@@ -121,14 +158,14 @@ class StorageHandler:
         f.close()
         return val
 
-    def _freeze(self, variable):
+    def _freeze(self, struct):
         """ Stores a specific variable in the startup store file
 
         :param variable: Key for variable to store
         :type variable: str
         """
         temp_data = self._thaw()
-        temp_data[variable] = self._store[variable]
+        temp_data = dict_merge(temp_data, struct)
         f = open(self._store_path, 'w')
         json.dump(temp_data, f)
         f.close()

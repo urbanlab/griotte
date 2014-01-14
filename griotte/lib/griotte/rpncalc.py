@@ -112,11 +112,15 @@ class RPNCalc:
         if (len(tup) == 5 and tup[4] is not None):
             self.stack.insert(1,tup[4](self.stack.pop(1)))
 
-    def dump_stack(self): #pragma: no cover
-        print("---stack bottom---")
-        for e in reversed(self.stack):
-            print (e)
-        print("---stack top---")
+    def _dump_stack(self):
+        """ dumps stack in a string and returns it
+
+        :rtype: str
+        """
+        stk = ""
+        for item in self.stack:
+            stk += " %s" % item
+        return stk
 
     def process(self, expression):
         spregex = re.compile("\s+")
@@ -146,13 +150,15 @@ class RPNCalc:
                     else:
                         logging.error("Formula error : token \"%s\" not found!" % tok)
 
+                except ZeroDivisionError:
+                    logging.error("Attempt to divide by zero : %s" % self._dump_stack())
+                    raise ZeroDivisionError
+
                 except:
-                    err = "Current stack :"
-                    for item in self.stack:
-                        err += " %s" % item
-                    logging.error("Unknown RPN error : %s when handling tok %s" %
-                                  (sys.exc_info()[0], tok))
-                    logging.error(err)
+                    logging.error("Unknown RPN error : %s when handling tok %s for stack -- %s --" %
+                                  (sys.exc_info()[0],
+                                  tok,
+                                  self._dump_stack()))
 
         if len(self.stack) > 0:
             return self.stack[0]

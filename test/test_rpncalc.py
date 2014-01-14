@@ -241,7 +241,8 @@ class RPNCalcTests(unittest.TestCase):
 
     def test_zerodiv(self):
         # Using try2 to extend the coverage in the stack dumping loop
-        self.try2('0 /', None)
+        with self.assertRaises(ZeroDivisionError):
+            self.try2('0 /', None)
 
 if __name__ == "__main__":
     unittest.main()
