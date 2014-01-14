@@ -285,8 +285,8 @@ DNSMasq
 
 .. code-block:: bash
 
-interface=wlan0
-dhcp-range=192.168.166.10,192.168.166.20,12h
+    interface=wlan0
+    dhcp-range=192.168.166.10,192.168.166.20,12h
 
 .. note:: YMMV. If you use multiple SSID you might want to tweak the ``interface`` setting.
 
@@ -311,9 +311,13 @@ Installation
 
 or if you need development libraries :
 
+.. code-block:: bash
+
     make devel
 
 Then, activate virtualenv :
+
+.. code-block:: bash
 
     source bin/activate
     export PYTHONPATH=${PWD}/griotte/lib:$PYTHONPATH
@@ -343,6 +347,7 @@ Start the required handlers like so :
 
 .. code-block:: bash
 
+    griotte/bin/storage
     griotte/bin/adc
     griotte/bin/gpio
     griotte/bin/multimedia
