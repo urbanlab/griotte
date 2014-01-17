@@ -873,7 +873,7 @@ Code.init = function(container) {
   //Griotte.init('ws://' + host + (port ? ':' + port : '') + path);
   Code.griotte = Griotte
   Code.scenario = null;
-  Code.griotte.subscribe('meta.storage.scenario', Code.cb_restoreFromWS);
+  Code.griotte.subscribe('store.get.scenario.*', Code.cb_restoreFromWS);
 
   var rtl = BlocklyApps.isRtl();
   var toolbox = document.getElementById('toolbox');
@@ -919,7 +919,8 @@ Code.init = function(container) {
   BlocklyApps.bindClick('scenario-save', Code.saveScenario);
   BlocklyApps.bindClick('scenario-trash',
       function() {Code.discard(); Code.renderContent();});
-  BlocklyApps.bindClick('scenario-run', Code.runJS);
+  //BlocklyApps.bindClick('scenario-run',);
+
 };
 
 /*if (window.location.pathname.match(/readonly.html$/)) {
@@ -933,6 +934,7 @@ Code.init = function(container) {
  */
 Code.discard = function() {
   console.log("Trashing scenario");
+  Code.current_scenario = null;
 
   var count = Blockly.mainWorkspace.getAllBlocks().length;
   if (count < 2 ||
@@ -967,16 +969,18 @@ Code.wrapScenario = function(code) {
 };
 
 Code.saveScenario = function() {
+  if (!Code.current_scenario) {
+    $("#popup-saveas" ).popup();
+  }
   console.log("Saving scenario");
-  var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+  var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace()).innerHTML;
   var code = Code.wrapScenario(Blockly.Python.workspaceToCode());
   console.log(xml);
-
+  Griotte.publish('store.set.scenario.random', { value: { xml: xml, code: code }, persistent: true });
 };
 
 Code.SaveToWS = function(name) {
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
-  Griotte.publish('meta.storage.scenario.set', { "code" : Blockly.Xml.domToText(xml) })
 };
 
 Code.restoreFromWS = function(name) {

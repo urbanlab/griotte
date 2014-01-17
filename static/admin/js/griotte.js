@@ -66,7 +66,7 @@ Griotte = {
 
   publish: function(channel, data) {
     var self = this;
-
+    console.log(data);
     if (self.ready) {
       console.log("publishing " + JSON.stringify(data) + " to " + channel);
       var msg = { channel: channel, data: data};
