@@ -46,8 +46,7 @@ or if you need development libraries :
 
 Then, activate virtualenv :
 
-    source bin/activate
-    export PYTHONPATH=${PWD}/griotte/lib:$PYTHONPATH
+    source griotte/tools/env.sh
 
 You might need to adjust your python3 path in the top-level Makefile.
 

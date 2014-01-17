@@ -53,8 +53,7 @@ production prod: _production _message
 _message:
 	@echo -e "\n====================================\n"
 	@echo -e "Please run :\n"
-	@echo "source bin/activate"
-	@echo 'export PYTHONPATH=${PWD}/griotte/lib:$$PYTHONPATH'
+	@echo "source griotte/tools/env.sh"
 	@echo
 
 clean:

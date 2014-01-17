@@ -6,6 +6,8 @@
 Welcome to Griotte's documentation!
 ===================================
 
+`Return to home page  <http://griotte.erasme.org>`_
+
 User's guides
 -------------
 
@@ -15,6 +17,7 @@ User's guides
   intro
   installation_easy
   installation
+  installation_optional
 
 Advanced guides
 ---------------
