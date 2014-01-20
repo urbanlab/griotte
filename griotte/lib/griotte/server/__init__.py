@@ -24,36 +24,11 @@ from time import time
 import fnmatch
 
 """
-Messages:
+Server class
 
-/<topic>/<category>[/emitter]
+Handles channel subscription and message dispathing to clients.
 
-topics : meta, command, message, event
- - meta : meta information (subscribing, connecting, storing values)
- - command : acting on something (video, actuator)
- - message : a regurlarly occuring message (sensor value, video playing progress, ...)
- - log : something logged that do not appear on the bus
-categories for meta : subscribe, unsubscribe, join, ping, log, store
-categories for command : sound, video, image, trigger, sensor (set profile, poll freq)
-categories for message : value, video, sound
-categories for event : io0-3/(raising|falling), an0-3(over_threshold|below_threshold), video (finish, pause), sound (finish, pause)
-
-e.g. :
-
-meta:subscribe { "channel" : ":event:io:1:rising" }
-meta:store:sound_level:set { "value": 35 }
-meta:store:some_complex:set { "value": { "complex": "data", "with": [ "array" ] } }
-meta:store:date:set { "date" : 20140516, "time": "145232" }
-meta:device:attach { "device" : "/dev/nfc1" }
-meta:device:detach { "device" : "/dev/nfc1" }
-request:an:2 { "profile???" }
-command:video { "action" : "play", "media" : "wtf.mp4" }
-message:video { "status" : "playing", "media" : "wtf.mp4", "progress" : "16", "length" : "49" }
-message:an:0 { "value" : 146, "profile" : { "name" : "Maxborktik EZ-1", ... }}
-message:nfc:1 { "value": "ab133df" }
-event:io1:raising {}
-
-All exchanged messages have a timestamp
+See :doc:`messages` for more info on messages.
 
 """
 class Server(tornado.websocket.WebSocketHandler):

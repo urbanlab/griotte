@@ -36,37 +36,62 @@ All exchanged messages have a timestamp
 
 class AnalogHandler:
     def __init__(self):
+        """ Initialize ADc subsystem and install websocket handlers
+
+        AnalogHandler only listens to periodic_sample and profile for now.
+        """
         self.analogdevice = AnalogDevice()
 
         self.ws = WebSocket(watchdog_interval=2)
 
         for chan in self.analogdevice.device.channels():
-            self.ws.add_listener('request.analog.' + chan,
-                                 self.request, chan)
+            self.ws.add_listener("analog.command." + chan + ".periodic_sample",
+                                 self._periodic_sample)
+            self.ws.add_listener("analog.command." + chan + ".profile",
+                                 self._profile)
 
-        self.sample_delay = None
+        self.sample_delay = 1
         self.periodic_sampled_channels = []
 
         self.start()
 
-    def request(self, channel, message):
-        # Let's get the real analog channel from the path
-        channel = channel[channel.rfind('.')+1:]
-        logging.info("Request received for channel %s with message %s" % (channel, message))
-        # Message types :
-        # set_profile
-        # get_value
-        # periodic_sample
-        if message['type'] == 'periodic_sample':
+    def _periodic_sample(self, channel, message):
+        """ Start periodic sampling for channel
+
+        :param channel: The channel to sample (an0-3)
+        :type channel: str
+        :param message: The message received over the wire
+        :type message: dict -- shoud contain `every` key
+
+        ..note :: When this method is called several times, the lowest value
+                  for sampling period will be used
+        """
+
+        channel = channel.split('.')[2]
+
+        # If faster samples are requested, we update our sampling rate
+        # Sampling rate is the same for all channels !
+        if self.sample_delay > message['every']:
             self.sample_delay = message['every']
-            logging.debug("periodic_sample request with sample_delay %s" % self.sample_delay)
+
+        logging.debug("periodic_sample request in channel %s with sample_delay %s" % (channel, self.sample_delay))
+
+        if channel not in self.periodic_sampled_channels:
             self.periodic_sampled_channels.append(channel)
-        elif message['type'] == 'set_profile':
-            jp = message['profile']
-            logging.debug("set_profile request with profile %s" % jp['name'])
-            # Unpack dict to keywork arguments
-            profile = Profile(**jp)
-            self.analogdevice.set_profile(channel, profile)
+
+    def _profile(self, channel, message):
+        """ Sets profile for channel
+
+        :param channel: The channel for which the profile will be set (an0-3)
+        :type channel: str
+        :param message: The message received over the wire
+        :type message: dict -- shoud contain a profile, see :doc:profiles
+        """
+        jp = message['profile']
+        logging.debug("profile request with profile %s" % jp['name'])
+        # Unpack dict to keywork arguments
+        profile = Profile(**jp)
+        self.analogdevice.set_profile(channel, profile)
 
     def start(self):
         logging.info("Starting AnalogHandler's websocket")
@@ -79,7 +104,7 @@ class AnalogHandler:
                 # do sample
                 for chan in self.periodic_sampled_channels:
                     logging.debug("Sampling %s" % chan)
-                    self.ws.send(chan + "event.sample",
+                    self.ws.send("analog.event." + chan + ".sample",
                                 self.analogdevice.convert(chan).__dict__)
 
 

@@ -30,10 +30,13 @@ This module implements server-side code generated for multimedia blockly blocks.
 import json
 import sys
 import time
+import atexit
 
 import logging
 
-from websocket import create_connection
+from griotte.scenario import _expect, _send, _unsubscribe_all
+
+__WS__ = None
 
 def play_video(media, sync=True):
     """ Plays video synchronously
@@ -42,11 +45,12 @@ def play_video(media, sync=True):
 
     :param media: The media to play, relative to the media root folder
     """
-    ws = _send('video.command.start',
+    global __WS__
+    __WS__ = _send('video.command.start',
               '{ "media": "' + media + '" }',
               close=False)
     if sync:
-        _expect(ws, 'video.event.stop')
+        _expect(__WS__, 'video.event.stop')
 
 def play_audio(media, sync=True):
     """ Plays sound synchronously
@@ -55,11 +59,13 @@ def play_audio(media, sync=True):
 
     :param media: The media to play, relative to the media root folder
     """
-    ws = _send('video.command.start',
+    global __WS__
+    __WS__ = _send('video.command.start',
               '{ "media": "' + media + '" }',
-              close=False)
+              close=False,
+              ws = __WS__)
     if sync:
-        _expect(ws, 'video.event.stop')
+        _expect(__WS__, 'video.event.stop')
 
 def play_image(media, duration=0):
     """ Displays an image
@@ -71,9 +77,11 @@ def play_image(media, duration=0):
     :param duration: The media to play, relative to the media root folder
     :type duration: int -- 0 for infinite
     """
-    ws = _send('image.command.start',
-              '{ "media": "' + media + '" }',
-              close=False)
+    global __WS__
+    __WS__ = _send('image.command.start',
+                   '{ "media": "' + media + '" }',
+                   ws = _WS__,
+                   close=False)
 
 def set_volume(level):
     """ Changes global volume
@@ -82,69 +90,36 @@ def set_volume(level):
 
     :param level: The sound level, in percent (0 - 120)
     """
-    _send('meta.store.sound_level.set',
-         '{ "level":"%s" }' % int(level))
+    global __WS__
+    __WS__ = _send('meta.store.sound_level.set',
+                   '{ "level":"%s" }' % int(level),
+                   ws = __WS__,
+                   close = False)
 
 def stop_video():
     """ Stops currently playing video
 
     Sends a ws message asking for the video to stop
     """
-    _send('video.command.stop')
+    global __WS__
+    __WS__ = _send('video.command.stop',
+                   ws = __WS__,
+                   close = False)
 
 def stop_audio():
     """ Stops currently playing video
 
     Sends a ws message asking for the video to stop
     """
-    _send('audio.command.stop')
+    global __WS__
+    __WS__ = __send('audio.command.stop',
+                    ws = __WS__,
+                    close = False)
 
-def _send(channel, data = '{}', close=True, ws=None):
-    """ Sends a message over websocket
+@atexit.register
+def __goodbye__():
+    global __WS__
+    logging.debug("unloading")
 
-    Utility function that wraps websocket message sending and takes care of
-    opening a websocket if needed
-
-    :param channel: The channel to write to
-    :type channel: str.
-
-    :param data: The data to send
-    :type data: str -- json encoded
-
-    :param close: Whether the socket must be closed after sending the message
-    :type close: bool
-
-    :param ws: A websocket to use. If `None`, a websocket will be created.
-    :type ws: WebSocket
-
-    :returns: WebSocket object, or None if close was True.
-    """
-    # Open websocket if we're not given one
-    if ws == None:
-        ws = create_connection("ws://localhost:8888/ws")
-
-    print(data)
-    decoded = json.loads(data)
-
-    data = json.dumps( { 'channel': channel, 'data': decoded } )
-    logging.debug("in channel %s sending %s" % (channel, data))
-    ws.send(data)
-
-    if close:
-        ws.close()
-        return None
-
-    return ws
-
-def _expect(ws, channel, type=None):
-    data = json.dumps( { 'channel': 'meta.subscribe',
-                         'timestamp': time.time(),
-                         'data': { 'channel': channel } } )
-    ws.send(data)
-
-    found = False
-    while not found:
-        message = ws.recv()
-        decoded = json.loads(message)
-        if decoded['channel'] == channel:
-            found = True;
+    _unsubscribe_all(__WS__)
+    __WS__.close()

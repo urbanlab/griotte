@@ -41,7 +41,7 @@ class OMXPlayer(object):
     #_STATUS_REXP = re.compile(b"duration:(.*),")
     _DONE_REXP = re.compile(b"have a nice day.*")
 
-    _LAUNCH_CMD = '/home/pi/omxplayer --vol %s %s'
+    _LAUNCH_CMD = '/usr/bin/omxplayer --vol %s %s'
 
     _PAUSE_CMD = 'p'
     _TOGGLE_SUB_CMD = 's'

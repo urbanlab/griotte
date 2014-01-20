@@ -12,10 +12,10 @@ Blockly.Blocks['analog_sensor'] = {
         .appendTitle("Capteur Analogique");
     this.appendDummyInput()
         .appendTitle("Canal")
-        .appendTitle(new Blockly.FieldDropdown([["AN0", "AN0"], ["AN1", "AN1"], ["AN2", "AN2"], ["AN3", "AN3"]]), "NAME");
+        .appendTitle(new Blockly.FieldDropdown([["AN0", "an0"], ["AN1", "an1"], ["AN2", "an2"], ["AN3", "an3"]]), "CHANNEL");
     this.appendDummyInput()
         .appendTitle("Profil")
-        .appendTitle(new Blockly.FieldDropdown([["Identity", "IDENTITY"], ["Maxbotik EZ1", "MAXEZ1"], ["Grove Temperature", "SEN23292P"]]), "Profil");
+        .appendTitle(new Blockly.FieldDropdown([["Identity", "IDENTITY"], ["Maxbotik EZ1", "MAXEZ1"], ["Grove Temperature", "SEN23292P"]]), "PROFILE");
     this.setOutput(true);
     this.setTooltip('');
   }

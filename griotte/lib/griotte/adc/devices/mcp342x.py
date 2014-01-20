@@ -96,7 +96,7 @@ class MCP342x():
         # This is a kind of trick so we can generate the documentation
         # on other platforms
         try:
-            self.bus = bus | i2c.I2CMaster()
+            self.bus = bus or i2c.I2CMaster()
         except FileNotFoundError:
             self.bus = None
 
