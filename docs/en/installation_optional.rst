@@ -26,8 +26,7 @@ DWL-121 only (RealTek 8192cu)
 
 * Specific Hostapd (for DWL-121 only)
 
-you need to find the drivers on the RealTek website (or googling). The exact
-filename is ``rtl8192xc_usb_linux_v3.4.4_4749.20121105.zip``.
+you need to find the drivers and hostapd on the RealTek website (or googling). The exact filename is ``rtl8192xc_usb_linux_v3.4.4_4749.20121105.zip``.
 
 .. code-block:: bash
 
@@ -210,6 +209,14 @@ DNSMasq
 -------
 
 .. code-block:: bash
+
+    sudo apt-get install dnsmasq
+
+DNSMasq config :
+
+.. code-block:: bash
+
+    cat | sudo tee /etc/dnsmasq.conf<<EOF > /dev/null
 
     interface=wlan0
     dhcp-range=192.168.166.10,192.168.166.20,12h

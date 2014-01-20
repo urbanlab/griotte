@@ -44,7 +44,7 @@ Image & base config
 .. code-block:: bash
 
     sudo apt-get update
-    sudo apt-get -y install python-setuptools python3-pip python-virtualenv dnsmasq
+    sudo apt-get -y install python3-setuptools python3-pip python-virtualenv
 
 * Apply updates
 
@@ -75,7 +75,7 @@ Devices
     sudo usermod -aG i2c pi
     echo 'KERNEL=="i2c-[0-9]*", GROUP="i2c"' | sudo tee /etc/udev/rules.d/10-local_i2c_group.rules
 
-* Enable Watchdog
+* Enable Watchdog (optional)
 
 .. code-block:: bash
 
@@ -87,6 +87,12 @@ Devices
 
 .. warning:: The watchdog doesn't seem to work properly.
 
+* Reboot at this point to activate i2c & watchdod
+
+.. code-block:: bash
+
+   sudo reboot
+
 Griotte
 =======
 
@@ -96,6 +102,7 @@ Installation
 .. code-block:: bash
 
     git clone https://github.com/erasme/griotte.git
+    git checkout devel
     cd griotte
     make production
 
@@ -105,6 +112,15 @@ or if you need development libraries :
 
     make devel
 
+If you get an error using `make devel` or `make prod`, try regenerating
+bootstrap scripts :
+
+.. code-block:: bash
+
+    python create-bootstrap.py
+
+and re-run `make devel` or `make production`.
+
 Then, activate virtualenv :
 
 .. code-block:: bash
@@ -112,6 +128,7 @@ Then, activate virtualenv :
     source griotte/tools/env.sh
 
 .. note:: You might need to adjust your python3 path in the top-level Makefile.
+.. note:: This step is required everytime you log in.
 
 You can list all available targets in the makefile by invoking `make` :
 

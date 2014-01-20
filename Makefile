@@ -1,5 +1,5 @@
 # Adjust your python path here if needed
-PYTHON 								:= /usr/bin/python3
+PYTHON := /usr/bin/python3
 
 # sphinx-apidoc options
 #  members : documents members functions
@@ -10,7 +10,7 @@ PYTHON 								:= /usr/bin/python3
 #
 SPHINX_APIDOC_OPTIONS := members,undoc-members,show-inheritance,private-members,special-members
 
-NOSETESTS 						:= nosetests
+NOSETESTS := nosetests
 
 .PHONY: docs tests cov rtfm _devel _production devel dev production prod clean
 
@@ -51,8 +51,8 @@ devel dev: _devel _production _message
 production prod: _production _message
 
 _message:
-	@echo -e "\n====================================\n"
-	@echo -e "Please run :\n"
+	@echo "\n====================================\n"
+	@echo "Please run :\n"
 	@echo "source griotte/tools/env.sh"
 	@echo
 

@@ -146,8 +146,8 @@ Triggered when the volume is changed
 hardware events
 ---------------
 
-<an[0-3]|io[0-3]>.event.sample
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+analog.event.<an[0-3]|io[0-3]>.sample
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Events sent from the analog and digital handling subsystem. The port must end
 with the analog or digital port name of th RaspeOMix interface. The port name
@@ -165,10 +165,10 @@ value.
 * **resolution** : ADC sampling resolution
 * **gain** : ADC gain
 * **raw_value** : raw value in mV
-* **converted_value** : value after converion (in units specified in the profile)
+* **converted_value** : value after conversion (in units specified in the profile)
 
-<an[0-3]|io[0-3]>.event.edge
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+analog.event.<an[0-3]|io[0-3]>.edge
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note:: TBD
 

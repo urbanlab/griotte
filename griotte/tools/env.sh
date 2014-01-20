@@ -7,6 +7,6 @@ echo -n "Reading config from griotte/config/griotte.conf..."
 source griotte/config/griotte.conf
 echo "ok"
 echo -n "Fixing path......................................."
-export PYTHONPATH=/home/leucos/dev/raspberry/griotte/griotte/lib:$PYTHONPATH
+export PYTHONPATH=${PWD}/griotte/lib:$PYTHONPATH
 echo "ok"
 
