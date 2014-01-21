@@ -69,6 +69,9 @@ class AnalogHandler:
 
         channel = channel.split('.')[2]
 
+        from pprint import pprint
+        pprint(message)
+
         # If faster samples are requested, we update our sampling rate
         # Sampling rate is the same for all channels !
         if self.sample_delay > message['every']:

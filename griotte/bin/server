@@ -21,10 +21,11 @@ import griotte.server
 import griotte.constants as C
 import tornado.ioloop
 import tornado.web
-from setproctitle import setproctitle
-from tornado.options import define, options
 import logging
 import os
+
+from setproctitle import setproctitle
+from tornado.options import define, options
 
 
 define("port", default=C.DEFAULT_PORT, help="Web server port")
@@ -38,7 +39,6 @@ def main():
                                                     'default_filename': 'index.html' }),
         ])
 
-    tornado.options.parse_command_line()
     logging.info("Starting tornado web server")
 
     logging.info("Listening on port %s" % options.port)
@@ -47,4 +47,5 @@ def main():
     tornado.ioloop.IOLoop.instance().start()
 
 if __name__ == "__main__":
+    tornado.options.parse_command_line()
     main()

@@ -20,8 +20,11 @@
 import tornado.websocket
 import logging
 import json
-from time import time
 import fnmatch
+
+import griotte.graceful
+
+from time import time
 
 """
 Server class
@@ -53,7 +56,6 @@ class Server(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         logging.debug("Received : %s" % message)
-
         decoded = None
 
         try:

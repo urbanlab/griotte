@@ -56,6 +56,9 @@ _message:
 	@echo "source griotte/tools/env.sh"
 	@echo
 
+push:
+
+
 clean:
 	@echo "Cleaning up byte compiled python stuff"
 	find . -type f -regex ".*\.py[co]$$" -delete

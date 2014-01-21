@@ -24,32 +24,37 @@ This module implements server-side code generated for analog sensors blockly blo
 
 """
 
-import json
 import sys
 import time
 
 import logging
 import atexit
 
-from griotte.scenario import _expect, _send, _unsubscribe_all
+from griotte.scenario import Expecter
 
-__WS__ = None
+"""
+..todo :: use static vars in functions
+"""
+
+_E = Expecter()
 
 def get_analog(channel):
-    """ Returns current analog value for chanel
+    """ Returns current analog value for channel
 
     This will block until an analog value is received on the requested channel
 
     :param channel: Channel to wait for
     """
-    global __WS__
+    data = _E.send_expect("analog.command." + channel + ".periodic_sample",
+                          "analog.event." + channel + ".sample",
+                          data='{ "every": 0.5 }',
+                          flush=True)
 
-    __WS__ = _send("analog.command." + channel + ".periodic_sample",
-          data = '{ "every": 0.1 }', close=False, ws=__WS__)
+    # logging.debug("get_analog : expecting data")
 
-    logging.debug("expecting data...")
-    data = _expect(__WS__, 'analog.event.' + channel + '.sample')
-    logging.debug("received sample %s" % data['raw_value'])
+    # data = _E.expect('analog.event.' + channel + '.sample', flush=True)
+
+    logging.debug("get_analog : received sample %s" % data['raw_value'])
 
     return data['raw_value']
 
@@ -60,13 +65,5 @@ def set_profile(channel, profile):
 
 @atexit.register
 def __goodbye__():
-    global __WS__
-
-    if not __WS__:
-        return
-
-    logging.debug("unloading")
-
-    _unsubscribe_all(__WS__)
-    __WS__.close()
+    _E.quit()
 

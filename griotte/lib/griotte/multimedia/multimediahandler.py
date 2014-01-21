@@ -20,12 +20,16 @@
 # tools/ws_send.py request.video '{ "command": "play", "media": "/home/pi/kitten.mp4" }'
 
 
-from griotte.multimedia.omxplayer import OMXPlayer
-from griotte.ws import WebSocket
-from time import sleep
 
 import logging
 import json
+
+import griotte.graceful
+
+from time import sleep
+
+from griotte.multimedia.omxplayer import OMXPlayer
+from griotte.ws import WebSocket
 
 """
 
@@ -55,6 +59,9 @@ class MultimediaHandler:
         # toggle_pause
         # play
         # stop
+        from pprint import pprint
+        pprint(message)
+        print(type(message))
         if channel == 'video.command.pause':
             logging.debug("pausing media")
             self.backend.toggle_pause()
@@ -82,5 +89,5 @@ class MultimediaHandler:
 
     def start(self):
         logging.info("Starting MultimediaHandler's websocket")
-        self.ws.start()
+        self.ws.start(detach=False)
 

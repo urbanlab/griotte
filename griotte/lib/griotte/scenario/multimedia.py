@@ -34,9 +34,9 @@ import atexit
 
 import logging
 
-from griotte.scenario import _expect, _send, _unsubscribe_all
+from griotte.scenario import Expecter
 
-__WS__ = None
+_E = Expecter()
 
 def play_video(media, sync=True):
     """ Plays video synchronously
@@ -45,12 +45,11 @@ def play_video(media, sync=True):
 
     :param media: The media to play, relative to the media root folder
     """
-    global __WS__
-    __WS__ = _send('video.command.start',
-              '{ "media": "' + media + '" }',
-              close=False)
+    _E.send('video.command.start', '{ "media": "' + media + '" }')
+
     if sync:
-        _expect(__WS__, 'video.event.stop')
+        print("sync mode, expecting stop")
+        _E.expect('video.event.stop')
 
 def play_audio(media, sync=True):
     """ Plays sound synchronously
@@ -59,13 +58,9 @@ def play_audio(media, sync=True):
 
     :param media: The media to play, relative to the media root folder
     """
-    global __WS__
-    __WS__ = _send('video.command.start',
-              '{ "media": "' + media + '" }',
-              close=False,
-              ws = __WS__)
+    _E.send('video.command.start', '{ "media": "' + media + '" }')
     if sync:
-        _expect(__WS__, 'video.event.stop')
+        _E.expect('video.event.stop')
 
 def play_image(media, duration=0):
     """ Displays an image
@@ -77,11 +72,8 @@ def play_image(media, duration=0):
     :param duration: The media to play, relative to the media root folder
     :type duration: int -- 0 for infinite
     """
-    global __WS__
-    __WS__ = _send('image.command.start',
-                   '{ "media": "' + media + '" }',
-                   ws = _WS__,
-                   close=False)
+    _E.send('image.command.start', '{ "media": "' + media + '" }')
+    time.sleep(duration)
 
 def set_volume(level):
     """ Changes global volume
@@ -90,36 +82,22 @@ def set_volume(level):
 
     :param level: The sound level, in percent (0 - 120)
     """
-    global __WS__
-    __WS__ = _send('meta.store.sound_level.set',
-                   '{ "level":"%s" }' % int(level),
-                   ws = __WS__,
-                   close = False)
+    _E.send('meta.store.sound_level.set', '{ "level":"%s" }' % int(level))
 
 def stop_video():
     """ Stops currently playing video
 
     Sends a ws message asking for the video to stop
     """
-    global __WS__
-    __WS__ = _send('video.command.stop',
-                   ws = __WS__,
-                   close = False)
+    _E.send('video.command.stop')
 
 def stop_audio():
     """ Stops currently playing video
 
     Sends a ws message asking for the video to stop
     """
-    global __WS__
-    __WS__ = __send('audio.command.stop',
-                    ws = __WS__,
-                    close = False)
+    _E.send('audio.command.stop')
 
 @atexit.register
 def __goodbye__():
-    global __WS__
-    logging.debug("unloading")
-
-    _unsubscribe_all(__WS__)
-    __WS__.close()
+    _E.quit()

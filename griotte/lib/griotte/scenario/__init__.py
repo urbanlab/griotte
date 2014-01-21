@@ -22,108 +22,185 @@ This module implements server-side code generated for blockly blocks.
 
 .. moduleauthor:: Michel Blanc <mblanc@erasme.org>
 
-"""
+This module implements socket communications for scenarios.
 
-# Why ?? Let the generator do the stuff
-# import griotte.scenario.analog
-# import griotte.scenario.digital
-# import griotte.scenario.multimedia
+**A word on this implementation**
+
+At first sight, it could seem quite trivial. Just use the ws.recv() blocking
+call and wait for data to arrive before returning back to the caller function in
+the scenario (e.g. `griotte.scenario.digital.get_digital`).
+
+However, consider the following scenario :
+
+.. code-block:: python
+
+  while True:
+    if get_digital('io0'):
+      play_video('kitten.mp4', sync=True)
+
+`get_digital` waits (calling `expect` here) for some value, and then
+`play_video` is called. Since the call is `sync=True`, the scenario will block
+until video finishes.
+
+When the video finishes, `get_digital` is called again; it will call ws.recv()
+which will return immediately since there would be a pile of data waiting in the
+websocket buffer. But the first data that will be used will be the data sent by
+the digital backend just after the one that passed the test, and it will
+probably be the same value and the video will plya again. We've just recreated a
+software equivalent of hardware bouncing.
+
+Since there is no non-blocking recv call in websocket client (which would let us
+empty the websocket bufffer before waiting for new values), we have to find
+annother way.
+
+The approach used here is the following :
+
+- start a threaded websocket client
+- when a message arrives, add it in a dedicated Queue object for that channel
+- when a `expect` is called with `flush=True`, the Queue for the considered
+  channel is flushed and `expect` will wait until a new value arrives.
+
+This is much more complex, but until a non-blocking recv call is implemented in
+websocket client (which would let us empty the websocket bufffer before waiting
+for new values), we have to find annother way.
+
+"""
 
 import json
 import logging
 import time
 
-from websocket import create_connection
+from queue import Queue
+from griotte.ws import WebSocket
 
-__SUBSCRIPTIONS__ = []
+import griotte.graceful
 
-def _send(channel, data = '{}', close=True, ws=None):
-    """ Sends a message over websocket
+class Expecter:
+    """ Utility class that sends and receives data over websocket for server-side blocks
 
-    Utility function that wraps websocket message sending and takes care of
-    opening a websocket if needed
-
-    :param channel: The channel to write to
-    :type channel: str.
-
-    :param data: The data to send
-    :type data: str -- json encoded
-
-    :param close: Whether the socket must be closed after sending the message
-    :type close: bool
-
-    :param ws: A websocket to use. If `None`, a websocket will be created.
-    :type ws: WebSocket
-
-    :returns: WebSocket object, or None if close was True.
     """
-    # Open websocket if we're not given one
-    if ws == None:
-        ws = create_connection("ws://localhost:8888/ws")
+    def __init__(self, uri=None):
+        self._ws = WebSocket(watchdog_interval=2, uri=uri)
+        self._ws.start()
+        self._subscriptions = {}
 
-    decoded = json.loads(data)
+    def send_expect(self, channel_out, channel_in, data='{}', flush=False):
+        """ Sends a message over websocket and waits for a reply
 
-    data = json.dumps( { 'channel': channel, 'data': decoded } )
-    logging.debug("in channel %s sending %s" % (channel, data))
+        A combination of :py:func:`send` and :py:func:`expect`
 
-    ws.send(data)
+        :param channel_out: The channel to write to
+        :type channel: str
 
-    if close:
-        ws.close()
-        return None
+        :param channel_in: The channel to listen to
+        :type channel: str
 
-    return ws
+        :param data: The data to send
+        :type data: str -- json encoded
 
-def _expect(ws, channel):
-    """ Expects a message on a channel
+        :param flush: Whether the incoming queue must be flushed before handling message (set to True to prevent receiving past messages )
+        :type flush: bool
+        """
 
-    Blocks until the message arrives and returns the 'data' part of the message
+        self._subscribe(channel_in)
 
-    :param ws: websocket to use
-    :type ws: Websocket object
-    :param channel: Channel to listen to
-    :type channel: str
-    :rtype: dict
-    """
-    global __SUBSCRIPTIONS__
+        if flush:
+            self._flush_queue(channel_in)
 
-    __subscribe(ws,channel)
+        self._ws.send(channel_out, data)
+        return self._subscriptions[channel_in].get()
 
-    # Open websocket if we're not given one
-    if ws == None:
-        ws = create_connection("ws://localhost:8888/ws")
+    def send(self, channel, data = '{}'):
+        """ Sends a message over websocket
 
-    if channel not in __SUBSCRIPTIONS__:
-        __SUBSCRIPTIONS__.append(channel)
+        Utility function that wraps websocket message sending and takes care of
+        opening a websocket if needed
 
-    found = False
-    while not found:
-        message = ws.recv()
-        decoded = json.loads(message)
-        if decoded['channel'] == channel:
-            found = True;
+        :param channel: The channel to write to
+        :type channel: str.
 
-    __unsubscribe(ws,channel)
+        :param data: The data to send
+        :type data: str -- json encoded
 
-    return decoded['data']
+        :param flush: Whether the incoming queue must be flushed before handling message (set to True to prevent receiving past messages )
+        :type flush: bool
+        """
 
-def __subscribe(ws, channel):
-    data = json.dumps( { 'channel': 'meta.subscribe',
-                         'timestamp': time.time(),
-                         'data': { 'channel': channel } } )
-    ws.send(data)
+        logging.debug("sending message on %s" % channel)
+        self._ws.send(channel, data)
 
-def __unsubscribe(ws, channel):
-    data = json.dumps( { 'channel': 'meta.unsubscribe',
-                         'timestamp': time.time(),
-                         'data': { 'channel': channel } } )
-    ws.send(data)
+    def expect(self, channel, flush=False):
+        """ Expects a message on a channel
 
-def _unsubscribe_all(ws):
-    global __SUBSCRIPTIONS__
+        Blocks until the message arrives and returns the 'data' part of the message
 
-    for channel in __SUBSCRIPTIONS__:
-        __unsubscribe(ws, channel)
-        time.sleep(1)
+        :param channel: Channel to listen to
+        :type channel: str
+
+        :param flush: Whether the incoming queue must be flushed before handling message (set to True to prevent receiving past messages )
+        :type flush: bool
+
+        :rtype: dict -- the message we got on the wire
+        """
+
+        self._subscribe(channel)
+
+        if flush:
+            self._flush_queue(channel)
+
+        data = self._subscriptions[channel].get()
+        logging.debug("got message on %s" % channel)
+
+        #self._unsubscribe(channel)
+
+        return data
+
+    def quit(self):
+        self._unsubscribe_all()
+        self._ws.stop()
+
+    def on_message(self, channel, data):
+        print("message on channel %s" % channel)
+
+        try:
+            self._subscriptions[channel].put(data)
+        except KeyError:
+            logging.error("Received a message for a channel we didn't subsribe to (%s)" % channel)
+
+    def _flush_queue(self, channel):
+        logging.debug("Flushing queue for channel %s" % channel)
+
+        try:
+            while not self._subscriptions[channel].empty():
+                self._subscriptions[channel].get()
+                logging.debug("flushed one message")
+        except Empty:
+            return
+
+    def _subscribe(self, channel):
+        if channel in self._subscriptions:
+            return False
+
+        self._subscriptions[channel] = Queue()
+
+        logging.debug("subscribing to channel %s" % channel)
+        self._ws.add_listener(channel, self.on_message)
+
+        return True
+
+    def _unsubscribe(self, channel):
+        if channel not in self._subscriptions:
+            return
+
+        logging.debug("unsubscribing from channel %s" % channel)
+
+        self._ws.remove_listener(channel)
+
+        logging.debug("removing channel %s" % channel)
+        self._subscriptions.pop(channel)
+
+    def _unsubscribe_all(self):
+        for channel in self._subscriptions.copy().keys():
+            self._unsubscribe(channel)
 
 
