@@ -75,145 +75,141 @@ from griotte.ws import WebSocket
 
 import griotte.graceful
 
-class Expecter:
-    """ Utility class that sends and receives data over websocket for server-side blocks
+class Expecter(object):
+    class __Expecter:
+        """ Utility class that sends and receives data over websocket for server-side blocks
 
-    """
-    def __init__(self, uri=None):
-        self._ws = WebSocket(watchdog_interval=2, uri=uri)
-        self._ws.start()
-        self._subscriptions = {}
-
-    def send_expect(self, channel_out, channel_in, data='{}', flush=False):
-        """ Sends a message over websocket and waits for a reply
-
-        A combination of :py:func:`send` and :py:func:`expect`
-
-        :param channel_out: The channel to write to
-        :type channel: str
-
-        :param channel_in: The channel to listen to
-        :type channel: str
-
-        :param data: The data to send
-        :type data: str -- json encoded
-
-        :param flush: Whether the incoming queue must be flushed before handling message (set to True to prevent receiving past messages )
-        :type flush: bool
         """
+        def __init__(self, uri=None):
+            self._ws = WebSocket(watchdog_interval=2, uri=uri)
+            self._ws.start()
+            self._subscriptions = {}
 
-        self._subscribe(channel_in)
+        def send_expect(self, channel_out, channel_in, data='{}', flush=False):
+            """ Sends a message over websocket and waits for a reply
 
-        if flush:
-            self._flush_queue(channel_in)
+            A combination of :py:func:`send` and :py:func:`expect`
 
-        self._ws.send(channel_out, data)
-        return self._subscriptions[channel_in].get()
+            :param channel_out: The channel to write to
+            :type channel: str
 
-    def send(self, channel, data = '{}'):
-        """ Sends a message over websocket
+            :param channel_in: The channel to listen to
+            :type channel: str
 
-        Utility function that wraps websocket message sending and takes care of
-        opening a websocket if needed
+            :param data: The data to send
+            :type data: str -- json encoded
 
-        :param channel: The channel to write to
-        :type channel: str.
+            :param flush: Whether the incoming queue must be flushed before handling message (set to True to prevent receiving past messages )
+            :type flush: bool
+            """
 
-        :param data: The data to send
-        :type data: str -- json encoded
+            self._subscribe(channel_in)
 
-        :param flush: Whether the incoming queue must be flushed before handling message (set to True to prevent receiving past messages )
-        :type flush: bool
-        """
+            if flush:
+                self._flush_queue(channel_in)
 
-        logging.debug("sending message on %s" % channel)
-        self._ws.send(channel, data)
+            self._ws.send(channel_out, data)
+            return self._subscriptions[channel_in].get()
 
-    def expect(self, channel, flush=False):
-        """ Expects a message on a channel
+        def send(self, channel, data = '{}'):
+            """ Sends a message over websocket
 
-        Blocks until the message arrives and returns the 'data' part of the message
+            Utility function that wraps websocket message sending and takes care of
+            opening a websocket if needed
 
-        :param channel: Channel to listen to
-        :type channel: str
+            :param channel: The channel to write to
+            :type channel: str.
 
-        :param flush: Whether the incoming queue must be flushed before handling message (set to True to prevent receiving past messages )
-        :type flush: bool
+            :param data: The data to send
+            :type data: str -- json encoded
 
-        :rtype: dict -- the message we got on the wire
-        """
+            :param flush: Whether the incoming queue must be flushed before handling message (set to True to prevent receiving past messages )
+            :type flush: bool
+            """
 
-        self._subscribe(channel)
+            logging.debug("sending message on %s" % channel)
+            self._ws.send(channel, data)
 
-        if flush:
-            self._flush_queue(channel)
+        def expect(self, channel, flush=False):
+            """ Expects a message on a channel
 
-        data = self._subscriptions[channel].get()
-        logging.debug("got message on %s" % channel)
+            Blocks until the message arrives and returns the 'data' part of the message
 
-        #self._unsubscribe(channel)
+            :param channel: Channel to listen to
+            :type channel: str
 
-        return data
+            :param flush: Whether the incoming queue must be flushed before handling message (set to True to prevent receiving past messages )
+            :type flush: bool
 
-    def quit(self):
-        self._unsubscribe_all()
-        self._ws.stop()
+            :rtype: dict -- the message we got on the wire
+            """
 
-    def on_message(self, channel, data):
-        print("message on channel %s" % channel)
+            self._subscribe(channel)
 
-        try:
-            self._subscriptions[channel].put(data)
-        except KeyError:
-            logging.error("Received a message for a channel we didn't subsribe to (%s)" % channel)
+            if flush:
+                self._flush_queue(channel)
 
-    def _flush_queue(self, channel):
-        logging.debug("Flushing queue for channel %s" % channel)
+            data = self._subscriptions[channel].get()
+            logging.debug("got message on %s" % channel)
 
-        try:
-            while not self._subscriptions[channel].empty():
-                self._subscriptions[channel].get()
-                logging.debug("flushed one message")
-        except Empty:
-            return
+            #self._unsubscribe(channel)
 
-    def _subscribe(self, channel):
-        if channel in self._subscriptions:
-            return False
+            return data
 
-        self._subscriptions[channel] = Queue()
+        def quit(self):
+            self._unsubscribe_all()
+            self._ws.stop()
 
-        logging.debug("subscribing to channel %s" % channel)
-        self._ws.add_listener(channel, self.on_message)
+        def on_message(self, channel, data):
+            print("message on channel %s" % channel)
 
-        return True
+            try:
+                self._subscriptions[channel].put(data)
+            except KeyError:
+                logging.error("Received a message for a channel we didn't subsribe to (%s)" % channel)
 
-    def _unsubscribe(self, channel):
-        if channel not in self._subscriptions:
-            return
+        def _flush_queue(self, channel):
+            logging.debug("Flushing queue for channel %s" % channel)
 
-        logging.debug("unsubscribing from channel %s" % channel)
+            try:
+                while not self._subscriptions[channel].empty():
+                    self._subscriptions[channel].get()
+                    logging.debug("flushed one message")
+            except Empty:
+                return
 
-        self._ws.remove_listener(channel)
+        def _subscribe(self, channel):
+            if channel in self._subscriptions:
+                return False
 
-        logging.debug("removing channel %s" % channel)
-        self._subscriptions.pop(channel)
+            self._subscriptions[channel] = Queue()
 
-    def _unsubscribe_all(self):
-        for channel in self._subscriptions.copy().keys():
-            self._unsubscribe(channel)
+            logging.debug("subscribing to channel %s" % channel)
+            self._ws.add_listener(channel, self.on_message)
 
+            return True
 
+        def _unsubscribe(self, channel):
+            if channel not in self._subscriptions:
+                return
 
-def static_var(varname, value):
-    def decorate(func):
-        setattr(func, varname, value)
-        return func
-    return decorate
-    
-@static_var("expecter", Expecter())
-def expecter():
-    """ Returns a static
+            logging.debug("unsubscribing from channel %s" % channel)
 
-    """
-    return expecter.expecter
+            self._ws.remove_listener(channel)
+
+            logging.debug("removing channel %s" % channel)
+            self._subscriptions.pop(channel)
+
+        def _unsubscribe_all(self):
+            for channel in self._subscriptions.copy().keys():
+                self._unsubscribe(channel)
+
+        instance = None
+        def __new__(cls):
+            if not Expecter.instance:
+                Expecter.instance = Expecter.__Expecter()
+            return Expecter.instance
+        def __getattr__(self, name):
+            return getattr(self.instance, name)
+        def __setattr__(self, name):
+            return setattr(self.instance, name)

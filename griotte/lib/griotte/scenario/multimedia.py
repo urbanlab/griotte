@@ -36,8 +36,6 @@ import logging
 
 from griotte.scenario import Expecter
 
-_E = Expecter()
-
 def play_video(media, sync=True):
     """ Plays video synchronously
 
@@ -45,11 +43,11 @@ def play_video(media, sync=True):
 
     :param media: The media to play, relative to the media root folder
     """
-    _E.send('video.command.start', '{ "media": "' + media + '" }')
+    Expecter().send('video.command.start', { "media": media })
 
     if sync:
         print("sync mode, expecting stop")
-        _E.expect('video.event.stop')
+        Expecter().expect('video.event.stop')
 
 def play_audio(media, sync=True):
     """ Plays sound synchronously
@@ -58,9 +56,9 @@ def play_audio(media, sync=True):
 
     :param media: The media to play, relative to the media root folder
     """
-    _E.send('video.command.start', '{ "media": "' + media + '" }')
+    Expecter().send('video.command.start', { "media": media })
     if sync:
-        _E.expect('video.event.stop')
+        Expecter().expect('video.event.stop')
 
 def play_image(media, duration=0):
     """ Displays an image
@@ -72,7 +70,7 @@ def play_image(media, duration=0):
     :param duration: The media to play, relative to the media root folder
     :type duration: int -- 0 for infinite
     """
-    _E.send('image.command.start', '{ "media": "' + media + '" }')
+    Expecter().send('image.command.start', { "media": media })
     time.sleep(duration)
 
 def set_volume(level):
@@ -82,22 +80,22 @@ def set_volume(level):
 
     :param level: The sound level, in percent (0 - 120)
     """
-    _E.send('meta.store.sound_level.set', '{ "level":"%s" }' % int(level))
+    Expecter().send('meta.store.sound_level.set', { "level": level })
 
 def stop_video():
     """ Stops currently playing video
 
     Sends a ws message asking for the video to stop
     """
-    _E.send('video.command.stop')
+    Expecter().send('video.command.stop')
 
 def stop_audio():
     """ Stops currently playing video
 
     Sends a ws message asking for the video to stop
     """
-    _E.send('audio.command.stop')
+    Expecter().send('audio.command.stop')
 
 @atexit.register
 def __goodbye__():
-    _E.quit()
+    Expecter().quit()
