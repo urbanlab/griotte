@@ -204,3 +204,16 @@ class Expecter:
             self._unsubscribe(channel)
 
 
+
+def static_var(varname, value):
+    def decorate(func):
+        setattr(func, varname, value)
+        return func
+    return decorate
+    
+@static_var("expecter", Expecter())
+def expecter():
+    """ Returns a static
+
+    """
+    return expecter.expecter

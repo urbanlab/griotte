@@ -30,13 +30,7 @@ import time
 import logging
 import atexit
 
-from griotte.scenario import Expecter
-
-"""
-..todo :: use static vars in functions
-"""
-
-_E = Expecter()
+from griotte.scenario import expecter
 
 def get_analog(channel):
     """ Returns current analog value for channel
@@ -45,14 +39,10 @@ def get_analog(channel):
 
     :param channel: Channel to wait for
     """
-    data = _E.send_expect("analog.command." + channel + ".periodic_sample",
+    data = expecter().send_expect("analog.command." + channel + ".periodic_sample",
                           "analog.event." + channel + ".sample",
                           data='{ "every": 0.5 }',
                           flush=True)
-
-    # logging.debug("get_analog : expecting data")
-
-    # data = _E.expect('analog.event.' + channel + '.sample', flush=True)
 
     logging.debug("get_analog : received sample %s" % data['raw_value'])
 
@@ -65,5 +55,5 @@ def set_profile(channel, profile):
 
 @atexit.register
 def __goodbye__():
-    _E.quit()
+    expecter().quit()
 
