@@ -1,0 +1,4 @@
+graft tools
+recursive-include docs *
+recursive-include static *
+include Makefile

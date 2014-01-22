@@ -18,13 +18,18 @@ default:
 	@echo
 	@echo "Available targets :"
 	@echo
-	@echo "           clean : cleans generated files, including doc"
-	@echo "             cov : runs test suite with coverage"
-	@echo "       dev,devel : installs developpment dependencies"
-	@echo "            docs : generates documentation"
-	@echo " prod,production : installs production dependencies"
-	@echo "            rtfm : opens local documentation in browser"
-	@echo "           tests : runs test suite"
+	@echo "       clean : cleans generated files, including doc"
+	@echo "         cov : runs test suite with coverage"
+	@echo "        docs : generates documentation"
+	@echo "        rtfm : opens local documentation in browser"
+	@echo "       tests : runs test suite"
+	@echo
+	@echo "Install targets :"
+	@echo
+	@echo " install.dev : installs developpment dependencies (system wide)"
+	@echo "install.prod : installs production dependencies (system wide)"
+	@echo " virtual.dev : installs developpment dependencies (in virtualenv)"
+	@echo "virtual.prod : installs production dependencies (in virtualenv)"
 	@echo
 
 tests:
@@ -33,6 +38,12 @@ tests:
 cov:
 	$(NOSETESTS) -d -v -P --with-coverage --cover-package=griotte --cover-html --cover-html-dir docs/_build/html/en/coverage/
 
+bdist:
+	$(PYTHON) setup.py bdist
+
+sdist:
+	$(PYTHON) setup.py sdist
+
 doc docs:
 	SPHINX_APIDOC_OPTIONS=$(SPHINX_APIDOC_OPTIONS) sphinx-apidoc -f -o docs/en/ griotte/lib/griotte/
 	cd docs && make
@@ -40,24 +51,31 @@ doc docs:
 rtfm:
 	xdg-open docs/_build/html/en/index.html
 
-_devel:
+_vdevel:
 	$(PYTHON) devel-bootstrap.py -p $(PYTHON)
 
-_production:
+_vproduction:
 	$(PYTHON) production-bootstrap.py -p $(PYTHON)
 
-devel dev: _devel _production _message
+_devel:
+	sudo pip install production-requirements.txt
 
-production prod: _production _message
+_production:
+	sudo pip install devel-requirements.txt
 
-_message:
+install.dev: _devel _production
+
+install.prod: _production
+
+virtual.dev: _vdevel _vproduction _vmessage
+
+virtual.prod: _vproduction _vmessage
+
+_vmessage:
 	@echo "\n====================================\n"
 	@echo "Please run :\n"
 	@echo "source griotte/tools/env.sh"
 	@echo
-
-push:
-
 
 clean:
 	@echo "Cleaning up byte compiled python stuff"
@@ -65,4 +83,6 @@ clean:
 	@echo "Cleaning up editor backup files"
 	find . -type f \( -name "*~" -or -name "#*" \) -delete
 	find . -type f \( -name "*.swp" \) -delete
+	find . -type d \( -name "__pycache__" \) -delete
 	cd docs && make clean
+	@rm -rf build/ dist/ pkg/
