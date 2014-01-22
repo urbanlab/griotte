@@ -18,34 +18,30 @@
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
 import griotte.server
-import griotte.constants as C
 import tornado.ioloop
 import tornado.web
 import logging
 import os
 
 from setproctitle import setproctitle
-from tornado.options import define, options
 
-
-define("port", default=C.DEFAULT_PORT, help="Web server port")
-define("static", default=C.DEFAULT_STATIC, help="Static assets path")
+from tornado.options import options
+import griotte.config
 
 def main():
     setproctitle("griotte-server")
     app = tornado.web.Application([
-        (r'/ws', griotte.server.Server),
-        (r'/(.*)', tornado.web.StaticFileHandler, { 'path': options.static,
+        (r'/ws',   griotte.server.Server),
+        (r'/(.*)', tornado.web.StaticFileHandler, { 'path': options.document_root,
                                                     'default_filename': 'index.html' }),
         ])
 
     logging.info("Starting tornado web server")
 
-    logging.info("Listening on port %s" % options.port)
-    app.listen(options.port)
-    logging.info("Static assets path : %s" % options.static)
+    logging.info("Listening on port %s" % options.server_port)
+    app.listen(options.server_port)
+    logging.info("Static assets path : %s" % options.document_root)
     tornado.ioloop.IOLoop.instance().start()
 
 if __name__ == "__main__":
-    tornado.options.parse_command_line()
     main()

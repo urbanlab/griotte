@@ -19,7 +19,6 @@
 import json
 import socket
 import time
-import griotte.constants as C
 import logging
 
 import fnmatch
@@ -27,7 +26,10 @@ import fnmatch
 import threading
 import websocket
 
+from tornado.options import options
 from copy import deepcopy
+
+import griotte.config
 
 class WebSocket:
     """ WebSocket client """
@@ -40,7 +42,7 @@ class WebSocket:
 
         # So caller doesn't have to check if URI is set or not when it's received as an argument
         if not uri:
-            uri = "ws://" + C.DEFAULT_SERVER + ":" + C.DEFAULT_PORT + "/ws"
+            uri = "ws://%s:%s/ws" % (options.default_server, options.default_port)
 
         self._uri = uri
         self._ws_ready = False

@@ -33,9 +33,13 @@ default:
 	@echo
 
 tests:
+	#NOSE_DETAILED_ERRORS=1 NOSE_NOPATH=1 NOSE_VERBOSE=1 NOSE_PROCESSES=1 $(NOSETESTS)
 	$(NOSETESTS) -d -v -P --processes=1
+	#nosetests -d -v -P --processes=1
 
 cov:
+	#NOSE_WITH_COVERAGE=1 \
+	#NOSE_COVER_PACKAGE=griotte \
 	$(NOSETESTS) -d -v -P --with-coverage --cover-package=griotte --cover-html --cover-html-dir docs/_build/html/en/coverage/
 
 bdist:

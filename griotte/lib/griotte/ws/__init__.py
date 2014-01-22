@@ -18,14 +18,3 @@
 
 from griotte.ws.websocket import WebSocket
 
-#pragma: no cover
-if __name__ == "__main__":
-    # test code
-    import tornado.options
-    def func(message):
-        print("in callback with %s" % message)
-
-    tornado.options.parse_command_line()
-    ws = WebSocket(watchdog_interval=2)
-    ws.add_listener('an', func)
-    ws.start()

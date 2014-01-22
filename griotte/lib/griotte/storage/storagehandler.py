@@ -13,15 +13,16 @@ Test me with :
 
 .. code-block:: bash
 
-    griotte/tools//ws_send.py store.set.wtf '{ "value" : { "a": { "b": "z" } }, "persistent": true }'
+    griotte/tools/ws_send.py store.set.wtf '{ "value" : { "a": { "b": "z" } }, "persistent": true }'
 
 """
 
 import logging
 import json
 import tempfile
-import griotte.constants as C
 import sys
+
+from tornado.options import options
 
 from griotte.ws import WebSocket
 from griotte.utils import dict_merge
@@ -32,7 +33,7 @@ class StorageHandler:
     Store and sends values over websockets
     """
 
-    def __init__(self, store=C.DEFAULT_STORE + '/store.json'):
+    def __init__(self, store="%s/store.json" % options.store):
         logging.debug("Starting StorageHandler")
 
         self._store_path = store
@@ -86,7 +87,7 @@ class StorageHandler:
 
     def start(self):
         logging.info("Starting StorageHandler's websocket")
-        self._ws.start()
+        self._ws.start(detach=False)
 
     def stop(self):
         logging.info("Starting StorageHandler's websocket")
@@ -150,19 +151,19 @@ class StorageHandler:
         this.
 
         :rtype: Hash representing stored variables or an empty Hash of store
-                  file is not found
+                file is not found
         """
         try:
             f = open(self._store_path, 'r')
         except FileNotFoundError:
-            logging.warn("Unable to open store file. Starting empty.")
+            logging.warn("Unable to open store file '%s'. Starting empty.", self._store_path)
             return {}
 
         try:
             val = json.load(f)
         except ValueError:
             val = {}
-            logging.error("Unable to decode store file. Starting empty.")
+            logging.error("Unable to parse json store file '%s'. Starting empty.", self._store_path)
 
         f.close()
         return val

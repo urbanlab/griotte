@@ -17,13 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-from griotte.adc.analoghandler import AnalogHandler
-import griotte.constants as C
 from setproctitle import setproctitle
-import logging
-
-import tornado.options
-tornado.options.parse_command_line()
+from griotte.adc.analoghandler import AnalogHandler
 
 setproctitle("griotte-adc")
 
