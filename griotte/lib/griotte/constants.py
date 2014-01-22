@@ -33,6 +33,4 @@ DEFAULT_STATIC  = os.path.abspath(os.path.join(os.path.dirname(__file__),
 try:
     DEFAULT_STORE = os.environ['GRIOTTE_STORE']
 except KeyError:
-    print("No store defined. Please define the GRIOTTE_STORE environment variable.", file=sys.stderr)
-    exit(1)
-
+    DEFAULT_STORE = '/tmp'
