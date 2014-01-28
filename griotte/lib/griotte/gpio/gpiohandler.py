@@ -17,14 +17,13 @@
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+from griotte.ws import WebSocket
 
 try:
     import RPIO
 except SystemError:
     logging.error("Unable to load RPIO. Are you using a Raspberry ?")
-    # Reraise so callers can catch
-    # ..todo :: Is this the best way to do it ?
-    raise SystemError
+    pass
 
 class GPIOHandler:
     """ GPIO handler
@@ -38,7 +37,7 @@ class GPIOHandler:
               'io2'  : { 'pin' : 13 },
               'io3'  : { 'pin' : 15 },
               'dip0' : { 'pin' :  7 },
-              'dip1' : { 'pin' :  6 } }
+              'dip1' : { 'pin' : 16 } }
 
 
     def __init__(self):
@@ -47,19 +46,22 @@ class GPIOHandler:
         """
         self._ws = WebSocket(watchdog_interval=2)
 
+        RPIO.setmode(RPIO.BOARD)
+
         # Install websocket & RPIO callbacks
-        for chan in self.PORTS:
-            pin = self.PORTS[chan]['pin']
-            self._ws.add_listener("digital.command." + chan + ".sample",
+        for port in self.PORTS:
+            pin = self.PORTS[port]['pin']
+            self._ws.add_listener("digital.command." + port + ".sample",
                                  self._sample)
-            self._ws.add_listener("digital.command." + chan + ".edge",
-                                 self._edge, "both")
-            self._ws.add_listener("digital.command." + chan + ".rising",
-                                 self._edge, "rising")
-            self._ws.add_listener("digital.command." + chan + ".falling",
-                                 self._edge, "falling")
-            # self._ws.add_listener("digital.command." + chan + ".profile",
-            #                     self._profile)
+            # self._ws.add_listener("digital.command." + port + ".edge",
+            #                      self._edge, "both")
+            # self._ws.add_listener("digital.command." + port + ".rising",
+            #                      self._edge, "rising")
+            # self._ws.add_listener("digital.command." + port + ".falling",
+            #                      self._edge, "falling")
+            self._ws.add_listener("digital.command." + port + ".profile",
+                                 self._profile)
+            logging.debug("installing RPIO handlers for pin %s", pin)
             RPIO.add_interrupt_callback(pin, self._edge)
             # For now, we just set everything to input with pull up
             # we'll fix that with profiles later

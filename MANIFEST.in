@@ -1,4 +1,4 @@
-graft tools
 recursive-include docs *
 recursive-include static *
+prune docs/_build
 include Makefile

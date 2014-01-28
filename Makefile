@@ -45,7 +45,7 @@ cov:
 bdist:
 	$(PYTHON) setup.py bdist
 
-sdist:
+sdist: clean
 	$(PYTHON) setup.py sdist
 
 doc docs:
@@ -62,10 +62,12 @@ _vproduction:
 	$(PYTHON) production-bootstrap.py -p $(PYTHON)
 
 _devel:
-	sudo pip install production-requirements.txt
+	sudo pip install -r devel-requirements.txt
+	sudo python setup.py install
 
 _production:
-	sudo pip install devel-requirements.txt
+	sudo pip install -r production-requirements.txt
+	sudo python setup.py install
 
 install.dev: _devel _production
 
@@ -88,5 +90,5 @@ clean:
 	find . -type f \( -name "*~" -or -name "#*" \) -delete
 	find . -type f \( -name "*.swp" \) -delete
 	find . -type d \( -name "__pycache__" \) -delete
+	$(PYTHON) setup.py clean
 	cd docs && make clean
-	@rm -rf build/ dist/ pkg/

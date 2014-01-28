@@ -19,7 +19,7 @@
 try:
     import quick2wire.i2c as i2c
 except:
-    sys.stderr.write("Unable to load quick2wire.Not on Raspberry ? Going on anyway.")
+    sys.stderr.write("Unable to load quick2wire. Not on Raspberry ? Going on anyway.")
 
 import tornado.websocket
 import json
