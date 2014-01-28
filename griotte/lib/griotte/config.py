@@ -28,21 +28,21 @@ Sensible defaults for module
 """
 
 try:
-    define("default-server",
+    define("default_server",
            default="127.0.0.1",
            help="Default server to use for websocket client connections")
 
-    define("default-port",
+    define("default_port",
            default=8888,
            type=int,
            help="Default port to use for websocket client connections")
 
-    define("server-port",
+    define("server_port",
            default=8888,
            type=int,
            help="Port to use for web and websocket server")
 
-    define("document-root",
+    define("document_root",
            default="/usr/local/share/griotte/static",
            help="Root for static web files served by the internal webserver")
 
