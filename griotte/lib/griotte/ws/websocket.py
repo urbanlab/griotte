@@ -70,7 +70,8 @@ class WebSocket:
     def stop(self):
         self.watchdog_interval=0
         logging.info("Closing websocket")
-        self.ws.close()
+        if self._ws_ready:
+            self.ws.close()
 
     def add_listener(self, channel, callback, *args):
         """ Adds a listener to a specific or wildcard channel

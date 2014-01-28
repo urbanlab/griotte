@@ -30,6 +30,8 @@ import time
 import logging
 import atexit
 
+from griotte.scenario import Expecter
+
 def get_analog(port):
     """ Returns current analog value for port
 
