@@ -91,8 +91,10 @@ class GPIOHandler:
         port = port.split('.')[2]
         logging.debug("sample request in port %s" % port)
 
+        boolval = RPIO.input(self.PORTS[port]['bcm'])
+
         self._ws.send("digital.event." + port + ".sample",
-                      { 'value' : RPIO.input(self.PORTS[port]['bcm']) } )
+                      { 'value' : boolval, 'raw_value': int(boolval) } )
 
     def _edge(self, gpio_id, value):
         """ Callback for RPIO on edge
@@ -114,7 +116,8 @@ class GPIOHandler:
         else:
             edge = "rising"
 
-        self._ws.send("digital.event." + port + ".edge." + edge, { 'value' : value == 1 } )
+        self._ws.send("digital.event." + port + ".edge." + edge, { 'value' : value == 1, 'raw_value' : value })
+
 
 
     def _profile(self, port, message):

@@ -16,7 +16,6 @@ Griotte = {
 
     self._ws.onmessage = function(message) {
       data = JSON.parse(message.data)
-      console.log("got message for channel " + data.channel);
       self.dispatch(data);
     };
 
@@ -29,10 +28,8 @@ Griotte = {
 
   dispatch: function(message) {
     var self = this;
-    console.log("dispatching " + message.channel);
 
     if (self._events.hasOwnProperty(message.channel)) {
-        console.log("calling cb for " + message.channel);
         self._events[message.channel](message);
       }
   },

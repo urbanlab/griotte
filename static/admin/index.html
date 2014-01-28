@@ -79,13 +79,6 @@
         <h3>Réglages</h3>
         <form>
           <div data-role="fieldcontain">
-            <label for="toggle-scenario">Fonctionnement</label>
-            <select name="toggle-scenario" id="toggle-scenario" data-role="slider" data-mini="true">
-              <option value="pause">Pause</option>
-              <option value="play">Play</option>
-            </select>
-          </div>
-          <div data-role="fieldcontain">
             <label for="toggle-sound">Son</label>
             <select name="toggle-sound" id="toggle-sound" data-role="slider" data-mini="true">
               <option value="off">Off</option>
@@ -97,6 +90,31 @@
             <input type="range" step="10" name="slider-sound" id="slider-sound" value="20" min="0" max="120" data-highlight="true" data-mini="true">
           </div>
         </form>
+
+        <h3>Capteurs</h3>
+
+        <form>
+          <fieldset data-role="controlgroup" data-type="horizontal" >
+            <input type="radio" name="radio-range" id="radio-1sec" value="1sec" data-mini="true" />
+            <label for="radio-1sec">1 second</label>
+
+            <input type="radio" name="radio-range" id="radio-10secs" value="10secs" data-mini="true" checked="checked"  />
+            <label for="radio-10secs">10 seconds</label>
+
+            <input type="radio" name="radio-range" id="radio-1min" value="1min" data-mini="true"  />
+            <label for="radio-1min">1 minute</label>
+
+            <input type="radio" name="radio-range" id="radio-10mins" value="10mins" data-mini="true"  />
+            <label for="radio-10mins">10 minutes</label>
+          </fieldset>
+        </form>
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" data-role="content" id="graph-an-container" style="height:240px;margin: 8px auto;"></div>
+          <div class="ui-block-b" data-role="content" id="graph-io-container" style="height:240px;margin: 8px auto;"></div>
+        </div>
+
+
       </div> <!-- content -->
 
       <div data-role="footer">
@@ -193,11 +211,12 @@
             <p>Liste des services en cours de fonctionnment</p>
 
             <div data-role="fieldcontain">
-              <label for="slider_scheduler">Scheduler</label>
-              <select name="slider_scheduler" id="slider_scheduler" data-role="slider" data-mini="true">
+              <label for="slider_runner">Runner</label>
+              <select name="slider_runner" id="slider_runner" data-role="slider" data-mini="true">
                 <option value="off">Off</option>
                 <option value="on" selected>On</option>
               </select>
+
             </div> <!-- fieldcontain -->
             <div data-role="fieldcontain">
               <label for="slider_videoclient">Video/Son</label>
@@ -513,39 +532,39 @@ $( document ).bind("pageinit", function( event ) {
 
 
 <script type="text/javascript">
-$( "#analog0" ).on("pageshow", function() {
-    console.log("animating from pageshow");
-    var container = document.getElementById('graph-container'),
-    start = (new Date).getTime(),
-    data, graph, offset, i;
+// $( document ).on("pageshow", function() {
+//     console.log("animating from pageshow");
+//     var container = document.getElementById('graph-analog0-container'),
+//     start = (new Date).getTime(),
+//     data, graph, offset, i;
 
-    // Draw a sine curve at time t
-    function animate (t) {
-    data = [];
-    offset = 2 * Math.PI * (t - start) / 10000;
+//     // Draw a sine curve at time t
+//     function animate (t) {
+//     data = [];
+//     offset = 2 * Math.PI * (t - start) / 10000;
 
-    // Sample the sine function
-    for (i = 0; i < 4 * Math.PI; i += 0.2) {
-      data.push([i, Math.sin(i - offset)]);
-    }
+//     // Sample the sine function
+//     for (i = 0; i < 4 * Math.PI; i += 0.2) {
+//       data.push([i, Math.sin(i - offset)]);
+//     }
 
-    // Draw Graph
-    graph = Flotr.draw(container, [ data ], {
-        yaxis : {
-        max : 2,
-        min : -2
-        }
-      });
+//     // Draw Graph
+//     graph = Flotr.draw(container, [ data ], {
+//         yaxis : {
+//         max : 2,
+//         min : -2
+//         }
+//       });
 
-    // Animate
-    setTimeout(function () {
-        animate((new Date).getTime());
-        }, 50);
-    }
+//     // Animate
+//     setTimeout(function () {
+//         animate((new Date).getTime());
+//         }, 50);
+//     }
+//     //$("#graph-analog0-container").
+//     animate((start));
 
-    animate((start));
-
-});
+// });
 </script>
 
 </html>
