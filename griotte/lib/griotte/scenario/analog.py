@@ -30,15 +30,15 @@ import time
 import logging
 import atexit
 
-def get_analog(channel):
-    """ Returns current analog value for channel
+def get_analog(port):
+    """ Returns current analog value for port
 
-    This will block until an analog value is received on the requested channel
+    This will block until an analog value is received on the requested port
 
-    :param channel: Channel to wait for
+    :param port: port to wait for
     """
-    data = Expecter().send_expect("analog.command." + channel + ".periodic_sample",
-                          "analog.event." + channel + ".sample",
+    data = Expecter().send_expect("analog.command." + port + ".periodic_sample",
+                          "analog.event." + port + ".sample",
                           data  = { "every": 0.5 },
                           flush = True)
 
@@ -46,8 +46,8 @@ def get_analog(channel):
 
     return data['raw_value']
 
-def set_profile(channel, profile):
-    """ Sets the profile for channel
+def set_profile(port, profile):
+    """ Sets the profile for port
     """
     return
 

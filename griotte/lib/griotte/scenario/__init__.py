@@ -75,7 +75,7 @@ from griotte.ws import WebSocket
 
 import griotte.graceful
 
-class Expecter(object):
+class Expecter:
     class __Expecter:
         """ Utility class that sends and receives data over websocket for server-side blocks
 
@@ -204,12 +204,12 @@ class Expecter(object):
             for channel in self._subscriptions.copy().keys():
                 self._unsubscribe(channel)
 
-        instance = None
-        def __new__(cls):
-            if not Expecter.instance:
-                Expecter.instance = Expecter.__Expecter()
-            return Expecter.instance
-        def __getattr__(self, name):
-            return getattr(self.instance, name)
-        def __setattr__(self, name):
-            return setattr(self.instance, name)
+    instance = None
+    def __new__(cls):
+        if not Expecter.instance:
+            Expecter.instance = Expecter.__Expecter()
+        return Expecter.instance
+    def __getattr__(self, name):
+        return getattr(self.instance, name)
+    def __setattr__(self, name):
+        return setattr(self.instance, name)

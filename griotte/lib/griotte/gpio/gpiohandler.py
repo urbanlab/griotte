@@ -32,12 +32,15 @@ class GPIOHandler:
     """
 
     # Pin to board
-    PORTS = { 'io0'  : { 'pin' : 12 },
-              'io1'  : { 'pin' : 11 },
-              'io2'  : { 'pin' : 13 },
-              'io3'  : { 'pin' : 15 },
-              'dip0' : { 'pin' :  7 },
-              'dip1' : { 'pin' : 16 } }
+    # Note that RPIO prefers Board numbering
+    # even if you use RPIO.setmode(RPIO.BOARD)
+    # the callback will return BCM ports
+    PORTS = { 'io0'  : { 'board' : 12, 'bcm' : 18 },
+              'io1'  : { 'board' : 11, 'bcm' : 17 },
+              'io2'  : { 'board' : 13, 'bcm' : 27 },
+              'io3'  : { 'board' : 15, 'bcm' : 22 },
+              'dip0' : { 'board' :  7, 'bcm' :  4 },
+              'dip1' : { 'board' : 16, 'bcm' : 23 } }
 
 
     def __init__(self):
@@ -46,11 +49,9 @@ class GPIOHandler:
         """
         self._ws = WebSocket(watchdog_interval=2)
 
-        RPIO.setmode(RPIO.BOARD)
-
         # Install websocket & RPIO callbacks
-        for port in self.PORTS:
-            pin = self.PORTS[port]['pin']
+        for port in GPIOHandler.PORTS:
+            pin = GPIOHandler.PORTS[port]['bcm']
             self._ws.add_listener("digital.command." + port + ".sample",
                                  self._sample)
             # self._ws.add_listener("digital.command." + port + ".edge",
@@ -62,18 +63,18 @@ class GPIOHandler:
             self._ws.add_listener("digital.command." + port + ".profile",
                                  self._profile)
             logging.debug("installing RPIO handlers for pin %s", pin)
-            RPIO.add_interrupt_callback(pin, self._edge)
             # For now, we just set everything to input with pull up
             # we'll fix that with profiles later
             RPIO.setup(pin, RPIO.IN,
-                       pull_up_down=RPIO.PUD_UP,
-                       debounce_timeout_ms=50)
+                       pull_up_down=RPIO.PUD_UP)
+            RPIO.add_interrupt_callback(pin, self._edge,
+                                        debounce_timeout_ms=50)
 
         self.start()
 
     def _pin_to_port(self, pin):
-        for p in PORTS:
-            if PORTS[p]['pin'] == pin:
+        for p in GPIOHandler.PORTS:
+            if GPIOHandler.PORTS[p]['bcm'] == pin:
                 return p
 
         return None
@@ -87,12 +88,11 @@ class GPIOHandler:
         :type message: dict -- should be empty
 
         """
-
         port = port.split('.')[2]
         logging.debug("sample request in port %s" % port)
 
         self._ws.send("digital.event." + port + ".sample",
-                      { 'value' : RPIO.input(self.PORTS[port]['pin']) } )
+                      { 'value' : RPIO.input(self.PORTS[port]['bcm']) } )
 
     def _edge(self, gpio_id, value):
         """ Callback for RPIO on edge
@@ -104,6 +104,7 @@ class GPIOHandler:
         """
         port = self._pin_to_port(gpio_id)
         edge = None
+        logging.debug("edge detected on port %s" % port)
 
         if not port:
             return
@@ -113,7 +114,7 @@ class GPIOHandler:
         else:
             edge = "rising"
 
-        self._ws.send("digital.event." + port + "." + edge, { 'value' : value} )
+        self._ws.send("digital.event." + port + ".edge." + edge, { 'value' : value} )
 
 
     def _profile(self, port, message):
@@ -137,5 +138,5 @@ class GPIOHandler:
         logging.info("Starting GPIOHandler's websocket thread")
         self._ws.start()
         logging.info("Starting GPIOHandler's RPIO interrupts thread")
-        RPIO.wait_for_interrupts(threaded=True)
+        RPIO.wait_for_interrupts(threaded=False)
 
