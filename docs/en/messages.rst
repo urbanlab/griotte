@@ -296,7 +296,7 @@ following keys :
 * **formula** : a RPN formatted convertion formula to apply to the raw sensor value.
   See 'Formulas' below.
 * **pulling** : whether the input line should be pulled `up`, `down` or not pulled (`none`, default).
-* **direction** : the port direction (`input`, `output`)
+* **direction** : the port direction, can be `input` (default) or `output`.
 
 .. note:: Profiles are not yet supported on digital ports. All IO ports are
           currently set to input with pull-up enabled.

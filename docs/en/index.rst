@@ -32,11 +32,12 @@ Developper's guides
 .. toctree::
   :maxdepth: 2
 
+  programming
   messages
   profiles
 
-API
-^^^
+Module API
+^^^^^^^^^^
 
 .. toctree::
   :maxdepth: 4

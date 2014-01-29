@@ -105,7 +105,7 @@ Application = {
     Griotte.subscribe("digital.event.io3.edge.falling", Application.sensor_in);
 
     for (var i = 0; i < 4; i++) {
-      Griotte.publish("analog.command.an" + i + ".periodic_sample", { every: 0.1 } );
+      Griotte.publish("analog.command.an" + i + ".periodic_sample", { every: 2.0 } );
     };
 
     // Get initial sound settings
