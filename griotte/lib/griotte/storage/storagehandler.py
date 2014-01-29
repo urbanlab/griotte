@@ -13,7 +13,7 @@ Test me with :
 
 .. code-block:: bash
 
-    griotte/tools/ws_send.py store.set.wtf '{ "value" : { "a": { "b": "z" } }, "persistent": true }'
+    griotte/tools/ws_send.py store.command.set.wtf '{ "value" : { "a": { "b": "z" } }, "persistent": true }'
 
 """
 
@@ -40,8 +40,8 @@ class StorageHandler:
         self._store = self._thaw()
 
         self._ws = WebSocket(watchdog_interval=2)
-        self._ws.add_listener('store.set.*', self.set)
-        self._ws.add_listener('store.get.*', self.get)
+        self._ws.add_listener('store.command.set.*', self.set)
+        self._ws.add_listener('store.command.get.*', self.get)
 
         self.start()
 
@@ -57,7 +57,8 @@ class StorageHandler:
         variable = self._get_struct(self._get_variable_from_channel(channel), self._store)
 
         return_channel = "store.event." + ".".join(self._get_variable_from_channel(channel))
-        self._ws.send(return_channel, variable)
+
+        self._ws.send(return_channel, { 'value': variable })
 
     def set(self, channel, data):
         """ Callback for the set operation
@@ -67,7 +68,7 @@ class StorageHandler:
         * { 'a' : { 'b' : 'c' } } : deep structure
 
         The later is the same as publishing 'c' in the
-        `store.set.a.b` channel.
+        `store.command.set.a.b` channel.
 
         :param channel: The name of the channel containing the set request
         :type channel: str
@@ -98,7 +99,7 @@ class StorageHandler:
         root recursing over subkeys
 
         For instance, if { 'value' : 42 } is passed in channel
-        `store.set.some.deep.structure`, `_get_struct` will return a dict :
+        `store.command.set.some.deep.structure`, `_get_struct` will return a dict :
         { 'some' : { 'deep' : { 'structure' : 42 }}}
 
         :param chanarr: Array containing subkeys
@@ -107,7 +108,10 @@ class StorageHandler:
         :type message: str
         """
         if len(chanarr) > 0:
-            value = self._get_struct(chanarr[1:], value[chanarr[0]])
+            if chanarr[0] in value:
+                value = self._get_struct(chanarr[1:], value[chanarr[0]])
+            else:
+                value = {}
 
         return value
 
@@ -116,7 +120,7 @@ class StorageHandler:
         root recursing over subkeys
 
         For instance, if { 'value' : 42 } is passed in channel
-        `store.set.some.deep.structure`, `_set_struct` will return a dict :
+        `store.command.set.some.deep.structure`, `_set_struct` will return a dict :
         { 'some' : { 'deep' : { 'structure' : 42 }}}
 
         :param chanarr: Array containing subkeys
@@ -142,7 +146,7 @@ class StorageHandler:
 
         .. note:: may be this should be shared in griotte for other modules
         """
-        return channel.split('.')[2:]
+        return channel.split('.')[3:]
 
     def _thaw(self):
         """ Reads store from disk and returns it
@@ -155,7 +159,7 @@ class StorageHandler:
         """
         try:
             f = open(self._store_path, 'r')
-        except FileNotFoundError:
+        except IOError:
             logging.warn("Unable to open store file '%s'. Starting empty.", self._store_path)
             return {}
 

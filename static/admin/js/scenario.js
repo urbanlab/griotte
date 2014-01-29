@@ -873,7 +873,7 @@ Code.init = function(container) {
   //Griotte.init('ws://' + host + (port ? ':' + port : '') + path);
   Code.griotte = Griotte
   Code.scenario = null;
-  Code.griotte.subscribe('store.get.scenario.*', Code.cb_restoreFromWS);
+  Code.griotte.subscribe('store.command.get.scenario.*', Code.cb_restoreFromWS);
 
   var rtl = BlocklyApps.isRtl();
   var toolbox = document.getElementById('toolbox');
@@ -976,7 +976,7 @@ Code.saveScenario = function() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace()).innerHTML;
   var code = Code.wrapScenario(Blockly.Python.workspaceToCode());
   console.log(xml);
-  Griotte.publish('store.set.scenario.random', { value: { xml: xml, code: code }, persistent: true });
+  Griotte.publish('store.command.set.scenario.random', { value: { xml: xml, code: code }, persistent: true });
 };
 
 Code.SaveToWS = function(name) {

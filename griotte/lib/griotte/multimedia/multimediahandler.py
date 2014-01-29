@@ -40,7 +40,7 @@ class MultimediaHandler:
         self.backend = OMXPlayer(self.send_status)
         self.ws = WebSocket(watchdog_interval=2)
         self.ws.add_listener('video.command.*', self.video_request)
-        self.ws.add_listener('store.set.sound_level', self.sound_level)
+        self.ws.add_listener('store.command.set.sound_level', self.sound_level)
 
         self.start()
 
@@ -50,9 +50,9 @@ class MultimediaHandler:
         # mute
         # set_volume
         if 'level' in message:
-            self.backend.set_volume(message['level'])
+            self.backend.set_volume(message['value']['level'])
         if 'state' in message:
-            self.backend.mute(message['state'])
+            self.backend.mute(message['value']['state'])
 
     def video_request(self, channel, message):
         # Message types :

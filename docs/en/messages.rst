@@ -308,13 +308,13 @@ Storage commands allow to get/set variable values. Variables can contain
 whatever you want, since it will hold the content of the `data['value']` field
 in the message.
 
-For instance, the channel `store.set.foo` will set the value for the variable
+For instance, the channel `store.command.set.foo` will set the value for the variable
 `foo`. If you pass this message :
 
 .. code-block:: json
 
     {
-      "channel": "store.set.foo",
+      "channel": "store.command.set.foo",
       "timestamp": <timestamp>,
       "data":
         {
@@ -329,12 +329,12 @@ For instance, the channel `store.set.foo` will set the value for the variable
 
 then the variable `foo` will hold a hash variable with keys `bar`, `fizz`, `number`.
 
-With the `store.get` operation, sending in `store.get.foo` will trigger a
+With the `store.command.get` operation, sending in `store.command.get.foo` will trigger a
 `store.event.foo` message containing the `foo` variable value in the data
 variable.
 
-.. warning::  There is no atomic operations : if you get a value (`store.get`,
-              followed by a `store.event`), add a new key (`store.set`), and
+.. warning::  There is no atomic operations : if you get a value (`store.command.get`,
+              followed by a `store.event`), add a new key (`store.command.set`), and
               send it back, you might override another change that occured
               between the get and the set operation.
 
@@ -360,12 +360,12 @@ Some known vars with a special purpose :
 
 While vars can contain any arbitrary deep structure, a subkey can be used in the
 channel name to address a particular item in a hash. For instance, the channel
-`store.set.scenarios.scenario1` will address the scenario names `scenario1` in
-the scenario hash while `store.set.scenarios` will retrieve the complete struct
+`store.command.set.scenarios.scenario1` will address the scenario names `scenario1` in
+the scenario hash while `store.command.set.scenarios` will retrieve the complete struct
 in the scenarios key.
 
 Thus, you can save a scenario without having to push all the scenarions in the
-`store.set.scenarios` hash. While this does not prevent collision when multiple
+`store.command.set.scenarios` hash. While this does not prevent collision when multiple
 clients work on the same scenario, it will help minimizing conflicts.
 
 .. warning:: while this is a nice feature, it has implications : if one client
@@ -373,14 +373,15 @@ clients work on the same scenario, it will help minimizing conflicts.
              have to monitor `store.event.foo` and `store.event.foo.*` to catch
              direct subkeys modifications
 
-store.get.<var>
-^^^^^^^^^^^^^^^
+store.command.get.<var>
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Asks the <var> value over websocket. The storage handler will respond with a
-store.event.<var> response.
+store.event.<var> response. The complete value for the entry will be in the
+`value` key in the `data` field of the message.
 
-store.set.<var>
-^^^^^^^^^^^^^^^
+store.command.set.<var>
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Sets the <var> value. The value to set must be in the `data` field, under the
 `value` key. If the `data` field contains a `persistent` key and is set to true,
@@ -399,7 +400,7 @@ store.event.<var>
 Returns the value for variable`<var>`, in the `data` field.
 The returned value depend on the request.
 
-For instance, if StorageHandler receives a `store.get.foo` message, it will send
+For instance, if StorageHandler receives a `store.command.get.foo` message, it will send
 back a `store.event.foo` message like :
 
 .. code-block:: json
@@ -418,7 +419,7 @@ back a `store.event.foo` message like :
         }
     }
 
-On the other hand, if the request was receved for `store.get.foo.bar`, it will
+On the other hand, if the request was receved for `store.command.get.foo.bar`, it will
 send back a `store.event.foo.bar` message like :
 
 .. code-block:: json

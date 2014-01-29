@@ -87,7 +87,8 @@ Application = {
 
   launch: function() {
     console.log("Application.launch called");
-    Griotte.subscribe("store.set.sound_level", Application.sound_in);
+    Griotte.subscribe("store.command.set.sound_level", Application.sound_in);
+    Griotte.subscribe("store.event.sound_level", Application.sound_in);
     Griotte.subscribe("video.event.status", Application.video_in);
     Griotte.subscribe("video.event.stop", Application.video_in);
     Griotte.subscribe("analog.event.an0.sample", Application.sensor_in);
@@ -106,6 +107,9 @@ Application = {
     for (var i = 0; i < 4; i++) {
       Griotte.publish("analog.command.an" + i + ".periodic_sample", { every: 0.1 } );
     };
+
+    // Get initial sound settings
+    Griotte.publish("store.command.get.sound_level", {});
   },
 
   scenario: function(state) {
@@ -113,7 +117,7 @@ Application = {
   },
 
   sound: function(state, volume) {
-    Griotte.publish("store.set.sound_level", { state: state, level: parseInt(volume) } );
+    Griotte.publish("store.command.set.sound_level", { value: { state: state, level: parseInt(volume) } } );
   },
 
   normalize_digital_data: function() {
@@ -194,7 +198,7 @@ Application = {
 
 
   sound_in: function(message) {
-    data = message.data
+    data = message.data.value
     console.log("sound event in");
     console.log(data);
 
