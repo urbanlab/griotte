@@ -33,8 +33,8 @@ TBD
 Current channel list and message definitions
 ============================================
 
-meta
-----
+Meta events
+-----------
 
 The meta namespace covers the pub/sub area. It is mainly used by
 Javascript/Python pub/sub implementation.
@@ -92,7 +92,7 @@ channel or not.
 
     "data": { "client": "<ip_address>:<client_port>" }
 
-multimedia events
+Multimedia events
 -----------------
 
 Event messages are emited by various subsystems to indicate that some condition
@@ -143,11 +143,11 @@ Triggered when the volume is changed
 
 .. note:: This will be deprecated
 
-hardware events
+Hardware events
 ---------------
 
-analog.event.<an[0-3]|io[0-3]>.sample
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<analog|digital>.event.<an[0-3]|io[0-3]>.sample
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Events sent from the analog and digital handling subsystem. The port must end
 with the analog or digital port name of th RaspeOMix interface. The port name
@@ -167,12 +167,16 @@ value.
 * **raw_value** : raw value in mV
 * **converted_value** : value after conversion (in units specified in the profile)
 
-analog.event.<an[0-3]|io[0-3]>.edge
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+digital.event.io[0-3].edge.<rising|falling>
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note:: TBD
+When a state change is encountered on a digital port, an 'edge' event is sent
+over the wire. the event is either `falling` if the signal went from high state
+to low state, or `rising` otherwise.
 
-multimedia commands
+Edge events are only available on digital ports.
+
+Multimedia commands
 -------------------
 
 Commands are typically send between clients to play medias or configure some
@@ -216,7 +220,7 @@ is emitted in response to a resume command.
 Restarts media playback from the beginning. No specific event is emitted after a
 resume command.
 
-analog/digital converter commands
+Analog/digital converter commands
 ---------------------------------
 
 Messages sent to the analog handling subsystem. The port must end with the
@@ -224,12 +228,12 @@ analog port name of th RaspeOMix interface. The port name value can be 'an0',
 'an1', 'an2', 'an3'.
 
 analog.command.<port>.sample
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Asks the sensor handler to send back a single sample message (not implemented).
 
 analog.command.<port>.periodic_sample
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Asks the sensor handler to send periodic samples. this message has the following
 data field  :
@@ -237,7 +241,7 @@ data field  :
 * **every** : delay between sending a new sample message
 
 analog.command.<port>.profile
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Assigns a sensor profile to analog port <port>. The profile can have the
 following keys :
@@ -272,12 +276,32 @@ Example, assigning a thermistor-type profile to analog 0 port :
         }
     }
 
-digital converter commands
+Digital converter commands
 --------------------------
 
-.. note:: TBD (outputs, pull-ups, pwm)
+digital.command.<port>.sample
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-storage commands
+Asks the digital sensor handler to send back a single sample on designated port.
+
+digital.command.<port>.profile
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Assigns a sensor profile to analog port <port>. The profile can have the
+following keys :
+
+* **name** : a short profile name, typically representing the sensor's name (e.g.
+  "Maxbotik EZ-1")
+* **description** : a free form description of the profile
+* **formula** : a RPN formatted convertion formula to apply to the raw sensor value.
+  See 'Formulas' below.
+* **pulling** : whether the input line should be pulled `up`, `down` or not pulled (`none`, default).
+* **direction** : the port direction (`input`, `output`)
+
+.. note:: Profiles are not yet supported on digital ports. All IO ports are
+          currently set to input with pull-up enabled.
+
+Storage commands
 ----------------
 
 Storage commands allow to get/set variable values. Variables can contain
