@@ -24,10 +24,10 @@ Application = {
    */
 
   init: function() {
-    Application.started = Math.floor(Date.now() / 100);
+    Application.started = Date.now();
     Application.graph = {};
     Application.sensor_data = { 'an0': [], 'an1': [], 'an2': [], 'an3': [],
-                                'io0': [], 'io1': [], 'io2': [], 'io3': [] };
+                                'io0': [[Application.started,0]], 'io1': [[Application.started,0]], 'io2': [[Application.started,0]], 'io3': [[Application.started,0]] };
 
     Application.sliderprogress = $('#slider-current');
     Application.slidersound    = $('#slider-sound');
@@ -77,11 +77,10 @@ Application = {
     $('#radio-1min').click(function() {
       Application.graph_range = 60000;
     });
-    $('#radio-10mins').click(function() {
-      Application.graph_range = 600000;
-    });
-
     console.log("Application initialized");
+
+    setInterval(Application.normalize_digital_data, 200);
+    setInterval(Application.trim_data, 5000);
 
     Griotte.subscribe('internal.ready', Application.launch);
   },
@@ -117,37 +116,40 @@ Application = {
     Griotte.publish("store.set.sound_level", { state: state, level: parseInt(volume) } );
   },
 
+  normalize_digital_data: function() {
+    var index = Date.now();
+    for (var ch = 0; ch < 4; ch++) {
+      if (Application.sensor_data["io" + ch].length > 0) {
+        var lastval = Application.sensor_data["io" + ch][Application.sensor_data["io" + ch].length - 1][1];
+        Application.sensor_data["io" + ch].push([index, lastval]);
+      }
+    }
+  },
+
+  // Poor man's garbage collector
+  trim_data: function() {
+    var index = Date.now();
+    for (var key in dat = Object.keys(Application.sensor_data)) {
+      while (Application.sensor_data[dat[key]].length > 0 && Application.sensor_data[dat[key]][0][0] <
+             (index - 60000)) {
+         Application.sensor_data[dat[key]].shift();
+      }
+    }
+  },
+
   sensor_in: function(message) {
     var chan = message.channel.split('.')[2],
         container,
-        index = Date.now(); // - Application.started
-
-    // Dirty trick ahead :
-    if (chan[0] == 'a') {
-      /* To have flat digital graphs, we'll fill-in values for io here, even if
-      we had no incoming value. the fact is digital doesn't support
-      periodic_sampling for now so we'll just fake it this way */
-      for (var i = 0; i < 4; i++) {
-        var lastval_index = Application.sensor_data['io' + i].length
-        if (lastval_index > 1) {
-          var lastval = Application.sensor_data['io' + i][lastval_index-1][1];
-          Application.sensor_data['io' + i].push([ index, lastval ]);
-        }
-      }
-    }
+        index = Date.now(), // - Application.started
+        style = ['an','io'],
+        data = [];
 
     Application.sensor_data[chan].push([ index, message.data.raw_value ])
 
-    var style = ['an','io'];
-    var data = {'an': [], 'io': []};
-
     for (var s = style.length - 1; s >= 0; s--) {
-      var data = [];
-
-      // Come on, make a damn loop !
+      data = [];
       container = document.getElementById("graph-" + style[s] + "-container");
       for (var ch = 0; ch < 4; ch++) {
-        // We redraw both, for io-periodic sample hack effect
         data.push({ data: Application.sensor_data[style[s] + ch], label: style[s] + ch })
       }
 
