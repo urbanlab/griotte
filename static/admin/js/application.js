@@ -1,4 +1,54 @@
+$( document ).ready(function( event ) {
 
+  $('#upload-form').on('submit', function() {
+    var formData = new FormData($(this)[0]);
+
+    console.log($(this)[0]);
+
+    if ($('#filearg').val() == "") {
+      $('#popup-title').text("Don't be stupid");
+      $('#popup-content').text("You need to select a file first !");
+      $.mobile.changePage('#page-popup', {
+        transition : 'pop',
+      });        return false;
+    }
+
+    $.ajax({
+        url:"/upload",
+        type:"POST",
+        data:formData,
+        contentType:false,
+        processData:false,
+        cache:false,
+        success:function(resp){
+            $('#upload-progress').attr({value:0})
+            $('#upload-progress').slider("refresh");
+            $('#upload-slider-container').fadeOut(500);
+            //$('#upload-progress').parent().find('.ui-slider-track').fadeOut(500);
+        },
+        error:function(resp){
+            $('#upload-progress').prop({value:0});
+            //$('#upload-progress').slider('disable');
+
+            $('#popup-title').text("Unable to upload file");
+            $('#popup-content').text("Sorry, I couldn't upload the file because I had this error :" + resp.statusText);
+            $.mobile.changePage('#page-popup', {
+              transition : 'pop',
+            });
+        },
+        xhr:function(){
+            myXhr = $.ajaxSettings.xhr();
+            if(myXhr.upload){
+  //              $('#upload-progress').parent().find('.ui-slider-track').fadeIn(500);
+                $('#upload-slider-container').fadeIn(500);
+                myXhr.upload.addEventListener('progress', Application.upload_progress,false);
+            }
+            return myXhr;
+        }
+    });
+    return false;
+  });
+});
 
 $( document ).bind( "pageinit", function( event ) {
   $('#toggle-scenario').bind('slidestop', function() {
@@ -13,8 +63,43 @@ $( document ).bind( "pageinit", function( event ) {
     console.log($('#slider-sound'));
     Application.sound($('#toggle-sound').prop('value'), $('#slider-sound').prop('value'));
   });
-});
 
+
+  $('.custom-collapsible').bind('collapsibleexpand', function(event) {
+    var type = $(this).attr("id").split('-')[0];
+    console.log(type + ' collapsible expanded');
+    $.ajax({
+      url:'/api/' + type,
+      type:"GET",
+      contentType:false,
+      processData:false,
+      cache:false,
+      dataType: 'json',
+      success:function(resp) {
+        console.log(resp)
+        $("#" + type + "-list").empty();
+        console.log('got ' + resp.length + ' elements');
+        var code = "";
+        $.each(resp, function(index, element) {
+          console.log("adding " + element.name);
+          code = code + '<li class="ui-li-has-thumb ui-first-child">';
+          code = code + '<a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r">\n<img src="' + element.thumbnail + '" />\n';
+          code = code + '<h3>' + element.name + '</h3>';
+          code = code + '<p> duration ' +  element.duration + '</p>'
+          code = code + '<p> codec ' +  element.major_brand + '</p>'
+          code = code + '</a></li>';
+        });
+        console.log("adding code " + code);
+        $('#' + type + '-list').html(code);
+      },
+    });
+  });
+
+  $('#upload-progress').css('margin-left','-9999px'); // Fix for some FF versions
+  $('#upload-progress').find('.ui-slider-track').css('margin','0 15px 0 15px');
+  $('#upload-progress').parent().find('.ui-slider-handle').hide();
+  $('#upload-slider-container').hide();
+});
 
 Application = {
   /**
@@ -110,6 +195,15 @@ Application = {
 
     // Get initial sound settings
     Griotte.publish("store.command.get.sound_level", {});
+  },
+
+  upload_progress: function(evnt){
+    if(evnt.lengthComputable){
+      var ratio = (evnt.loaded / evnt.total) * 100;
+      console.log("setting val to " + ratio);
+      $('#upload-progress').val(ratio);
+      $('#upload-progress').slider('refresh');
+    }
   },
 
   scenario: function(state) {

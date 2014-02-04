@@ -29,7 +29,7 @@ import sys
 
 class OMXPlayer(object):
 
-    #_FILEPROP_REXP = re.compile(b".*audio streams (\d+) video streams (\d+) chapters (\d+) subtitles (\d+).*")
+    #_FILEPROP_REXP = re.compile(r".*audio streams (\d+) video streams (\d+) chapters (\d+) subtitles (\d+).*")
     _VIDEOPROP_REXP = re.compile(b"Video codec ([\w-]+) width (\d+) height (\d+) profile (\d+) fps ([\d.]+)")
     _AUDIOPROP_REXP = re.compile(b"Audio codec (\w+) channels (\d+) samplerate (\d+) bitspersample (\d+).*")
     _SUBTITLES_REXP = re.compile(b"Subtitle count: (\d+), state: (\w+), index: (\d+), delay: (\d+)")
@@ -38,7 +38,7 @@ class OMXPlayer(object):
 
     #duration:11005,pos:276,state:1,volume:0,amplitude:100,muted:0
 
-    #_STATUS_REXP = re.compile(b"duration:(.*),")
+    #_STATUS_REXP = re.compile(r"duration:(.*),")
     _DONE_REXP = re.compile(b"have a nice day.*")
 
     _LAUNCH_CMD = '/usr/bin/omxplayer --vol %s %s'
@@ -196,6 +196,7 @@ class OMXPlayer(object):
             self._status_callback('pause')
 
     def mute(self, sound="toggle"):
+        logging.debug("received call to mute with state %s" % sound)
         if sound == "toggle":
             self._toggle_mute()
         elif sound == 'off' and not self.muted:
@@ -241,6 +242,8 @@ class OMXPlayer(object):
         # Nothing to do if we're muted
         # this is important : omxplayer will reset muting state if volume changes
         # when mute is off
+        logging.debug("received volume command - state before change is level=%s, muted=%s" % (self.volume,self.muted))
+
         self.volume = OMXPlayer.percent_to_millibels(int(volume))
         if self.muted: return
 

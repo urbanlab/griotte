@@ -32,6 +32,9 @@ def main():
     setproctitle("griotte-server")
     app = tornado.web.Application([
         (r'/ws',   griotte.server.Server),
+        (r'/api/(\w+)', griotte.server.Api),        
+        (r'/upload', griotte.server.Uploader),
+        (r'/store/(.*)', tornado.web.StaticFileHandler, { 'path': options.store, }),
         (r'/(.*)', tornado.web.StaticFileHandler, { 'path': options.document_root,
                                                     'default_filename': 'index.html' }),
         ])
@@ -39,8 +42,10 @@ def main():
     logging.info("Starting tornado web server")
 
     logging.info("Listening on port %s" % options.server_port)
+    logging.info("Static assets path ... %s" % options.document_root)
+    logging.info("Store path ........... %s" % options.store)
+
     app.listen(options.server_port)
-    logging.info("Static assets path : %s" % options.document_root)
     tornado.ioloop.IOLoop.instance().start()
 
 if __name__ == "__main__":

@@ -19,8 +19,6 @@
 # Example:
 # tools/ws_send.py request.video '{ "command": "play", "media": "/home/pi/kitten.mp4" }'
 
-
-
 import logging
 import json
 
@@ -49,9 +47,9 @@ class MultimediaHandler:
         # unmute
         # mute
         # set_volume
-        if 'level' in message:
+        if 'level' in message['value']:
             self.backend.set_volume(message['value']['level'])
-        if 'state' in message:
+        if 'state' in message['value']:
             self.backend.mute(message['value']['state'])
 
     def video_request(self, channel, message):

@@ -21,10 +21,137 @@ import tornado.websocket
 import logging
 import json
 import fnmatch
+import os
+import re
+
+from subprocess import Popen, PIPE
+from shutil import copyfile
 
 import griotte.graceful
 
+from tornado.options import options
 from time import time
+
+class Api(tornado.web.RequestHandler):
+    def get(self, target):
+        response = []
+        for file in os.listdir("%s/%s" % (options.store, target)):
+            if not fnmatch.fnmatch(file, '*_thumbnail.jpg') and not fnmatch.fnmatch(file, '*_meta.json'):
+                response.append(self._build_response_for(file, target))
+
+        self.write(json.dumps(response))
+
+    def _build_response_for(self, file, genre):
+        response = { 'name': file, 'type': genre, 'thumbnail':"/store/%s/%s_thumbnail.jpg" % (genre, file) }
+        if genre == 'audio':
+            response['thumbnail'] = "/img/audio_thumbnail.png"
+
+        meta = "%s/%s/%s_meta.json" % (options.store, genre, file)
+        if os.path.isfile(meta):
+            logging.info("reading metadata for %s from %s" % (file, meta))
+
+            with open(meta) as data_file:
+                response.update(json.load(data_file))
+        else:
+            response['note'] = "No metadata found"
+
+        return response
+
+class MediaProcessor:
+    _VIDEO_CMD = "/usr/bin/avconv -i %s -vf scale='min(300\,iw):-1' -ss 00:00:05 -f image2 -vframes 1 %s_thumbnail.jpg"
+    _IMAGE_CMD = "/usr/bin/avconv -i %s -vf scale='min(300\,iw):-1' -f image2 -vframes 1 %s_thumbnail.jpg"
+    _AUDIO_CMD = "/usr/bin/avprobe %s"
+
+    _DUMMY_THUMBNAIL = "%s/image/.dummy.jpg"
+
+    _VIDEOPROP_REXP       = re.compile(b"\s*([\w]+)\s*:\s*(.*)")
+    _VIDEOPROP_REXP_START = re.compile(b"Input #0.*")
+    _VIDEOPROP_REXP_STOP  = re.compile(b"Output #0.*")
+
+    def __init__(self, path, mime):
+        self._family, self._type = mime.split('/')
+        self._media = path
+        if (self._family == "video"):
+            self._process_media(self._VIDEO_CMD % (self._media, self._media))
+        elif (self._family == "image"):
+            self._process_media(self._IMAGE_CMD % (self._media, self._media))
+        else:
+            self._process_media(self._AUDIO_CMD % self._media)
+            copyfile(self._DUMMY_THUMBNAIL % options.store,
+                     "%s/audio/%s_thumbnail.jpg" % (options.store,self._media))
+
+    def _process_media(self, cmd, thumbnail=None):
+        started_at = time()
+        pipe = Popen(cmd, shell=True, stderr=PIPE)
+        metadata = {}
+        in_input = False
+        for line in pipe.stderr:
+            if in_input:
+                m = self._VIDEOPROP_REXP.match(line)
+                if m:
+                    key, value = m.groups()
+                    metadata[key.decode('ascii')] = value.decode('ascii')
+            if self._VIDEOPROP_REXP_START.match(line):
+                in_input = True
+            elif self._VIDEOPROP_REXP_STOP.match(line):
+                in_input = False
+
+        # Duration needs special processing
+        if 'Duration' in metadata:
+          info = metadata['Duration'].split(', ')
+          # Re-add duration as key
+          info[0] = "duration: %s" % info[0]
+          for i in info:
+            k,v = i.split(': ')
+            metadata[k] = v
+        metadata.pop("Duration", None)
+        metadata.pop("Metadata", None)
+
+        f = open("%s_meta.json" % self._media, 'w')
+        json.dump(metadata, f)
+        f.close()
+        logging.info("thumbnail and metadata processed for file %s in %s seconds" %
+                     (self._media, time() - started_at))
+
+class Uploader(tornado.web.RequestHandler):
+
+    def _process_media(self, path, mime):
+        MediaProcessor(path, mime)
+
+    def post(self):
+        fileinfo = self.request.files['filearg'][0]
+        fname = fileinfo['filename']
+        mime = fileinfo['content_type']
+        #extn = os.path.splitext(fname)[1]
+
+        logging.debug("got upload request with file %s" % fname)
+
+        subpath = mime.split('/')[0]
+
+        if not subpath in ['video','image','audio']:
+            logging.warning("unsupported content-type %s for file %s" % (mime, fname))
+            self.send_error(415)
+            return
+
+        path = "%s/%s/" % (options.store, subpath)
+
+        if not os.path.isdir(path):
+            os.mkdir(path)
+
+        fname = re.sub('[ /,;]', '_', fname)
+        path = "%s/%s" % (path, fname)
+
+        fh = open(path, 'wb')
+        fh.write(fileinfo['body'])
+        fh.close()
+
+        logging.debug("%s uploaded to %s" % (fname, options.store))
+        #self.redirect("%s#page-medias" % self.request.headers.get('Referer'))
+
+        # start & detach a process :
+        # avconv -i ~/video.m4v -vf scale='min(180\,iw):-1' -ss 00:00:05 -f image2 -vframes 1 thumbnail.jpg
+        with tornado.stack_context.NullContext():
+            tornado.ioloop.IOLoop.instance().add_callback(self._process_media, path, mime)
 
 """
 Server class
@@ -51,8 +178,8 @@ class Server(tornado.websocket.WebSocketHandler):
         key = self.key()
         Server.clients[key] = self
 
-        logging.info("WebSocket opened for %s" % key)
-        logging.info("Currently handling %s clients" % len(Server.clients))
+        logging.debug("WebSocket opened for %s" % key)
+        logging.debug("Currently handling %s clients" % len(Server.clients))
 
     def on_message(self, message):
         logging.debug("Received : %s" % message)
@@ -73,7 +200,7 @@ class Server(tornado.websocket.WebSocketHandler):
             # Handle subscribe
             logging.info("Got subscribe for channel %s" % decoded['data']['channel'])
             Server.channel_watchers[decoded['data']['channel']].add(self.key())
-            Server._dump_channel_watchers()
+            #Server._dump_channel_watchers()
         elif decoded['channel'] == 'meta.unsubscribe':
             # Handle unsusbscribe
             logging.info("Got unsubscribe for channel %s" % decoded['data']['channel'])
@@ -82,7 +209,7 @@ class Server(tornado.websocket.WebSocketHandler):
             Server._dispatch(decoded)
 
     def on_close(self):
-        logging.info("WebSocket closed for %s" % self.key())
+        logging.debug("WebSocket closed for %s" % self.key())
         # remove client from list and from watchers
         Server._remove_channel_watcher(self.key())
 
@@ -95,7 +222,7 @@ class Server(tornado.websocket.WebSocketHandler):
         except Exception as ex:
             logging.error("Error closing connection for client : %s" % ex)
 
-        logging.info("Currently handling %s clients" % len(Server.clients))
+        logging.debug("Currently handling %s clients" % len(Server.clients))
 
     def key(self):
         return ("%s#%s" % (str(self.request.remote_ip),

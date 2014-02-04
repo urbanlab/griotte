@@ -38,18 +38,21 @@
     <script type="text/javascript" src="js/blockly/generators/python/multimedia.js"></script>
     <script type="text/javascript" src="js/scenario.js"></script>
   </head>
-  <body>
 
-    <a href="#popup-saveas" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-check ui-btn-icon-left ui-btn-a" data-transition="pop">Nom du scénario</a>
-    <div data-role="popup" id="popup-saveas" data-theme="a" class="ui-corner-all">
-        <form>
-            <div style="padding:10px 20px;">
-                <h3>Scenario</h3>
-                <label for="scenario-name" class="ui-hidden-accessible">Name :</label>
-                <input type="text" name="scenario-name" id="scenario-name" value="" placeholder="scenario-name" data-theme="a">
-                <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Save</button>
-            </div>
-        </form>
+  <body>
+    <div data-role="page" id="page-popup" data-dialog="true">
+      <div data-role="header">
+        <h1 id="popup-title">Error uploading file</h1>
+      </div>
+
+      <div data-role="content" role="main">
+        <p id="popup-content">The dialog box is different from a normal page, it is displayed on top of the current page with a dark background color. It will not span the entire width of the page. The dialog has an icon of "X" in the header to close the box.</p>
+        <a href="#" id="exit-button" data-rel="back" class="ui-btn ui-shadow ui-corner-all ui-btn-b">Ok</a>
+      </div>
+
+      <div data-role="footer">
+        <h1>Sorry about that !</h1>
+      </div>
     </div>
 
     <div data-role="page" id="page-control">
@@ -62,7 +65,7 @@
           <ul>
             <li><a href="#page-control" data-icon="grid" class="ui-state-persist ui-btn-active">Contrôle</a></li>
             <li><a href="#page-scenario" data-icon="gear">Scenario</a></li>
-            <li><a href="#page-cartels" data-icon="info">Cartels</a></li>
+            <li><a href="#page-medias" data-icon="info">Médias</a></li>
             <li><a href="#page-monitor" data-icon="alert">Moniteur</a></li>
           </ul>
         </div> <!-- /navbar -->
@@ -130,7 +133,7 @@
           <ul>
             <li><a href="#page-control" data-icon="grid">Contrôle</a></li>
             <li><a href="#page-scenario" data-icon="gear" class="ui-state-persist ui-btn-active">Scenario</a></li>
-            <li><a href="#page-cartels" data-icon="info">Cartels</a></li>
+            <li><a href="#page-medias" data-icon="info">Médias</a></li>
             <li><a href="#page-monitor" data-icon="alert">Moniteur</a></li>
           </ul>
         </div><!-- /navbar -->
@@ -152,7 +155,7 @@
 
     </div> <!-- page page-scenario-->
 
-    <div data-role="page" id="page-cartels">
+    <div data-role="page" id="page-medias">
       <div data-role="header">
 
         <h1>Griotte</h1>
@@ -162,7 +165,7 @@
           <ul>
             <li><a href="#page-control" data-icon="grid">Contrôle</a></li>
             <li><a href="#page-scenario" data-icon="gear">Scenario</a></li>
-            <li><a href="#page-cartels" data-icon="info" class="ui-state-persist ui-btn-active">Cartels</a></li>
+            <li><a href="#page-medias" data-icon="info" class="ui-state-persist ui-btn-active">Médias</a></li>
             <li><a href="#page-monitor" data-icon="alert">Moniteur</a></li>
           </ul>
         </div><!-- /navbar -->
@@ -171,6 +174,45 @@
 
       <div data-role="content">
         <div class="content-primary">
+          <h3>Upload</h3>
+
+          <div id="upload-slider-container">
+            <input type="range" id="upload-progress" data-highlight="true" min="0" max="100" value="50">
+          </div>
+
+          <form id="upload-form" enctype="multipart/form-data" action="/upload" method="post" data-ajax="false">
+            <div data-role="fieldcontain">
+              <fieldset data-role="controlgroup" data-type="horizontal">
+                <input type="file" id="filearg" name="filearg" />
+                <input type="submit" value="Upload" />
+              </fieldset>
+            </div>
+          </form>
+
+          <h3>Médias</h3>
+
+          <button type="button" data-icon="plus" data-iconpos="right" data-mini="true" data-inline="true" id="expand">Ajouter</button>
+
+          <div data-role="collapsible-set" data-iconpos="right" id="set">
+            <div data-role="collapsible" class="custom-collapsible" id="video-collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+              <h3>Vidéos</h3>
+              <ul id="video-list" data-role="listview">
+              </ul>
+            </div>
+            <div data-role="collapsible" class="custom-collapsible" id="image-collapsible" data-collapsed="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+              <h3>Images</h3>
+              <ul id="image-list" data-role="listview">
+              </ul>
+            </div>
+            <div data-role="collapsible" class="custom-collapsible" id="audio-collapsible" data-collapsed="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+              <h3>Sons</h3>
+              <ul id="audio-list" data-role="listview">
+              </ul>
+            </div>
+          </div>
+
+
+          <h3>Cartels</h3>
           <ul data-role="listview">
             <li data-role="list-divider">Demo</li>
             <li><a href="/cartels/demo/fr/index.html" target="_blank">fr</a></li>
@@ -181,7 +223,7 @@
           </ul>
         </div>
       </div> <!-- content -->
-    </div> <!-- page page-cartels-->
+    </div> <!-- page page-medias-->
 
     <div data-role="page" id="page-monitor">
       <div data-role="header">
@@ -193,7 +235,7 @@
           <ul>
             <li><a href="#page-control" data-icon="grid">Contrôle</a></li>
             <li><a href="#page-scenario" data-icon="gear">Scenario</a></li>
-            <li><a href="#page-cartels" data-icon="info">Cartels</a></li>
+            <li><a href="#page-medias" data-icon="info">Médias</a></li>
             <li><a href="#page-monitor" data-icon="alert" class="ui-state-persist ui-btn-active">Moniteur</a></li>
           </ul>
         </div><!-- /navbar -->
