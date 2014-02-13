@@ -188,6 +188,7 @@ Application = {
     Griotte.subscribe("digital.event.io1.edge.falling", Application.sensor_in);
     Griotte.subscribe("digital.event.io2.edge.falling", Application.sensor_in);
     Griotte.subscribe("digital.event.io3.edge.falling", Application.sensor_in);
+    Griotte.subscribe("store.event.medias", Blockly.Medias.callbackMedias);
 
     for (var i = 0; i < 4; i++) {
       Griotte.publish("analog.command.an" + i + ".periodic_sample", { every: 2.0 } );
@@ -195,6 +196,9 @@ Application = {
 
     // Get initial sound settings
     Griotte.publish("store.command.get.sound_level", {});
+
+    // Get initial medias
+    Griotte.publish("store.command.get.medias", {});
   },
 
   upload_progress: function(evnt){
@@ -293,16 +297,10 @@ Application = {
 
   sound_in: function(message) {
     data = message.data.value
-    console.log("sound event in");
-    console.log(data);
 
-    // Toggle
-    console.log(Application.togglesound);
-  //    Application.togglesound.slider({ value: data['state'] });
     Application.togglesound.prop({ value: data.state });
     Application.togglesound.slider('refresh');
 
-    console.log(Application.slidersound);
     if (data['state'] == 'off') {
       Application.slidersound.slider('disable');
     } else {
@@ -310,7 +308,6 @@ Application = {
     }
 
     // Slider
-    console.log("setting value prop for slider to " + data.level);
     Application.slidersound.prop({ value: data['level'] });
     Application.slidersound.slider('refresh');
   },

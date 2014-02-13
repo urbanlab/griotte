@@ -6,7 +6,7 @@ goog.require('Blockly.Python');
 Blockly.Python['multimedia_video_play'] = function(block) {
   Blockly.Python.definitions_['from_griotte_scenario_multimedia_play_video'] = 'from griotte.scenario.multimedia import play_video';
 
-  var media = Blockly.Python.quote_(block.getTitleValue('MEDIA'));
+  var media = Blockly.Python.quote_(block.getTitleValue('VIDEO'));
   var code = 'play_video(' + media + ', sync=' + block.getTitleValue('SYNC') + ')\n'
 
   return code;
@@ -15,7 +15,7 @@ Blockly.Python['multimedia_video_play'] = function(block) {
 Blockly.Python['multimedia_audio_play'] = function(block) {
   Blockly.Python.definitions_['from_griotte_scenario_multimedia_play_audio'] = 'from griotte.scenario.multimedia import play_audio';
 
-  var media = Blockly.Python.quote_(block.getTitleValue('MEDIA'));
+  var media = Blockly.Python.quote_(block.getTitleValue('AUDIO'));
   var code = 'play_video(' + media + ', sync=' + block.getTitleValue('SYNC') + ')\n'
 
   return code;

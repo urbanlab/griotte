@@ -28,7 +28,31 @@ The timestamp is in Python's time.time() format.
 Debugging messages
 ==================
 
-TBD
+Griotte source code includes tools to debug WebSocket messages.
+
+`griotte/tools/ws_send.py <channel> <json_data>`
+------------------------------------------------
+
+Send a message containing <json_data> over <channel> and exits. You don't need to include "transport level" information in the message.
+
+If you don't need to send data, just add an empty JSON struct (`'{}'`).
+For instance :
+
+Example : `griotte/tools/ws_send.py store.command.get.sound_level '{}'`
+
+`ws_send.py` also supports common configuration parameters (e.g. `--logging`).
+
+`griotte/tools/ws_listen.py <channel>`
+--------------------------------------
+
+Listens for messages on specific channel. Channel can be a wildcard (e.g. `store.set.*`). By default, channel `meta.presence` is watched.
+
+By default, `ws_listen.py` connects to `ws://127.0.0.1:8888/ws` websocket server. Option `--url` can be used to override this value.
+
+The watchdog interval can be set with `--watchdog=<interval in secs>`. If the value (let say `x`) is not 0, the watchdog will try to reconnect to the server every `x` seconds. By default, no reconnection is attempted.
+
+`ws_listen.py` also supports common configuration parameters (e.g. `--logging`).
+
 
 Current channel list and message definitions
 ============================================
@@ -333,7 +357,7 @@ With the `store.command.get` operation, sending in `store.command.get.foo` will 
 `store.event.foo` message containing the `foo` variable value in the data
 variable.
 
-.. warning::  There is no atomic operations : if you get a value (`store.command.get`,
+.. warning::  There are no atomic operations : if you get a value (`store.command.get`,
               followed by a `store.event`), add a new key (`store.command.set`), and
               send it back, you might override another change that occured
               between the get and the set operation.
@@ -379,6 +403,87 @@ store.command.get.<var>
 Asks the <var> value over websocket. The storage handler will respond with a
 store.event.<var> response. The complete value for the entry will be in the
 `value` key in the `data` field of the message.
+
+.. note:: Media requests will be processed externally : medias are not stored by the storage module, but only in the filesystem.
+
+Requests to `store.command.get.medias` will return a hash with `video`, `image` and `audio` keys, containing an array of medias.
+
+Requests to a specific media type (e.g. `store.command.get.medias.video`) will return an array of media for the specific type.
+
+Example responses
+"""""""""""""""""
+
+A get request to `store.command.get.medias` would return the following data in a `store.event.medias` response (you can send the request with with `griotte/tools/ws_send.py store.command.get.medias '{}'`) :
+
+.. code-block:: json
+
+    {
+       "image":[
+          {
+             "start":"0.000000",
+             "name":"story.jpg",
+             "duration":"00:00:00.04",
+             "bitrate":"N/A",
+             "type":"image",
+             "thumbnail":"/store/image/story.jpg_thumbnail.jpg"
+          },
+          {
+             "start":"0.000000",
+             "name":"duerne.png",
+             "duration":"00:00:00.04",
+             "bitrate":"N/A",
+             "type":"image",
+             "thumbnail":"/store/image/duerne.png_thumbnail.jpg"
+          }
+       ],
+       "audio":[
+          {
+             "start":"0.000000",
+             "name":"sound.ogg",
+             "duration":"00:00:07.96",
+             "bitrate":"47 kb/s",
+             "type":"audio",
+             "thumbnail":"/img/audio_thumbnail.png"
+          }
+       ],
+       "video":[
+          {
+             "name":"video.m4v",
+             "title":"video2.mp4",
+             "bitrate":"402 kb/s",
+             "major_brand":"mp42",
+             "creation_time":"2011-07-13 16:17:16",
+             "minor_version":"0",
+             "start":"0.000000",
+             "compatible_brands":"mp42isomavc1",
+             "duration":"00:00:14.20",
+             "encoder":"HandBrake 0.9.5 2011043000",
+             "type":"video",
+             "thumbnail":"/store/video/video.m4v_thumbnail.jpg"
+          }
+       ]
+    }
+
+A get request to `store.command.get.medias.video` would return the following data in a `store.event.medias.video` response (you can send the request with with `griotte/tools/ws_send.py store.command.get.video '{}'`) :
+
+.. code-block:: json
+
+    [
+       {
+          "name":"video.m4v",
+          "title":"video2.mp4",
+          "bitrate":"402 kb/s",
+          "major_brand":"mp42",
+          "creation_time":"2011-07-13 16:17:16",
+          "minor_version":"0",
+          "start":"0.000000",
+          "compatible_brands":"mp42isomavc1",
+          "duration":"00:00:14.20",
+          "encoder":"HandBrake 0.9.5 2011043000",
+          "type":"video",
+          "thumbnail":"/store/video/video.m4v_thumbnail.jpg"
+       }
+    ]
 
 store.command.set.<var>
 ^^^^^^^^^^^^^^^^^^^^^^^

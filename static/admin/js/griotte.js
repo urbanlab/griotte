@@ -7,8 +7,7 @@ Griotte = {
     this._events = {};
     this.ready = false;
 
-    this._ws.onopen = function() {
-      //self._ws.send("Websocket connected to " + url);
+    self._ws.onopen = function() {
       console.log("Websocket connected");
       self.ready = true;
       self.dispatch({"channel": "internal.ready"});
@@ -19,10 +18,11 @@ Griotte = {
       self.dispatch(data);
     };
 
-    this._ws.onclose = function() {
+    self._ws.onclose = function() {
       console.log("Websocket closed");
       self.ready = false;
-    }
+    };
+
     console.log("Griotte initialized");
   },
 
@@ -30,20 +30,17 @@ Griotte = {
     var self = this;
 
     if (self._events.hasOwnProperty(message.channel)) {
-        self._events[message.channel](message);
-      }
+      self._events[message.channel](message);
+    }
   },
 
   subscribe: function(channel, callback) {
     var self = this;
 
-    console.log("Receiving subscription for " + channel);
-
     self._events[channel] = callback;
-    console.log("subscribing to " + channel);
+    //console.log("subscribing to " + channel);
 
     if (channel == ".internal.ready" && self.ready) {
-      console.log("Immediate dispatch for ready");
       self.dispatch({"channel": "internal.ready"});
     }
 
@@ -53,19 +50,16 @@ Griotte = {
   unsubscribe: function(channel) {
     var self = this;
 
-    console.log("Receiving unsubscription for " + channel);
-
     delete self._events[channel];
-    console.log("unsubscribing from " + channel);
+    // console.log("unsubscribing from " + channel);
 
     self.publish("meta.subscribe", { channel: channel });
   },
 
   publish: function(channel, data) {
     var self = this;
-    console.log(data);
     if (self.ready) {
-      console.log("publishing " + JSON.stringify(data) + " to " + channel);
+      //console.log("publishing " + JSON.stringify(data) + " to " + channel);
       var msg = { channel: channel, data: data};
       self._ws.send(JSON.stringify(msg));
     } else {

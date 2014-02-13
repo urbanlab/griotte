@@ -26,6 +26,7 @@ from tornado.options import options
 
 from griotte.ws import WebSocket
 from griotte.utils import dict_merge
+from griotte.multimedia.mediamanager import MediaManager
 
 class StorageHandler:
     """ Storage handling class
@@ -54,11 +55,25 @@ class StorageHandler:
         :type message: dict -- not used
         """
 
-        variable = self._get_struct(self._get_variable_from_channel(channel), self._store)
+        # Array version of variable
+        variable_arr = self._get_variable_from_channel(channel)
+        # Joined string version of variable
+        variable = ".".join(variable_arr)
 
-        return_channel = "store.event." + ".".join(self._get_variable_from_channel(channel))
+        # Dispatch for specific elements
+        # Medias are not stored internally
+        if variable == 'medias':
+            value = MediaManager.getMedias()
+        elif variable in ['medias.audio', 'medias.video', 'medias.image']:
+            value = MediaManager.get(variable.split('.')[1])
+        else:
+            # Internal value, handled by us
+            value = self._get_struct(variable_arr, self._store)
 
-        self._ws.send(return_channel, { 'value': variable })
+        logging.debug("got get request for value %s, sending back value %s" % (variable, value))
+        return_channel = "store.event.%s" % variable
+
+        self._ws.send(return_channel, { 'value': value })
 
     def set(self, channel, data):
         """ Callback for the set operation

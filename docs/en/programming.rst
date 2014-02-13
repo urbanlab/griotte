@@ -93,4 +93,10 @@ in 3 categories :
 * :mod:`griotte.scenario.multimedia` : Multimedia functions (play video, set
   sound volume, display images ...)
 
+Debugging
+=========
+
+All griotte "binaries" support the `--logging` Tornado flag, e.g. :
+
+  griotte/bin/server --logging=DEBUG
 

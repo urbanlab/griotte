@@ -28,41 +28,20 @@ from subprocess import Popen, PIPE
 from shutil import copyfile
 
 import griotte.graceful
-
+from griotte.multimedia.mediamanager import MediaManager
 from tornado.options import options
 from time import time
 
 class Api(tornado.web.RequestHandler):
     def get(self, target):
-        response = []
-        for file in os.listdir("%s/%s" % (options.store, target)):
-            if not fnmatch.fnmatch(file, '*_thumbnail.jpg') and not fnmatch.fnmatch(file, '*_meta.json'):
-                response.append(self._build_response_for(file, target))
-
-        self.write(json.dumps(response))
-
-    def _build_response_for(self, file, genre):
-        response = { 'name': file, 'type': genre, 'thumbnail':"/store/%s/%s_thumbnail.jpg" % (genre, file) }
-        if genre == 'audio':
-            response['thumbnail'] = "/img/audio_thumbnail.png"
-
-        meta = "%s/%s/%s_meta.json" % (options.store, genre, file)
-        if os.path.isfile(meta):
-            logging.info("reading metadata for %s from %s" % (file, meta))
-
-            with open(meta) as data_file:
-                response.update(json.load(data_file))
-        else:
-            response['note'] = "No metadata found"
-
-        return response
+        self.write(MediaManager.get(target))
 
 class MediaProcessor:
     _VIDEO_CMD = "/usr/bin/avconv -i %s -vf scale='min(300\,iw):-1' -ss 00:00:05 -f image2 -vframes 1 %s_thumbnail.jpg"
     _IMAGE_CMD = "/usr/bin/avconv -i %s -vf scale='min(300\,iw):-1' -f image2 -vframes 1 %s_thumbnail.jpg"
     _AUDIO_CMD = "/usr/bin/avprobe %s"
 
-    _DUMMY_THUMBNAIL = "%s/image/.dummy.jpg"
+    _DUMMY_THUMBNAIL = "%s/.dummy.jpg" % options.medias
 
     _VIDEOPROP_REXP       = re.compile(b"\s*([\w]+)\s*:\s*(.*)")
     _VIDEOPROP_REXP_START = re.compile(b"Input #0.*")
@@ -77,8 +56,8 @@ class MediaProcessor:
             self._process_media(self._IMAGE_CMD % (self._media, self._media))
         else:
             self._process_media(self._AUDIO_CMD % self._media)
-            copyfile(self._DUMMY_THUMBNAIL % options.store,
-                     "%s/audio/%s_thumbnail.jpg" % (options.store,self._media))
+            copyfile(self._DUMMY_THUMBNAIL,
+                     "%s_thumbnail.jpg" % self._media)
 
     def _process_media(self, cmd, thumbnail=None):
         started_at = time()
@@ -133,7 +112,7 @@ class Uploader(tornado.web.RequestHandler):
             self.send_error(415)
             return
 
-        path = "%s/%s/" % (options.store, subpath)
+        path = "%s/%s/" % (options.medias, subpath)
 
         if not os.path.isdir(path):
             os.mkdir(path)
@@ -145,7 +124,7 @@ class Uploader(tornado.web.RequestHandler):
         fh.write(fileinfo['body'])
         fh.close()
 
-        logging.debug("%s uploaded to %s" % (fname, options.store))
+        logging.debug("%s uploaded to %s" % (fname, options.medias))
         #self.redirect("%s#page-medias" % self.request.headers.get('Referer'))
 
         # start & detach a process :
