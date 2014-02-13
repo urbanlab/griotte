@@ -16,6 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
+# Volume icon (audio medias) by David Peters, EXBROOK, for Wikimedia Foundation
+# http://commons.wikimedia.org/wiki/File:Volume-icon.gif
+# CC-BY-SA-3.0
+
+# Book icon (scenario medias) by David Peters, EXBROOK, for Wikimedia Foundation
+# http://commons.wikimedia.org/wiki/File:Book-icon-orange.gif?uselang=fr
+# CC-BY-SA-3.0
+
 import logging
 import json
 import os
@@ -40,9 +48,13 @@ class MediaManager:
         return MediaManager._get('image')
 
     @staticmethod
+    def getImages():
+        return MediaManager._get('scenario')
+
+    @staticmethod
     def getMedias():
         result = {}
-        for k in ['video', 'audio', 'image']:
+        for k in ['video', 'audio', 'image', 'scenario']:
             result[k] = MediaManager._get(k)
 
         return result
@@ -63,9 +75,12 @@ class MediaManager:
 
     @staticmethod
     def _build_response_for(file, genre):
-        response = { 'name': file, 'type': genre, 'thumbnail':"/store/%s/%s_thumbnail.jpg" % (genre, file) }
-        if genre == 'audio':
-            response['thumbnail'] = "/img/audio_thumbnail.png"
+        response = { 'name': file,
+                     'type': genre,
+                     'thumbnail':"/store/%s/%s_thumbnail.jpg" % (genre, file) }
+
+        if genre in ['audio', 'scenario']:
+            response['thumbnail'] = "/img/%s_thumbnail.png" % genre
 
         meta = "%s/%s/%s_meta.json" % (options.store, genre, file)
         if os.path.isfile(meta):

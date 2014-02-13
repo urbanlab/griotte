@@ -64,7 +64,7 @@ class StorageHandler:
         # Medias are not stored internally
         if variable == 'medias':
             value = MediaManager.getMedias()
-        elif variable in ['medias.audio', 'medias.video', 'medias.image']:
+        elif variable in ['medias.audio', 'medias.video', 'medias.image', 'medias.scenario']:
             value = MediaManager.get(variable.split('.')[1])
         else:
             # Internal value, handled by us

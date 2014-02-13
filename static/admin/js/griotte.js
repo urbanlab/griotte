@@ -60,7 +60,7 @@ Griotte = {
     var self = this;
     if (self.ready) {
       //console.log("publishing " + JSON.stringify(data) + " to " + channel);
-      var msg = { channel: channel, data: data};
+      var msg = { channel: channel, data: data };
       self._ws.send(JSON.stringify(msg));
     } else {
       console.log("Websocket not ready, dropping message");

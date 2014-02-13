@@ -41,8 +41,6 @@ class MediaProcessor:
     _IMAGE_CMD = "/usr/bin/avconv -i %s -vf scale='min(300\,iw):-1' -f image2 -vframes 1 %s_thumbnail.jpg"
     _AUDIO_CMD = "/usr/bin/avprobe %s"
 
-    _DUMMY_THUMBNAIL = "%s/.dummy.jpg" % options.medias
-
     _VIDEOPROP_REXP       = re.compile(b"\s*([\w]+)\s*:\s*(.*)")
     _VIDEOPROP_REXP_START = re.compile(b"Input #0.*")
     _VIDEOPROP_REXP_STOP  = re.compile(b"Output #0.*")
@@ -56,8 +54,6 @@ class MediaProcessor:
             self._process_media(self._IMAGE_CMD % (self._media, self._media))
         else:
             self._process_media(self._AUDIO_CMD % self._media)
-            copyfile(self._DUMMY_THUMBNAIL,
-                     "%s_thumbnail.jpg" % self._media)
 
     def _process_media(self, cmd, thumbnail=None):
         started_at = time()
