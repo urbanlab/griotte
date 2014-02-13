@@ -4,15 +4,16 @@ goog.provide('Blockly.Python.digital');
 goog.require('Blockly.Python');
 
 Blockly.Python['digital_sensor'] = function(block) {
-  // Search the text for a substring.
-  // var operator = block.getTitleValue('END') == 'FIRST' ? 'indexOf' : 'lastIndexOf';
-  // var argument0 = Blockly.JavaScript.valueToCode(block, 'FIND',
-  //     Blockly.JavaScript.ORDER_NONE) || '\'\'';
-  // var argument1 = Blockly.JavaScript.valueToCode(block, 'VALUE',
-  //     Blockly.JavaScript.ORDER_MEMBER) || '\'\'';
-  // var code = argument1 + '.' + operator + '(' + argument0 + ') + 1';
-  // return [code, Blockly.JavaScript.ORDER_MEMBER];
-  var code = 'print("Python generator for digital_sensor")'
+  var port = Blockly.Python.quote_(block.getTitleValue('CHANNEL'));
+  var profile = Blockly.Python.quote_(block.getTitleValue('PROFILE'));
+
+  // We need to import few stuff at init time
+  //Blockly.Python.definitions_['from_griotte_scenario_digital_set_profile'] = 'from griotte.scenario.digital import set_profile';
+
+  Blockly.Python.definitions_['from_griotte_scenario_digital_get_digital'] = 'from griotte.scenario.digital import get_digital';
+
+  var code = 'get_digital(' + port + ')'
   console.log(code)
+
   return [code, Blockly.Python.ORDER_MEMBER];
 };

@@ -82,7 +82,7 @@ class MediaManager:
         if genre in ['audio', 'scenario']:
             response['thumbnail'] = "/img/%s_thumbnail.png" % genre
 
-        meta = "%s/%s/%s_meta.json" % (options.store, genre, file)
+        meta = "%s/%s/%s_meta.json" % (options.medias, genre, file)
         if os.path.isfile(meta):
             logging.info("reading metadata for %s from %s" % (file, meta))
 

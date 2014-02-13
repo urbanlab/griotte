@@ -36,6 +36,9 @@ class Api(tornado.web.RequestHandler):
     def get(self, target):
         self.write(MediaManager.get(target))
 
+
+#### TODO: This should definitively get out of here and go into mediamanager.py
+#### TODO : implement thumbnailer
 class MediaProcessor:
     _VIDEO_CMD = "/usr/bin/avconv -i %s -vf scale='min(300\,iw):-1' -ss 00:00:05 -f image2 -vframes 1 %s_thumbnail.jpg"
     _IMAGE_CMD = "/usr/bin/avconv -i %s -vf scale='min(300\,iw):-1' -f image2 -vframes 1 %s_thumbnail.jpg"

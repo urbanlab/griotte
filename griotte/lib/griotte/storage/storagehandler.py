@@ -21,6 +21,8 @@ import logging
 import json
 import tempfile
 import sys
+import re
+import os
 
 from tornado.options import options
 
@@ -91,6 +93,35 @@ class StorageHandler:
         :type message: dict
         """
 
+        if self.is_scenario(channel):
+            self._set_scenario(channel, data)
+        else:
+            self._set_variable(channel, data)
+
+    def _set_scenario(self, channel, data):
+        if 'value' in data:
+            values = data['value']
+
+            basepath = "%s/scenario" % options.medias
+            fname = values['name']
+
+            if not os.path.isdir(basepath):
+                os.mkdir(path)
+
+            fname = re.sub('[ /,;]', '_', fname)
+
+            path = "%s/%s.py" % (basepath, fname)
+            f = open(path, 'w')
+            f.write(values["code"])
+            f.close()
+
+            path = "%s/%s.py_meta.json" % (basepath, fname)
+            f = open(path, 'w')
+            json.dump(values, f)
+            f.close()
+
+
+    def _set_variable(self, channel, data):
         if 'value' in data:
             nested = self._set_struct(self._get_variable_from_channel(channel),
                                       data['value'])
@@ -100,6 +131,9 @@ class StorageHandler:
                 self._freeze(nested)
         else:
             logging.error("A client sent a message without a valid 'value' field")
+
+    def is_scenario(self, channel):
+        return channel.split('.')[3:] == ['medias','scenario']
 
     def start(self):
         logging.info("Starting StorageHandler's websocket")

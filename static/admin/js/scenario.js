@@ -976,7 +976,7 @@ Code.saveScenario = function() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace()).innerHTML;
   var code = Code.wrapScenario(Blockly.Python.workspaceToCode());
   console.log(xml);
-  Griotte.publish('store.command.set.scenario.random', { value: { xml: xml, code: code }, persistent: true });
+  Griotte.publish('store.command.set.medias.scenario', { value: { name: "somename", xml: xml, code: code }, persistent: true });
 };
 
 Code.SaveToWS = function(name) {
