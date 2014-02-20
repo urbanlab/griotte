@@ -27,6 +27,8 @@ import griotte.graceful
 from time import sleep
 
 from griotte.multimedia.omxplayer import OMXPlayer
+from griotte.multimedia.mediamanager import MediaManager
+
 from griotte.ws import WebSocket
 
 """
@@ -57,13 +59,15 @@ class MultimediaHandler:
         # toggle_pause
         # play
         # stop
+        media = MediaManager.get_media_dict('video', message['media'])
+
         if channel == 'video.command.pause':
             logging.debug("pausing media")
             self.backend.toggle_pause()
             #self.send_status('toggle_pause') => send by cb
         elif channel == 'video.command.start':
-            logging.debug("playing media %s" % message['media'])
-            self.backend.play(message['media'])
+            logging.debug("playing media %s" % media['path'])
+            self.backend.play(media['path'])
             self.send_status('start')
         elif channel == 'video.command.stop':
             logging.debug("stopping current media")

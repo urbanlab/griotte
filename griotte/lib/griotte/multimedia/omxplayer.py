@@ -122,7 +122,6 @@ class OMXPlayer(object):
         cmd = self._LAUNCH_CMD % (self.volume, mediafile)
 
         logging.debug("launchcmd : %s" % cmd)
-        #self._process = pexpect.spawn('/bin/bash', ['-c', cmd])
         self._process = pexpect.spawn(cmd)
         fout = open('mylog.txt','bw')
         self._process.logfile = fout

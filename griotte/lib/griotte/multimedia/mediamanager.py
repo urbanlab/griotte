@@ -35,43 +35,43 @@ from tornado.options import options
 MediaManager handles listing medias in the store
 """
 class MediaManager:
-    @staticmethod
     """
     Get available videos in the store
     :rtype: string -- JSON array of videos containing name:, type: and thumbnail: keys
     """
+    @staticmethod
     def getVideos():
         return MediaManager._get('video')
 
-    @staticmethod
     """
     Get available audio clips in the store
     :rtype: string -- JSON array of clips containing name:, type: and thumbnail: keys
     """
+    @staticmethod
     def getAudios():
         return MediaManager._get('audio')
 
-    @staticmethod
     """
     Get available images in the store
     :rtype: string -- JSON array of images containing name:, type: and thumbnail: keys
     """
+    @staticmethod
     def getImages():
         return MediaManager._get('image')
 
-    @staticmethod
     """
     Get available scenarios in the store
     :rtype: string -- JSON array of scenarios containing name:, type: and thumbnail: keys
     """
+    @staticmethod
     def getScenarios():
         return MediaManager._get('scenario')
 
-    @staticmethod
     """
     Get all available medias in the store
     :rtype: string -- JSON dict of media arrays keyed by type ('video', 'audio', 'image', 'scenario'). Each array item contains name:, type: and thumbnail: keys
     """
+    @staticmethod
     def getMedias():
         result = {}
         for k in ['video', 'audio', 'image', 'scenario']:
@@ -80,13 +80,24 @@ class MediaManager:
         return result
         #json.dumps(result)
 
-    @staticmethod
     """
     Gets information on specific media
     :rtype: string -- JSON dict of metadata  with name:, type: and thumbnail: keys
     """
+    @staticmethod
     def get(target):
         return json.dumps(MediaManager._get(target))
+
+    """
+    Gets information on specific media
+
+    :param target: type of media ('video', 'image', 'audio', 'scenario')
+    :param media: media name
+    :rtype: dict -- dict of metadata  with name:, type:, fullpath: and thumbnail: keys at least
+    """
+    @staticmethod
+    def get_media_dict(target, media):
+        return MediaManager._build_response_for(target, media)
 
     @staticmethod
     def _get(target):
@@ -98,8 +109,9 @@ class MediaManager:
         return response
 
     @staticmethod
-    def _build_response_for(file, genre):
+    def _build_response_for(genre, file):
         response = { 'name': file,
+                     'path': "%s/%s/%s" % (options.medias, genre, file),
                      'type': genre,
                      'thumbnail':"/store/%s/%s_thumbnail.jpg" % (genre, file) }
 

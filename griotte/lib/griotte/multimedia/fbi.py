@@ -17,7 +17,8 @@
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import os
+import subprocess
+import shlex
 
 """
 Handles image display
@@ -25,9 +26,9 @@ Handles image display
 Just a fbi spawner
 """
 class Fbi(object):
-    _LAUNCH_CMD = 'fbi -vt 1 -a -noverbose %s'
+    _LAUNCH_CMD = '/usr/bin/fbi -vt 1 -a -noverbose %s'
 
-    def __init__(self, status_callback):
+    def __init__(self):
         self._position_thread = None
 
         # Initialize status variables
@@ -45,6 +46,9 @@ class Fbi(object):
         self.media = mediafile
 
         cmd = self._LAUNCH_CMD % mediafile
-        logging.debug("launchcmd : %s" % cmd)
+        args = shlex.split(cmd)
 
-        os.spawnl(os.P_DETACH, cmd)
+        pid = subprocess.Popen(args).pid
+        logging.debug("launched cmd : %s in pid %s" % (cmd, pid))
+
+

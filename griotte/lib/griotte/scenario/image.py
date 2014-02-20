@@ -38,6 +38,15 @@ def show_image(media):
     """
     Expecter().send('image.command.start', { "media": media })
 
+def blank_screen:
+    """ Displays image
+
+    Plays displays image returns
+
+    :param media: The image to show, relative to the media root folder
+    """
+    Expecter().send('image.command.start', { "media": "blank.png" })
+
 @atexit.register
 def __goodbye__():
     Expecter().quit()

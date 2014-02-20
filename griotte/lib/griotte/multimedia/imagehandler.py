@@ -20,17 +20,16 @@
 # tools/ws_send.py request.video '{ "command": "play", "media": "/home/pi/kitten.mp4" }'
 
 import logging
-import json
 
 import griotte.graceful
 
-from time import sleep
+from griotte.multimedia.mediamanager import MediaManager
 
-from griotte.multimedia.omxplayer import OMXPlayer
+from griotte.multimedia.fbi import Fbi
 from griotte.ws import WebSocket
 
 """
-
+Image handling class
 """
 
 class ImageHandler:
@@ -45,16 +44,19 @@ class ImageHandler:
     def image_request(self, channel, message):
         # Message types :
         # play
+        media = MediaManager.get_media_dict('image', message['media'])
+        from pprint import pprint
+        pprint(media)
         if channel == 'image.command.start':
-            logging.debug("playing image %s" % message['media'])
-            self.backend.play(message['media'])
+            logging.debug("playing image %s" % media['path'])
+            self.backend.play(media['path'])
             self.send_status('start')
 
     def send_status(self, status = "status"):
         logging.debug("sending status")
         message = { "media": self.backend.media }
 
-        self.ws.send("video.event." + status, message)
+        self.ws.send("image.event." + status, message)
 
     def start(self):
         logging.info("Starting ImageHandler's websocket")
