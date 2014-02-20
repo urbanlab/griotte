@@ -16,8 +16,35 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-from griotte.multimedia.omxplayer import OMXPlayer
-from griotte.multimedia.fbi import Fbi
-from griotte.multimedia.multimediahandler import MultimediaHandler
-from griotte.multimedia.imagehandler import ImageHandler
-from griotte.multimedia.mediamanager import MediaManager
+import logging
+import os
+
+"""
+Handles image display
+
+Just a fbi spawner
+"""
+class Fbi(object):
+    _LAUNCH_CMD = 'fbi -vt 1 -a -noverbose %s'
+
+    def __init__(self, status_callback):
+        self._position_thread = None
+
+        # Initialize status variables
+        self.muted = False
+        self.volume = self.amplitude = 0
+
+    """
+    Plays media by spawning fbi
+
+    :param media: image to show
+    """
+    def play(self, mediafile):
+        self.playing = False
+        self.position = self.media_length = 0
+        self.media = mediafile
+
+        cmd = self._LAUNCH_CMD % mediafile
+        logging.debug("launchcmd : %s" % cmd)
+
+        os.spawnl(os.P_DETACH, cmd)

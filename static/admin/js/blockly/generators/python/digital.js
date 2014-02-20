@@ -12,7 +12,7 @@ Blockly.Python['digital_sensor'] = function(block) {
 
   Blockly.Python.definitions_['from_griotte_scenario_digital_get_digital'] = 'from griotte.scenario.digital import get_digital';
 
-  var code = 'get_digital(' + port + ')'
+  var code = 'get_digital(' + port.toLowerCase() + ')'
   console.log(code)
 
   return [code, Blockly.Python.ORDER_MEMBER];

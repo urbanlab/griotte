@@ -16,8 +16,28 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-from griotte.multimedia.omxplayer import OMXPlayer
-from griotte.multimedia.fbi import Fbi
-from griotte.multimedia.multimediahandler import MultimediaHandler
-from griotte.multimedia.imagehandler import ImageHandler
-from griotte.multimedia.mediamanager import MediaManager
+"""Server-side Image groups blocks implementation
+
+This module implements server-side code generated for image blockly blocks.
+
+.. module:: multimedia
+   :platform: Unix
+
+.. moduleauthor:: Michel Blanc <mblanc@erasme.org>
+
+"""
+
+from griotte.scenario import Expecter
+
+def show_image(media):
+    """ Displays image
+
+    Plays displays image returns
+
+    :param media: The image to show, relative to the media root folder
+    """
+    Expecter().send('image.command.start', { "media": media })
+
+@atexit.register
+def __goodbye__():
+    Expecter().quit()

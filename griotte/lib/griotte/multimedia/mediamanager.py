@@ -32,26 +32,46 @@ import fnmatch
 from tornado.options import options
 
 """
-
+MediaManager handles listing medias in the store
 """
 class MediaManager:
     @staticmethod
+    """
+    Get available videos in the store
+    :rtype: string -- JSON array of videos containing name:, type: and thumbnail: keys
+    """
     def getVideos():
         return MediaManager._get('video')
 
     @staticmethod
+    """
+    Get available audio clips in the store
+    :rtype: string -- JSON array of clips containing name:, type: and thumbnail: keys
+    """
     def getAudios():
         return MediaManager._get('audio')
 
     @staticmethod
+    """
+    Get available images in the store
+    :rtype: string -- JSON array of images containing name:, type: and thumbnail: keys
+    """
     def getImages():
         return MediaManager._get('image')
 
     @staticmethod
-    def getImages():
+    """
+    Get available scenarios in the store
+    :rtype: string -- JSON array of scenarios containing name:, type: and thumbnail: keys
+    """
+    def getScenarios():
         return MediaManager._get('scenario')
 
     @staticmethod
+    """
+    Get all available medias in the store
+    :rtype: string -- JSON dict of media arrays keyed by type ('video', 'audio', 'image', 'scenario'). Each array item contains name:, type: and thumbnail: keys
+    """
     def getMedias():
         result = {}
         for k in ['video', 'audio', 'image', 'scenario']:
@@ -61,6 +81,10 @@ class MediaManager:
         #json.dumps(result)
 
     @staticmethod
+    """
+    Gets information on specific media
+    :rtype: string -- JSON dict of metadata  with name:, type: and thumbnail: keys
+    """
     def get(target):
         return json.dumps(MediaManager._get(target))
 

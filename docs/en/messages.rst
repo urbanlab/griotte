@@ -128,28 +128,28 @@ They can be emitted for video, audio and image playback.
 
 Sent when a video, a sound or an image is starts playing.
 
-<video|audio|image>.event.stop
+<video|audio>.event.stop
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Sent when a video, a sound or an image playback is stopped. Stopped means that
 the player is not able to resume playback.
 
-<video|audio|image>.event.pause
+<video|audio>.event.pause
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Sent when a video, a sound or an image playback is paused. A paused media can be
 resumed with `<video|audio|image>.command.resume`_ .
 
-<video|audio|image>.event.resume
+<video|audio>.event.resume
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Sent when a media is resumed with `<video|audio|image>.command.resume`_ after a
 pause.
 
-<video|audio|image>.event.status
+<video|audio>.event.status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Send periodically by media players during playback.
+Sent periodically by media players during playback.
 Status event data may containt the following fields:
 
 * **position** : the current position in the media, in msecs
@@ -160,7 +160,7 @@ Status event data may containt the following fields:
 * **muted** : whether the media is currently muted
 * **media** : the media name in the storage
 
-<video|audio|image>.event.changed_volume
+<video|audio>.event.changed_volume
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Triggered when the volume is changed
@@ -218,27 +218,27 @@ A `<video|audio|image>.event.start`_ event is emitted in response to a stop
 command, and the player might send several `<video|audio|image>.event.status`_
 events during the playback.
 
-<video|audio|image>.command.stop
+<video|audio>.command.stop
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Stops media playback completely. The media can not be resumed after a stop
-command. A `<video|audio|image>.event.stop`_ event is emitted in response to a
+command. A `<video|audio>.event.stop`_ event is emitted in response to a
 stop command.
 
-<video|audio|image>.command.pause
+<video|audio>.command.pause
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Pauses media playback A `<video|audio|image>.event.pause`_ event is emitted in
 response to a pause command. A paused media can be resumed with
-`<video|audio|image>.command.resume`_ .
+`<video|audio>.command.resume`_ .
 
-<video|audio|image>.command.resume
+<video|audio>.command.resume
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Resumes a previously paused media. A `<video|audio|image>.event.resume`_ event
 is emitted in response to a resume command.
 
-<video|audio|image>.command.rewind
+<video|audio>.command.rewind
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Restarts media playback from the beginning. No specific event is emitted after a
