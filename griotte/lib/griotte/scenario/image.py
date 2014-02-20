@@ -27,6 +27,8 @@ This module implements server-side code generated for image blockly blocks.
 
 """
 
+import atexit
+
 from griotte.scenario import Expecter
 
 def show_image(media):
@@ -38,7 +40,7 @@ def show_image(media):
     """
     Expecter().send('image.command.start', { "media": media })
 
-def blank_screen:
+def blank_screen():
     """ Displays image
 
     Plays displays image returns

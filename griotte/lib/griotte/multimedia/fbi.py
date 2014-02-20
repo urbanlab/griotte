@@ -18,7 +18,6 @@
 
 import logging
 import subprocess
-import shlex
 
 """
 Handles image display
@@ -26,29 +25,38 @@ Handles image display
 Just a fbi spawner
 """
 class Fbi(object):
-    _LAUNCH_CMD = '/usr/bin/fbi -vt 1 -a -noverbose %s'
+    _LAUNCH_CMD = ['/usr/bin/fbi', '-vt', '1', '-a', '-noverbose', '-1' ]
 
     def __init__(self):
-        self._position_thread = None
+        self._popen = None
 
-        # Initialize status variables
-        self.muted = False
-        self.volume = self.amplitude = 0
+        # Clean up framebuffer
+        subprocess.Popen(['setterm', '-cursor', 'off'],
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        subprocess.Popen("echo 0 > /sys/class/graphics/fbcon/cursor_blink",
+                         shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        subprocess.Popen(['dd', 'if=/dev/zero', 'of=/dev/fb0'],
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     """
     Plays media by spawning fbi
 
-    :param media: image to show
+    :param mediafile: image to show
     """
     def play(self, mediafile):
-        self.playing = False
-        self.position = self.media_length = 0
         self.media = mediafile
+        cmd = self._LAUNCH_CMD + [ mediafile ]
 
-        cmd = self._LAUNCH_CMD % mediafile
-        args = shlex.split(cmd)
+        if self._popen:
+            logging.debug("terminating existing instance %s" % self._popen.pid)
+            # Sorry, I have nothing better
+            # fni forks/detach itself and gets out of control
+            subprocess.Popen(['/usr/bin/killall','fbi']).wait()
+            self._popen.wait()
+            logging.debug("instance terminated with code %s" % self._popen.returncode)
 
-        pid = subprocess.Popen(args).pid
-        logging.debug("launched cmd : %s in pid %s" % (cmd, pid))
+        self._popen = subprocess.Popen(cmd, stdin=subprocess.PIPE,
+                                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        logging.debug("launched cmd : %s in pid %s" % (" ".join(cmd), self._popen.pid))
 
 
