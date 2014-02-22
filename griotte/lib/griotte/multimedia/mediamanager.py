@@ -36,43 +36,11 @@ MediaManager handles listing medias in the store
 """
 class MediaManager:
     """
-    Get available videos in the store
-    :rtype: string -- JSON array of videos containing name:, type: and thumbnail: keys
-    """
-    @staticmethod
-    def getVideos():
-        return MediaManager._get('video')
-
-    """
-    Get available audio clips in the store
-    :rtype: string -- JSON array of clips containing name:, type: and thumbnail: keys
-    """
-    @staticmethod
-    def getAudios():
-        return MediaManager._get('audio')
-
-    """
-    Get available images in the store
-    :rtype: string -- JSON array of images containing name:, type: and thumbnail: keys
-    """
-    @staticmethod
-    def getImages():
-        return MediaManager._get('image')
-
-    """
-    Get available scenarios in the store
-    :rtype: string -- JSON array of scenarios containing name:, type: and thumbnail: keys
-    """
-    @staticmethod
-    def getScenarios():
-        return MediaManager._get('scenario')
-
-    """
     Get all available medias in the store
     :rtype: string -- JSON dict of media arrays keyed by type ('video', 'audio', 'image', 'scenario'). Each array item contains name:, type: and thumbnail: keys
     """
     @staticmethod
-    def getMedias():
+    def get_all():
         result = {}
         for k in ['video', 'audio', 'image', 'scenario']:
             result[k] = MediaManager._get(k)
@@ -85,42 +53,42 @@ class MediaManager:
     :rtype: string -- JSON dict of metadata  with name:, type: and thumbnail: keys
     """
     @staticmethod
-    def get(target):
-        return json.dumps(MediaManager._get(target))
+    def get(genre):
+        return json.dumps(MediaManager._get(genre))
 
     """
     Gets information on specific media
 
-    :param target: type of media ('video', 'image', 'audio', 'scenario')
-    :param media: media name
+    :param genre: type of media ('video', 'image', 'audio', 'scenario')
+    :param name: media name
     :rtype: dict -- dict of metadata  with name:, type:, fullpath: and thumbnail: keys at least
     """
     @staticmethod
-    def get_media_dict(target, media):
-        return MediaManager._build_response_for(target, media)
+    def get_media_dict(genre, name):
+        return MediaManager._build_response_for(genre, name)
 
     @staticmethod
-    def _get(target):
+    def _get(genre):
         response = []
-        for file in os.listdir("%s/%s" % (options.medias, target)):
-            if not fnmatch.fnmatch(file, '*_thumbnail.jpg') and not fnmatch.fnmatch(file, '*_meta.json'):
-                response.append(MediaManager._build_response_for(file, target))
+        for f in os.listdir("%s/%s" % (options.medias, genre)):
+            if not fnmatch.fnmatch(f, '*_thumbnail.jpg') and not fnmatch.fnmatch(f, '*_meta.json'):
+                response.append(MediaManager._build_response_for(genre, f))
 
         return response
 
     @staticmethod
-    def _build_response_for(genre, file):
-        response = { 'name': file,
-                     'path': "%s/%s/%s" % (options.medias, genre, file),
+    def _build_response_for(genre, name):
+        response = { 'name': name,
+                     'path': "%s/%s/%s" % (options.medias, genre, name),
                      'type': genre,
-                     'thumbnail':"/store/%s/%s_thumbnail.jpg" % (genre, file) }
+                     'thumbnail':"/store/%s/%s_thumbnail.jpg" % (genre, name) }
 
         if genre in ['audio', 'scenario']:
             response['thumbnail'] = "/img/%s_thumbnail.png" % genre
 
-        meta = "%s/%s/%s_meta.json" % (options.medias, genre, file)
+        meta = "%s/%s/%s_meta.json" % (options.medias, genre, name)
         if os.path.isfile(meta):
-            logging.info("reading metadata for %s from %s" % (file, meta))
+            logging.info("reading metadata for %s from %s" % (name, meta))
 
             with open(meta) as data_file:
                 response.update(json.load(data_file))

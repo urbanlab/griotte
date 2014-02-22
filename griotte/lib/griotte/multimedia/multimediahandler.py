@@ -61,6 +61,9 @@ class MultimediaHandler:
         # stop
         media = MediaManager.get_media_dict('video', message['media'])
 
+        from pprint import pprint
+        pprint(media)
+
         if channel == 'video.command.pause':
             logging.debug("pausing media")
             self.backend.toggle_pause()

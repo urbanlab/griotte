@@ -57,15 +57,23 @@ Blockly.Python['multimedia_audio_stop'] = function(block) {
 };
 
 Blockly.Python['multimedia_black'] = function(block) {
-  code = 'stop_video()\n';
+  Blockly.Python.definitions_['from_griotte_scenario_image_blank_screen'] = 'from griotte.scenario.image import blank_screen';
+
+  var code = 'blank_screen()\n';
   code += ''
   return code;
 };
 
 Blockly.Python['multimedia_wait'] = function(block) {
+  Blockly.Python.definitions_['from_griotte_scenario_sleep'] = 'from time import sleep';
+
+  var duration = Blockly.Python.valueToCode(block, 'DURATION',
+    Blockly.Python.ORDER_MULTIPLICATIVE) || '0';
+
+  var code = 'sleep(' + duration + ')\n';
+  code += ''
+
   return code;
 };
-
-
 
 

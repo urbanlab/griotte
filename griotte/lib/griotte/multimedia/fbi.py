@@ -18,6 +18,7 @@
 
 import logging
 import subprocess
+import atexit
 
 """
 Handles image display
@@ -31,6 +32,7 @@ class Fbi(object):
         self._popen = None
 
         # Clean up framebuffer
+        logging.info("Clearing framebuffer")
         subprocess.Popen(['setterm', '-cursor', 'off'],
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         subprocess.Popen("echo 0 > /sys/class/graphics/fbcon/cursor_blink",
@@ -59,4 +61,10 @@ class Fbi(object):
                                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         logging.debug("launched cmd : %s in pid %s" % (" ".join(cmd), self._popen.pid))
 
-
+@atexit.register
+def __goodbye__():
+    logging.info("Killing leftover fbi instances")
+    subprocess.Popen(['/usr/bin/killall','fbi']).wait()
+    logging.info("Restoring fb cursor")
+    subprocess.Popen("echo 1 > /sys/class/graphics/fbcon/cursor_blink",
+        shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)

@@ -31,7 +31,7 @@ import atexit
 
 from griotte.scenario import Expecter
 
-def show_image(media):
+def play_image(media):
     """ Displays image
 
     Plays displays image returns

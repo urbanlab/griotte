@@ -5,25 +5,6 @@ goog.provide('Blockly.Blocks.multimedia');
 goog.require('Blockly.Blocks');
 goog.require('Blockly.Medias');
 
-// Blockly.Blocks['multimedia_audio_play'] = {
-//   init: function() {
-//     // Load media list on init
-//   // Delegate real initialization in ajax callback
-//     this.setHelpUrl('http://www.erasme.org/');
-//     this.setColour(65);
-//     this.appendDummyInput()
-//         .appendTitle("Jouer le son")
-//         .appendTitle(new Blockly.FieldDropdown([['a','a'],['b','b']]), "MEDIA");
-//     this.appendDummyInput()
-//         .appendTitle(new Blockly.FieldDropdown([
-//              ["et attendre la fin", "True"],
-//              ["et passer à la suite", "False"]]), "SYNC");
-//     this.setPreviousStatement(true);
-//     this.setNextStatement(true);
-//     this.setTooltip('Joue le son sélectionné une seule fois');
-//   },
-// };
-
 Blockly.Blocks['multimedia_audio_play'] = {
   init: function() {
     // Load media list on init
@@ -67,15 +48,15 @@ Blockly.Blocks['multimedia_image_play'] = {
     this.appendDummyInput()
         .appendTitle("Afficher l'image")
         .appendTitle(new Blockly.FieldDropdown(Blockly.Medias.getMediasFor('image')), "IMAGE");
-    this.appendValueInput("DURATION")
-        .setCheck("")
-        .appendTitle("pendant");
-    this.appendDummyInput()
-        .appendTitle("secondes");
+    // this.appendValueInput("DURATION")
+    //     .setCheck("")
+    //     .appendTitle("pendant");
+    // this.appendDummyInput()
+    //     .appendTitle("secondes");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('Affiche l\'image sélectionnée pendant le nombre de secondes voulu');
+    this.setTooltip('Affiche l\'image sélectionnée');
   }
 };
 

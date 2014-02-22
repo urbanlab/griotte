@@ -270,7 +270,11 @@ Application = {
 
     for (var s = style.length - 1; s >= 0; s--) {
       data = [];
-      container = document.getElementById("graph-" + style[s] + "-container");
+      //container = document.getElementById("graph-" + style[s] + "-container");
+      container = $("#graph-" + style[s] + "-container")
+      if (! container.is(":visible")) {
+        return;
+      }
       for (var ch = 0; ch < 4; ch++) {
         data.push({ data: Application.sensor_data[style[s] + ch], label: style[s] + ch })
       }
@@ -278,7 +282,7 @@ Application = {
       Application.graph_options[style[s]]['xaxis']['min'] = Math.max(Application.started, index - Application.graph_range);
       Application.graph_options[style[s]]['xaxis']['max'] = index;
 
-      Application.graph[style[s]] = Flotr.draw(container,
+      Application.graph[style[s]] = Flotr.draw(container.get(0),
                                                data,
                                                Application.graph_options[style[s]]);
     };
