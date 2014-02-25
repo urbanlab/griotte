@@ -42,21 +42,6 @@
   </head>
 
   <body>
-    <div data-role="page" id="page-popup" data-dialog="true">
-      <div data-role="header">
-        <h1 id="popup-title">Error uploading file</h1>
-      </div>
-
-      <div data-role="content" role="main">
-        <p id="popup-content">The dialog box is different from a normal page, it is displayed on top of the current page with a dark background color. It will not span the entire width of the page. The dialog has an icon of "X" in the header to close the box.</p>
-        <a href="#" id="exit-button" data-rel="back" class="ui-btn ui-shadow ui-corner-all ui-btn-b">Ok</a>
-      </div>
-
-      <div data-role="footer">
-        <h1>Sorry about that !</h1>
-      </div>
-    </div>
-
     <div data-role="page" id="page-control">
       <div data-role="header">
 
@@ -125,7 +110,7 @@
 
     </div> <!-- /page page-control -->
 
-    <div data-role="page" id="page-scenario" height="100%">
+    <div data-role="page" id="page-scenario">
       <div data-role="header">
 
         <h1>Griotte</h1>
@@ -142,7 +127,7 @@
       </div><!-- header -->
 
       <div data-role="content">
-        <div id="content_area" height="100%">
+        <div id="content_area" style="height: 100%; width: 100%;">
         </div>
       </div> <!-- content -->
 
@@ -362,6 +347,16 @@
       </div> <!-- content -->
     </div> <!-- page page-monitor -->
 
+    <div data-role="page" id="page-popup" data-dialog="true">
+      <div data-role="header">
+        <h1 id="popup-title">Error uploading file</h1>
+      </div>
+
+      <div data-role="footer">
+        <h1>Sorry about that !</h1>
+      </div>
+    </div>
+
     <div data-role="page" id="analog0">
       <div data-role="header">
         <h1>Analog 0</h1>
@@ -397,6 +392,7 @@
         <block type="logic_ternary"></block>
       </category>
       <category name="Boucles">
+        <block type="controls_repeat_forever"></block>
         <block type="controls_repeat_ext">
           <value name="TIMES">
             <block type="math_number">
@@ -558,22 +554,29 @@
   </body>
 
   <script type="text/javascript">
-$( document ).bind("pageinit", function( event ) {
+//$( document ).bind("pageinit", function( event ) {
   // function pausecomp(ms) {
   //   ms += new Date().getTime();
   //   while (new Date() < ms){}
   // }
-
+$( document ).ready( function( event ) {
   var scheme = window.location.protocol,
       host   = location.hostname,
       port   = 8888, // location.port,
       path   = '/ws';
 
+  $('#content_area').height($(window).height()*0.8);
   Griotte.init('ws://' + host + (port ? ':' + port : '') + path);
   Application.init();
+  //$("#page-scenario").trigger('refresh');
+});
+
+$("#page-scenario").on("pageshow", function() {
   Code.init("content_area");
-  $("#page-scenario").trigger('refresh');
-  });
+  console.log("PAGESHOW hit !");
+  console.log(this);
+});
+
 </script>
 
 </html>
