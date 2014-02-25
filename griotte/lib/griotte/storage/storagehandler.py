@@ -65,7 +65,7 @@ class StorageHandler:
         # Dispatch for specific elements
         # Medias are not stored internally
         if variable == 'medias':
-            value = MediaManager.getMedias()
+            value = MediaManager.get_all()
         elif variable in ['medias.audio', 'medias.video', 'medias.image', 'medias.scenario']:
             value = MediaManager.get(variable.split('.')[1])
         else:
