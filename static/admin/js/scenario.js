@@ -917,17 +917,25 @@ Code.init = function(container) {
   //Blockly.fireUiEvent(window, 'resize');
 
   BlocklyApps.bindClick('scenario-save', Code.saveScenario);
-  BlocklyApps.bindClick('scenario-trash',
-      function() {Code.discard(); Code.renderContent();});
-  //BlocklyApps.bindClick('scenario-run',);
+  BlocklyApps.bindClick('scenario-trash', function() {
+    Code.discard(); Code.renderContent();
+  });
 
+  $('#scenario-name').keyup(function(event) {
+    console.log($('#scenario-name').val());
+    Code.current_scenario = $(this).val();
+    if ($(this).val().length > 0) {
+      $('#scenario-save').button( "enable" );
+      if ( event.which == 13 ) {
+        event.preventDefault();
+        $(this).blur();
+        Code.saveScenario();
+      }
+    } else {
+      $('#scenario-save').button( "disable" );
+    }
+  });
 };
-
-/*if (window.location.pathname.match(/readonly.html$/)) {
-  window.addEventListener('load', BlocklyApps.initReadonly);
-} else {
-  window.addEventListener('load', Code.init);
-}*/
 
 /**
  * Discard all blocks from the workspace.
@@ -969,14 +977,22 @@ Code.wrapScenario = function(code) {
 };
 
 Code.saveScenario = function() {
-  if (!Code.current_scenario) {
-    $("#popup-saveas" ).popup();
+  if (!Code.current_scenario || (Code.current_scenario.length == 0)) {
+    return;
   }
-  console.log("Saving scenario");
+
+  console.log('saving scenario to ' + Code.current_scenario);
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace()).innerHTML;
   var code = Code.wrapScenario(Blockly.Python.workspaceToCode());
   console.log(xml);
-  Griotte.publish('store.command.set.medias.scenario', { value: { name: "somename", xml: xml, code: code }, persistent: true });
+  Griotte.publish('store.command.set.medias.scenario',
+                  { value:
+                    { name: Code.current_scenario,
+                      xml: xml,
+                      code: code
+                    },
+                    persistent: true
+                  });
 };
 
 Code.SaveToWS = function(name) {
