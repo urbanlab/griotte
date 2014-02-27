@@ -42,6 +42,7 @@ class Api(tornado.web.RequestHandler):
 class MediaProcessor:
     _VIDEO_CMD = "/usr/bin/avconv -i %s -vf scale='min(300\,iw):-1' -ss 00:00:05 -f image2 -vframes 1 %s_thumbnail.jpg"
     _IMAGE_CMD = "/usr/bin/avconv -i %s -vf scale='min(300\,iw):-1' -f image2 -vframes 1 %s_thumbnail.jpg"
+    _THUMBNAILER_SQUARE_CMD = "/usr/bin/avconv -i %s -vf crop='min(iw\,ih):min(iw\,ih)' -f image2 -vframes 1 %s_square_thumbnail.jpg"
     _AUDIO_CMD = "/usr/bin/avprobe %s"
 
     _VIDEOPROP_REXP       = re.compile(b"\s*([\w]+)\s*:\s*(.*)")
@@ -53,8 +54,10 @@ class MediaProcessor:
         self._media = path
         if (self._family == "video"):
             self._process_media(self._VIDEO_CMD % (self._media, self._media))
+            Popen(self._THUMBNAILER_SQUARE_CMD % (self._media, self._media), shell=True)
         elif (self._family == "image"):
             self._process_media(self._IMAGE_CMD % (self._media, self._media))
+            Popen(self._THUMBNAILER_SQUARE_CMD % (self._media, self._media), shell=True)
         else:
             self._process_media(self._AUDIO_CMD % self._media)
 

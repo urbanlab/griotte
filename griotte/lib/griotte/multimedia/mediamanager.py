@@ -81,10 +81,13 @@ class MediaManager:
         response = { 'name': name,
                      'path': "%s/%s/%s" % (options.store, genre, name),
                      'type': genre,
-                     'thumbnail':"/store/%s/%s_thumbnail.jpg" % (genre, name) }
+                     'thumbnail':"/store/%s/%s_thumbnail.jpg" % (genre, name),
+                     'thumbnail_square':"/store/%s/%s_square_thumbnail.jpg" % (genre, name),
+                      }
 
         if genre in ['audio', 'scenario']:
             response['thumbnail'] = "/img/%s_thumbnail.png" % genre
+            response['thumbnail_square'] = "/img/%s_thumbnail.png" % genre
 
         meta = "%s/%s/%s_meta.json" % (options.store, genre, name)
         if os.path.isfile(meta):

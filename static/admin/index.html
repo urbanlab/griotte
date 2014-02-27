@@ -181,29 +181,35 @@
 
           <h3>Médias</h3>
 
+
+
+
           <button type="button" data-icon="plus" data-iconpos="right" data-mini="true" data-inline="true" id="expand">Ajouter</button>
 
           <div data-role="collapsible-set" data-iconpos="right" id="set">
             <div data-role="collapsible" class="custom-collapsible" id="video-collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
               <h3>Vidéos</h3>
-              <ul id="video-list" data-role="listview">
+              <ul id="video-list" data-role="listview" data-split-icon="delete" data-inset="true">
               </ul>
             </div>
             <div data-role="collapsible" class="custom-collapsible" id="image-collapsible" data-collapsed="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
               <h3>Images</h3>
-              <ul id="image-list" data-role="listview">
+              <ul id="image-list" data-role="listview" data-split-icon="delete" data-inset="true">
               </ul>
             </div>
             <div data-role="collapsible" class="custom-collapsible" id="audio-collapsible" data-collapsed="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
               <h3>Sons</h3>
-              <ul id="audio-list" data-role="listview">
+              <ul id="audio-list" data-role="listview" data-split-icon="delete" data-inset="true">
               </ul>
             </div>
             <div data-role="collapsible" class="custom-collapsible" id="scenario-collapsible" data-collapsed="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
               <h3>Scenarios</h3>
-              <ul id="scenario-list" data-role="listview">
-              </ul>
+              <div id="scenario-list">
+              <!-- <ul id="scenario-list" data-split-theme="a" data-split-icon="delete" data-inset="true">
+              </ul> -->
+              </div>
             </div>
+
           </div>
 
 

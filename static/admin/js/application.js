@@ -82,35 +82,45 @@ $( document ).bind( "pageinit", function( event ) {
         var code = "";
         $.each(resp, function(index, element) {
           console.log("adding " + element.name);
-          code += '<li class="ui-li-has-thumb ui-first-child">';
-          code += '<a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r">\n<img src="' + element.thumbnail + '" />\n';
-          code += '<h3>' + element.name + '</h3>';
-
-          $.each(['description', 'duration', 'codec'], function(index, key) {
-            console.log(key + "=>" + element[key]);
-            if (element[key]) {
-              keycap = key[0].toUpperCase() + key.slice(1); // capitalize... thanks JS
-              code = code + '<p><strong> ' + keycap + '</strong> : ' +  element[key] + '</p>';
-            };
-          });
           if (type == 'scenario') {
-            code += '<button type="button" data-inline="true" data-mini="true" data-role="button" data-icon="edit">Edit</button>';
-            code += '<button type="button" data-inline="true" data-mini="true" data-role="button" data-icon="run">Run</button>';
             code += '<div data-role="fieldcontain"> \
-              <label for="toggle-sound">Son</label> \
-              <select name="toggle-sound" id="toggle-sound" data-role="slider" data-mini="true"> \
+              <label for="slider_runner">Runner</label> \
+              <select name="slider_runner" id="slider_runner" data-role="slider" data-mini="true"> \
                 <option value="off">Off</option> \
-                <option value="on">On</option> \
+                <option value="on" selected>On</option> \
               </select> \
-            </div>';
+            </div> <!-- fieldcontain -->';
+
+            // code += '<button type="button" data-inline="true" data-mini="true" data-role="button" data-icon="edit">Edit</button>';
+            // code += '<button type="button" data-inline="true" data-mini="true" data-role="button" data-icon="run">Run</button>';
+            // code += '<div data-role="fieldcontain"> \
+            //   <label for="toggle-sound">Son</label> \
+            //   <select name="toggle-sound" id="toggle-sound" data-role="slider" data-mini="true"> \
+            //     <option value="off">Off</option> \
+            //     <option value="on">On</option> \
+            //   </select> \
+            // </div>';
           } else {
-            code += '<button type="button" data-inline="true" data-mini="true" data-role="button" data-icon="delete">Play</button>';
+            code += '<li>';
+
+            code += '  <a href="#"><img src="' + element.thumbnail_square + '">';
+            code += '<h3>' + element.name + '</h3>';;
+
+            $.each(['description', 'duration', 'codec'], function(index, key) {
+              console.log(key + "=>" + element[key]);
+              if (element[key]) {
+                keycap = key[0].toUpperCase() + key.slice(1); // capitalize... thanks JS
+                code = code + '<p><strong> ' + keycap + '</strong> : ' +  element[key] + '</p>';
+              };
+            });
+            code += '</a><a href="#" data-rel="popup" data-griotte-media-target="' + type + '/' + element.name + '" data-position-to="window" data-transition="pop">Supprimer</a></li>';
           }
-          code += '<button type="button" data-inline="true" data-mini="true" data-role="button" data-icon="delete">Delete</button>';
-          code += '</a></li>';
         });
         console.log("adding code " + code);
-        $('#' + type + '-list').html(code);
+        $('#' + type + '-list').html(code).listview('refresh');
+        $('a[data-griotte-media-target]').click(function () {
+          console.log("removing " + $(this).data("griotteMediaTarget"));
+        })
       },
     });
   });
