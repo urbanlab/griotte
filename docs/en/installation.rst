@@ -123,11 +123,12 @@ If you'd rather work in a virtualenv :
 or
     make virtual.prod
 
-.. warning:: Running in a virtualenv may cause trouble unless you have installed
-             as root. Since RPIO requires you to be root and virtualenv doesn't
-             work when sudo'ing, you'll have to issue `make virtual....` as root.
-             You still can work fine under virtualenv if you don't use
-             `bin/gpio`.
+.. warning:: It is highly recommended to install Griotte system-wide.
+            Running in a virtualenv may cause trouble unless you have installed
+            as root. Since RPIO requires you to be root and virtualenv doesn't
+            work when sudo'ing, you'll have to issue `make virtual....` as root.
+            You still can work fine under virtualenv if you don't use
+            `bin/gpio`.
 
 If you get an error using `make virtual.dev` or `make virtual.prod`, try
 regenerating virtualenv bootstrap scripts :
@@ -184,7 +185,6 @@ Start the required handlers like so :
     <prefix>/multimedia
     <prefix>/director
 
-Head to [the server](http://localhost:8888) (change localhost if you installed
-it somewhere else), and start playing with the application !
+Head to `your server <http://localhost:8888>`_ (change localhost if you installed it somewhere else), and start playing with the application !
 
 If you want to install an AP on you Pi, check out :doc:`installation_optional`.

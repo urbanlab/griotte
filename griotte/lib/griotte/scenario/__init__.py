@@ -161,8 +161,6 @@ class Expecter:
             self._ws.stop()
 
         def on_message(self, channel, data):
-            print("message on channel %s" % channel)
-
             try:
                 self._subscriptions[channel].put(data)
             except KeyError:

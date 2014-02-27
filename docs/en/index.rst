@@ -30,7 +30,7 @@ Developper's guides
 -------------------
 
 .. toctree::
-  :maxdepth: 2
+  :maxdepth: 3
 
   programming
   messages

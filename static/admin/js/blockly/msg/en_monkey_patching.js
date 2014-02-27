@@ -5,4 +5,6 @@ goog.provide('Blockly.Msg.fr');
 goog.require('Blockly.Msg');
 
 Blockly.Msg.DISCARD_CODE = "Discard all blocks ?"
+Blockly.Msg.OPEN_SCENARIO = "Open..."
+
 

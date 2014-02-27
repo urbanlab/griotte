@@ -1,17 +1,17 @@
-html, body {
+/*html, body {
   height: 100%;
-}
-body {
+}*/
+/*body {
   margin: 0;
   overflow: hidden;
 }
 h1 {
   margin-left: 5px;
   margin-right: 5px;
-}
+}*/
 
 /* Tabs */
-#tabRow>td {
+/*#tabRow>td {
   border: 1px solid #ccc;
 }
 td.tabon {
@@ -39,12 +39,12 @@ td.tabmax {
   padding-left: 10px;
   padding-right: 10px;
   text-align: right;
-}
-html[dir=rtl] td.tabmax {
+}*/
+/*html[dir=rtl] td.tabmax {
   text-align: left;
-}
+}*/
 
-table {
+/*table {
   border-collapse: collapse;
   margin: 0;
   padding: 0;
@@ -53,40 +53,40 @@ table {
 td {
   padding: 0;
   vertical-align: top;
-}
-.content {
+}*/
+/*.content {
   visibility: hidden;
   margin: 0;
   padding: 1ex;
   position: absolute;
-}
-pre.content {
+}*/
+/*pre.content {
   overflow: scroll;
-}
+}*/
 #content_blocks {
   padding: 0;
 }
-.blocklySvg {
+/*.blocklySvg {
   border-top: none !important;
-}
-#content_xml {
+}*/
+/*#content_xml {
   resize: none;
   outline: none;
   border: none;
   font-family: monospace;
   overflow: scroll;
-}
-#languageMenu {
+}*/
+/*#languageMenu {
   vertical-align: top;
   margin-top: 15px;
   margin-right: 15px;
 }
-
+*/
 /* Buttons */
-button {
+/*button {
   padding: 1px 10px;
   margin: 1px 5px;
-}
+}*/
 
 /* Sprited icons. */
 .icon21 {

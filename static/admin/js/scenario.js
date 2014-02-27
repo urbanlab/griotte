@@ -265,10 +265,6 @@ BlocklyApps.init = function() {
     return 0;
   };
 
-  if (document.getElementById('codeButton')) {
-    BlocklyApps.bindClick('codeButton', BlocklyApps.showCode);
-  }
-
   // Fixes viewport for small screens.
   var viewport = document.querySelector('meta[name="viewport"]');
   if (viewport && screen.availWidth < 725) {
@@ -873,7 +869,7 @@ Code.init = function(container) {
   //Griotte.init('ws://' + host + (port ? ':' + port : '') + path);
   Code.griotte = Griotte
   Code.scenario = null;
-  Code.griotte.subscribe('store.command.get.scenario.*', Code.cb_restoreFromWS);
+  Code.griotte.subscribe('store.command.set.medias.scenario.*', Code.cb_restoreFromWS);
 
   var rtl = BlocklyApps.isRtl();
   var toolbox = document.getElementById('toolbox');
@@ -915,9 +911,12 @@ Code.init = function(container) {
 
   //Code.tabClick(Code.selected);
   //Blockly.fireUiEvent(window, 'resize');
-
+  //BlocklyApps.bindClick('scenario-save', Code.saveScenario);
   BlocklyApps.bindClick('scenario-save', Code.saveScenario);
-  BlocklyApps.bindClick('scenario-trash', function() {
+  BlocklyApps.bindClick('scenario-trash', function(event) {
+    console.log("Preventing default");
+    console.log(event);
+    event.preventDefault();
     Code.discard(); Code.renderContent();
   });
 
@@ -935,6 +934,29 @@ Code.init = function(container) {
       $('#scenario-save').button( "disable" );
     }
   });
+
+  $("#select-scenario").change(function () {
+    var $sel = $("#select-scenario option:selected" );
+    console.log($sel.text());
+      Code.restoreFromWS($sel.text());
+  });
+};
+
+Code.refresh_scenario_list = function() {
+  var $sel = $("#select-scenario");
+  var scenarii = Blockly.Medias.getMediasFor('scenario');
+
+  console.log(scenarii);
+
+  console.log("Emptying list");
+  console.log($sel);
+
+  $sel.find('option').remove();
+  $sel.append('<option data-placeholder="true">' + Blockly.Msg.OPEN_SCENARIO + "</option>");
+  for(var i = 0; i < scenarii.length; i++) {
+    $sel.append("<option value=" + scenarii[i][0] + ">" + scenarii[i][0] + "</option>");
+  }
+  $sel.selectmenu( "refresh", true );
 };
 
 /**
@@ -946,9 +968,8 @@ Code.discard = function() {
 
   var count = Blockly.mainWorkspace.getAllBlocks().length;
   if (count < 2 ||
-      window.confirm(BlocklyApps.getMsg('Code_discard').replace('%1', count))) {
+      window.confirm(Blockly.Msg.DISCARD_CODE)) {
     Blockly.mainWorkspace.clear();
-    window.location.hash = '';
   }
 };
 
@@ -995,13 +1016,13 @@ Code.saveScenario = function() {
                   });
 };
 
-Code.SaveToWS = function(name) {
+Code.saveToWS = function(name) {
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
 };
 
 Code.restoreFromWS = function(name) {
   Code.scenario = name;
-  Griotte.publish('meta.storage.scenario.get', { "name": name } )
+  Griotte.publish('storage.command.get.medias.scenario', { "name": name } )
 };
 
 Code.cb_restoreFromWS = function(message) {

@@ -40,16 +40,13 @@
     <script type="text/javascript" src="js/blockly/generators/python/digital.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/multimedia.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/monkey_patching.js"></script>
+    <script type="text/javascript" src="js/blockly/msg/fr_monkey_patching.js"></script>
     <script type="text/javascript" src="js/scenario.js"></script>
   </head>
 
   <body>
     <div data-role="page" id="page-control">
       <div data-role="header">
-
-        <h1>Griotte</h1>
-        <a href="index.html" data-icon="delete" data-mini="true" class="ui-btn-right">Logout</a>
-
         <div data-role="navbar" data-iconpos="bottom">
           <ul>
             <li><a href="#page-control" data-icon="grid" class="ui-state-persist ui-btn-active">Contrôle</a></li>
@@ -107,17 +104,13 @@
       </div> <!-- content -->
 
       <div data-role="footer">
-        <h4>&copy; ERASME 2013</h4>
+        <h4>Griotte - &copy; ERASME 2013-2014</h4>
       </div><!-- /footer -->
 
     </div> <!-- /page page-control -->
 
     <div data-role="page" id="page-scenario">
       <div data-role="header">
-
-        <h1>Griotte</h1>
-        <a href="index.html" data-icon="delete" data-mini="true" class="ui-btn-right">Logout</a>
-
         <div data-role="navbar" data-iconpos="bottom">
           <ul>
             <li><a href="#page-control" data-icon="grid">Contrôle</a></li>
@@ -129,7 +122,7 @@
       </div><!-- header -->
 
       <div data-role="content">
-        <div id="content_area" style="height: 60%; width: 60%;">
+        <div id="content_area"> <!--  style="height: 60%; width: 60%;"> -->
         </div>
       </div> <!-- content -->
 
@@ -137,8 +130,12 @@
         <div class="ui-grid-b">
           <div class="ui-block-a">
             <div data-role="controlgroup" data-type="horizontal">
-              <input type="button" value="Ouvrir" data-inline="true" id="scenario-open" data-icon="arrow-d">
-              <input type="button" value="Poubelle" data-inline="true" id="scenario-trash" data-icon="delete">
+            <label for="select-scenario" class="select">Scenario:</label style="display: none;">
+              <select id="select-scenario" data-inline="true" data-native-menu="false" data-iconpos="left">
+                  <option>Ouvrir...</option>
+              </select>
+
+              <input type="button" value="Poubelle" data-inline="true" id="scenario-trash" data-icon="delete" >
             </div>
           </div>
           <div class="ui-block-b">
@@ -154,10 +151,6 @@
 
     <div data-role="page" id="page-medias">
       <div data-role="header">
-
-        <h1>Griotte</h1>
-
-        <a href="index.html" data-icon="delete" data-mini="true" class="ui-btn-right">Logout</a>
         <div data-role="navbar" data-iconpos="bottom">
           <ul>
             <li><a href="#page-control" data-icon="grid">Contrôle</a></li>
@@ -225,14 +218,13 @@
           </ul>
         </div>
       </div> <!-- content -->
+      <div data-role="footer">
+        <h4>Griotte - &copy; ERASME 2013-2014</h4>
+      </div><!-- /footer -->
     </div> <!-- page page-medias-->
 
     <div data-role="page" id="page-monitor">
       <div data-role="header">
-
-        <h1>Griotte</h1>
-        <a href="index.html" data-icon="delete" data-mini="true" class="ui-btn-right">Logout</a>
-
         <div data-role="navbar" data-iconpos="bottom">
           <ul>
             <li><a href="#page-control" data-icon="grid">Contrôle</a></li>
@@ -348,13 +340,11 @@
           </div> <!-- collapsible -->
         </div> <!-- collapsible-set -->
         <div data-role="footer">
-          <div align="right">
-            <!--<button id="login" data-theme="a" type="button" href="home.html" data-mini="false" data-inline="true" >Login</button>-->
-            <a href="/logout/" data-role="button" data-icon="delete" data-iconpos="notext" data-inline="true" data-ajax="false">logout</a>
-          </div>
-        </div>
+          <h4>Griotte - &copy; ERASME 2013-2014</h4>
+        </div><!-- /footer -->
 
       </div> <!-- content -->
+
     </div> <!-- page page-monitor -->
 
     <div data-role="page" id="page-popup" data-dialog="true">
@@ -582,9 +572,11 @@ $( document ).ready( function( event ) {
 });
 
 $("#page-scenario").on("pageshow", function() {
-  Code.init("content_area");
   console.log("PAGESHOW hit !");
-  console.log(this);
+  if (!Code.griotte) {
+    Code.init("content_area");
+  }
+  Code.refresh_scenario_list();
 });
 
 </script>

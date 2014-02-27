@@ -200,6 +200,45 @@ to low state, or `rising` otherwise.
 
 Edge events are only available on digital ports.
 
+Storage events
+--------------
+
+store.event.<var>
+^^^^^^^^^^^^^^^^^
+
+Returns the value for variable`<var>`, in the `data` field.
+The returned value depend on the request.
+
+For instance, if StorageHandler receives a `store.command.get.foo` message, it will send
+back a `store.event.foo` message like :
+
+.. code-block:: json
+
+    {
+      "channel": "store.event.foo",
+      "timestamp": <timestamp>,
+      "data":
+        {
+          "value" :
+            {
+              "bar": "baz",
+              "fizz": "buzz",
+              "number": 42
+            }
+        }
+    }
+
+On the other hand, if the request was receved for `store.command.get.foo.bar`, it will
+send back a `store.event.foo.bar` message like :
+
+.. code-block:: json
+
+    {
+        "channel": "store.event.foo.bar",
+        "timestamp": <timestamp>,
+        "data": "baz"
+    }
+
 Multimedia commands
 -------------------
 
@@ -495,43 +534,4 @@ the variable will be stored on disk and read at startup.
 Note that if you set a value twice, but the last update has no `persistent` flag
 turned on, the last value won't be used at startup. Only the last value set with
 the `persistent` flag set to `true` will be used (if any).
-
-storage events
---------------
-
-store.event.<var>
-^^^^^^^^^^^^^^^^^
-
-Returns the value for variable`<var>`, in the `data` field.
-The returned value depend on the request.
-
-For instance, if StorageHandler receives a `store.command.get.foo` message, it will send
-back a `store.event.foo` message like :
-
-.. code-block:: json
-
-    {
-      "channel": "store.event.foo",
-      "timestamp": <timestamp>,
-      "data":
-        {
-          "value" :
-            {
-              "bar": "baz",
-              "fizz": "buzz",
-              "number": 42
-            }
-        }
-    }
-
-On the other hand, if the request was receved for `store.command.get.foo.bar`, it will
-send back a `store.event.foo.bar` message like :
-
-.. code-block:: json
-
-    {
-        "channel": "store.event.foo.bar",
-        "timestamp": <timestamp>,
-        "data": "baz"
-    }
 

@@ -38,6 +38,7 @@ def play_image(media):
 
     :param media: The image to show, relative to the media root folder
     """
+    logging.info("Playing image %s" % media)
     Expecter().send('image.command.start', { "media": media })
 
 def blank_screen():
@@ -47,6 +48,7 @@ def blank_screen():
 
     :param media: The image to show, relative to the media root folder
     """
+    logging.info("Blanking screen")
     Expecter().send('image.command.start', { "media": "blank.png" })
 
 @atexit.register
