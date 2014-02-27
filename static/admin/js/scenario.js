@@ -869,7 +869,6 @@ Code.init = function(container) {
   //Griotte.init('ws://' + host + (port ? ':' + port : '') + path);
   Code.griotte = Griotte
   Code.scenario = null;
-  Code.griotte.subscribe('store.command.set.medias.scenario.*', Code.cb_restoreFromWS);
 
   var rtl = BlocklyApps.isRtl();
   var toolbox = document.getElementById('toolbox');
@@ -937,8 +936,10 @@ Code.init = function(container) {
 
   $("#select-scenario").change(function () {
     var $sel = $("#select-scenario option:selected" );
-    console.log($sel.text());
-      Code.restoreFromWS($sel.text());
+    console.log("changing select");
+    $('#select-scenario option[data-placeholder="true"]').prop('selected', true);
+    Code.restoreScenario($sel.text());
+    $("#select-scenario").selectmenu("refresh", true );
   });
 };
 
@@ -956,7 +957,7 @@ Code.refresh_scenario_list = function() {
   for(var i = 0; i < scenarii.length; i++) {
     $sel.append("<option value=" + scenarii[i][0] + ">" + scenarii[i][0] + "</option>");
   }
-  $sel.selectmenu( "refresh", true );
+  $sel.selectmenu("refresh", true );
 };
 
 /**
@@ -1016,25 +1017,37 @@ Code.saveScenario = function() {
                   });
 };
 
-Code.saveToWS = function(name) {
-  var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+// Code.saveToWS = function(name) {
+//   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+// };
+
+Code.restoreScenario = function(name) {
+  console.log("about to restore scenario " + name)
+
+  $.ajax({
+    url:'/store/scenario/' + name + ".py_meta.json",
+    type:"GET",
+    contentType:false,
+    processData:false,
+    cache:false,
+    dataType: 'json',
+    success:function(resp) {
+      console.log(resp)
+      Code.restoreScenarioCallback(resp);
+    },
+  });
 };
 
-Code.restoreFromWS = function(name) {
-  Code.scenario = name;
-  Griotte.publish('storage.command.get.medias.scenario', { "name": name } )
-};
-
-Code.cb_restoreFromWS = function(message) {
+Code.restoreScenarioCallback = function(message) {
   // python tools/ws_send.py meta.storage.scenario '{ "name": "test", "code": "<xml><block type=\"analog_sensor\" x=\"143\" y=\"51\"><title name=\"NAME\">AN0</title><title name=\"Profil\">IDENTITY</title></block></xml>"}'
-  var data = message.data;
-  console.log("cb_restoreFromWS called for " + data['name']);
-  if (Code.scenario && data['name'] == Code.scenario) {
-    console.log("restoring scenario" + data['name']);
 
-    var xml = Blockly.Xml.textToDom(data['code'])
-    Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(), xml);
-  }
+  console.log(message.xml);
+  var xml = Blockly.Xml.textToDom("<xml>"+message.xml+"</xml>")
+  Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(), xml);
+  console.log("loaded scenario " + message.name);
+  Code.scenario = message.name;
+  $("#scenario-name").val(message.name);
+  $('#scenario-save').button( "enable" );
 };
 
 
