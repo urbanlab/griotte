@@ -70,7 +70,7 @@ class MediaManager:
     @staticmethod
     def _get(genre):
         response = []
-        for f in os.listdir("%s/%s" % (options.medias, genre)):
+        for f in os.listdir("%s/%s" % (options.store, genre)):
             if not fnmatch.fnmatch(f, '*_thumbnail.jpg') and not fnmatch.fnmatch(f, '*_meta.json'):
                 response.append(MediaManager._build_response_for(genre, f))
 
@@ -79,14 +79,14 @@ class MediaManager:
     @staticmethod
     def _build_response_for(genre, name):
         response = { 'name': name,
-                     'path': "%s/%s/%s" % (options.medias, genre, name),
+                     'path': "%s/%s/%s" % (options.store, genre, name),
                      'type': genre,
                      'thumbnail':"/store/%s/%s_thumbnail.jpg" % (genre, name) }
 
         if genre in ['audio', 'scenario']:
             response['thumbnail'] = "/img/%s_thumbnail.png" % genre
 
-        meta = "%s/%s/%s_meta.json" % (options.medias, genre, name)
+        meta = "%s/%s/%s_meta.json" % (options.store, genre, name)
         if os.path.isfile(meta):
             logging.info("reading metadata for %s from %s" % (name, meta))
 

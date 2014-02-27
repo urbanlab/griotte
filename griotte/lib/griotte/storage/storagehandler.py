@@ -102,7 +102,7 @@ class StorageHandler:
         if 'value' in data:
             values = data['value']
 
-            basepath = "%s/scenario" % options.medias
+            basepath = "%s/scenario" % options.store
             fname = values['name']
 
             if not os.path.isdir(basepath):

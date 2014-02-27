@@ -235,7 +235,7 @@ Application = {
   },
 
   sound: function(state, volume) {
-    Griotte.publish("store.command.set.sound_level", { value: { state: state, level: parseInt(volume) } } );
+    Griotte.publish("store.command.set.sound_level", { persistent: true, value: { state: state, level: parseInt(volume) } } );
   },
 
   normalize_digital_data: function() {

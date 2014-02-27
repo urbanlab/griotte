@@ -111,7 +111,7 @@ class Uploader(tornado.web.RequestHandler):
             self.send_error(415)
             return
 
-        path = "%s/%s/" % (options.medias, subpath)
+        path = "%s/%s/" % (options.store, subpath)
 
         if not os.path.isdir(path):
             os.mkdir(path)
@@ -123,7 +123,7 @@ class Uploader(tornado.web.RequestHandler):
         fh.write(fileinfo['body'])
         fh.close()
 
-        logging.debug("%s uploaded to %s" % (fname, options.medias))
+        logging.debug("%s uploaded to %s" % (fname, options.store))
         #self.redirect("%s#page-medias" % self.request.headers.get('Referer'))
 
         # start & detach a process :
