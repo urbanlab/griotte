@@ -15,15 +15,22 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
 DESC="Griotte server"
 NAME=griotte
+
+GRIOTTE_BIN_PATH=/usr/local/griotte/bin
+GRIOTTE_DAEMONS='server storage multimedia image adc gpio'
+
+# Read configuration variable file if it is present
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+# Export proper pythonpath
+export PYTHONPATH=${PWD}/griotte/lib:$PYTHONPATH
+
 DAEMON=/usr/local/bin/$NAME
-PIDPATH=/var/run/$NAME.pid
+PIDPATH=/var/run/
 SCRIPTNAME=/etc/init.d/$NAME
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
-
-# Read configuration variable file if it is present
-[ -r /etc/default/$NAME ] && . /etc/default/$NAME
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
@@ -42,10 +49,12 @@ do_start()
   #   0 if daemon has been started
   #   1 if daemon was already running
   #   2 if daemon could not be started
+  PIDFILE=$PIDPATH/"$1".pid
+  DAEMON=$GRIOTTE_BIN_PATH/$1
   start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test > /dev/null \
     || return 1
   start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- \
-    $DAEMON_ARGS \
+    $GRIOTTE_ARGS \
     || return 2
   # Add code here, if necessary, that waits for the process to be ready
   # to handle requests from services started subsequently which depend
@@ -62,7 +71,9 @@ do_stop()
   #   1 if daemon was already stopped
   #   2 if daemon could not be stopped
   #   other if a failure occurred
-  start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE --name $NAME
+  PIDFILE=$PIDPATH/"$1".pid
+  DAEMON=$GRIOTTE_BIN_PATH/$1
+  start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE --name $1
   RETVAL="$?"
   [ "$RETVAL" = 2 ] && return 2
   # Wait for children to finish too if this is a daemon that forks
@@ -87,26 +98,30 @@ do_reload() {
   # restarting (for example, when it is sent a SIGHUP),
   # then implement that here.
   #
-  start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --name $NAME
+  start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --name $1
   return 0
 }
 
 case "$1" in
   start)
-  [ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
-  do_start
-  case "$?" in
-    0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-    2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
-  esac
+  for d in $GRIOTTE_DAEMONS; do
+    [ "$VERBOSE" != no ] && log_daemon_msg "Starting $d" "$d"
+    do_start(d)
+    case "$?" in
+      0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+      2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+    esac
+  done
   ;;
   stop)
-  [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
-  do_stop
-  case "$?" in
-    0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-    2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
-  esac
+  for d in $GRIOTTE_DAEMONS; do
+    [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $d" "$d"
+    do_stop
+    case "$?" in
+      0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+      2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+    esac
+  done
   ;;
   status)
   status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
@@ -125,16 +140,18 @@ case "$1" in
   # If the "reload" option is implemented then remove the
   # 'force-reload' alias
   #
-  log_daemon_msg "Restarting $DESC" "$NAME"
-  do_stop
-  case "$?" in
-    0|1)
-    do_start
+  for d in $GRIOTTE_DAEMONS; do
+    log_daemon_msg "Restarting $d" "$d"
+    do_stop($d)
     case "$?" in
-      0) log_end_msg 0 ;;
-      1) log_end_msg 1 ;; # Old process is still running
-      *) log_end_msg 1 ;; # Failed to start
-    esac
+      0|1)
+      do_start($d)
+      case "$?" in
+        0) log_end_msg 0 ;;
+        1) log_end_msg 1 ;; # Old process is still running
+        *) log_end_msg 1 ;; # Failed to start
+      esac
+    done
     ;;
     *)
     # Failed to stop
