@@ -1,3 +1,4 @@
-GRIOTTE_BIN_PATH=/home/pi/dev/griotte/griotte/
-GRIOTTE_ARGS='--logging=INFO'
+GRIOTTE_BIN_PATH=/home/pi/dev/griotte/griotte/bin/
+GRIOTTE_ARGS='--logging=DEBUG'
+GRIOTE_LOG_PATH=/var/log/griotte
 GRIOTTE_DAEMONS='server storage multimedia image adc gpio'

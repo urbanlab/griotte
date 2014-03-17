@@ -20,6 +20,6 @@
 from setproctitle import setproctitle
 from griotte.adc.analoghandler import AnalogHandler
 
-setproctitle("griotte-adc")
+setproctitle("g-adc")
 
 AnalogHandler()

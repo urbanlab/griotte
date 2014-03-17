@@ -20,6 +20,6 @@
 from setproctitle import setproctitle
 from griotte.storage.storagehandler import StorageHandler
 
-setproctitle("griotte-storage")
+setproctitle("g-storage")
 
 StorageHandler()

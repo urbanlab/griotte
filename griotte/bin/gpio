@@ -20,6 +20,6 @@
 from setproctitle import setproctitle
 from griotte.gpio.gpiohandler import GPIOHandler
 
-setproctitle("griotte-gpio")
+setproctitle("g-gpio")
 
 GPIOHandler()

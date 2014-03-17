@@ -20,6 +20,6 @@
 from setproctitle import setproctitle
 from griotte.multimedia.multimediahandler import MultimediaHandler
 
-setproctitle("griotte-multimedia")
+setproctitle("g-multimedia")
 
 MultimediaHandler()
