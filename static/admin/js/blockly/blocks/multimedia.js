@@ -10,7 +10,7 @@ Blockly.Blocks['multimedia_audio_play'] = {
     // Load media list on init
   // Delegate real initialization in ajax callback
     this.setHelpUrl('http://www.erasme.org/');
-    this.setColour(65);
+    this.setColour(44);
     this.appendDummyInput()
         .appendTitle("Jouer le son")
          .appendTitle(new Blockly.FieldDropdown(Blockly.Medias.getMediasFor('audio')), "AUDIO");
@@ -27,7 +27,7 @@ Blockly.Blocks['multimedia_audio_play'] = {
 Blockly.Blocks['multimedia_video_play'] = {
   init: function() {
     this.setHelpUrl('http://www.erasme.org/');
-    this.setColour(65);
+    this.setColour(44);
     this.appendDummyInput()
         .appendTitle("Jouer la vidéo")
         .appendTitle(new Blockly.FieldDropdown(Blockly.Medias.getMediasFor('video')), "VIDEO");
@@ -44,7 +44,7 @@ Blockly.Blocks['multimedia_video_play'] = {
 Blockly.Blocks['multimedia_image_play'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
-    this.setColour(65);
+    this.setColour(44);
     this.appendDummyInput()
         .appendTitle("Afficher l'image")
         .appendTitle(new Blockly.FieldDropdown(Blockly.Medias.getMediasFor('image')), "IMAGE");
@@ -63,7 +63,7 @@ Blockly.Blocks['multimedia_image_play'] = {
 Blockly.Blocks['multimedia_volume'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
-    this.setColour(65);
+    this.setColour(44);
     this.appendValueInput("VOLUME")
         .setCheck("")
         .appendTitle("Régler le son à");
@@ -79,7 +79,7 @@ Blockly.Blocks['multimedia_volume'] = {
 Blockly.Blocks['multimedia_video_stop'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
-    this.setColour(65);
+    this.setColour(44);
     this.appendDummyInput()
         .appendTitle("Arreter la vidéo en cours");
     this.setPreviousStatement(true);
@@ -91,7 +91,7 @@ Blockly.Blocks['multimedia_video_stop'] = {
 Blockly.Blocks['multimedia_audio_stop'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
-    this.setColour(65);
+    this.setColour(44);
     this.appendDummyInput()
         .appendTitle("Arreter le son en cours");
     this.setPreviousStatement(true);
@@ -103,7 +103,7 @@ Blockly.Blocks['multimedia_audio_stop'] = {
 Blockly.Blocks['multimedia_black'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
-    this.setColour(65);
+    this.setColour(44);
     this.appendDummyInput()
         .appendTitle("Afficher un écran noir");
     this.setPreviousStatement(true);
@@ -115,7 +115,7 @@ Blockly.Blocks['multimedia_black'] = {
 Blockly.Blocks['multimedia_wait'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
-    this.setColour(65);
+    this.setColour(44);
     this.appendValueInput("DURATION")
         .setCheck("")
         .appendTitle("Attendre pendant");

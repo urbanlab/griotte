@@ -69,6 +69,7 @@ for new values), we have to find annother way.
 import json
 import logging
 import time
+import fnmatch
 
 from queue import Queue
 from griotte.ws import WebSocket
@@ -164,7 +165,15 @@ class Expecter:
             try:
                 self._subscriptions[channel].put(data)
             except KeyError:
-                logging.error("Received a message for a channel we didn't subsribe to (%s)" % channel)
+                # Clients can watch wildcard channels
+                for watched_channel in self._subscriptions:
+                    if fnmatch.fnmatch(channel, watched_channel):
+                    # We had a match for watched_channel key
+                    # We have to iterate over client list for this channel
+                        self._subscriptions[watched_channel].put(data)
+                        return
+
+                logging.error("Received a message for a channel we didn't subscribe to (%s)" % channel)
 
         def _flush_queue(self, channel):
             logging.debug("Flushing queue for channel %s" % channel)

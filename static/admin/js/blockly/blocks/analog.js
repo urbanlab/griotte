@@ -7,7 +7,7 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks['analog_sensor'] = {
   init: function() {
     this.setHelpUrl('http://www.erasme.org/');
-    this.setColour(260);
+    this.setColour(349);
     this.appendDummyInput()
         .appendTitle("Capteur Analogique");
     this.appendDummyInput()

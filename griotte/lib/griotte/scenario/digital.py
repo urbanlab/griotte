@@ -49,7 +49,7 @@ def get_digital(port):
     return data['value']
 
 def wait_edge(port, style="any"):
-    """ Waits for an edge (rising, falling) on a port
+    """ Waits for an edge (rising, falling, any) on a port
 
     This will block until an edge of the requested style is sensed on the requested port
 
@@ -70,7 +70,7 @@ def wait_edge(port, style="any"):
 
     logging.debug("get_digital : received edge %s for port %s" % (data['value'], port))
 
-    return 1
+    return data['value'] ==  True
 
 def set_profile(port, profile):
     """ Sets the profile for port

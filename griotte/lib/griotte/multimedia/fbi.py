@@ -53,7 +53,8 @@ class Fbi(object):
             logging.debug("terminating existing instance %s" % self._popen.pid)
             # Sorry, I have nothing better
             # fni forks/detach itself and gets out of control
-            subprocess.Popen(['/usr/bin/killall','fbi']).wait()
+            self._popen = subprocess.Popen(['/usr/bin/killall','fbi'], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+            self._popen.communicate()[0]
             self._popen.wait()
             logging.debug("instance terminated with code %s" % self._popen.returncode)
 

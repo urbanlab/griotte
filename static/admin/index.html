@@ -375,8 +375,13 @@
 
     <xml id="toolbox" style="display: none">
       <category name="Capteurs">
-        <block type="analog_sensor"></block>
-        <block type="digital_sensor"></block>
+        <category name="Analogiques">
+          <block type="analog_sensor"></block>
+        </category>
+        <category name="Digitaux">
+          <block type="digital_sensor"></block>
+          <block type="digital_sensor_edge"></block>
+        </category>
       </category>
       <category name="Multimédia">
         <block type="multimedia_video_play"></block>
