@@ -36,7 +36,7 @@ class WebSocket:
 
     def __init__(self,
                  uri=None,
-                 watchdog_interval=0):
+                 watchdog_interval=5):
 
         self.callbacks = dict()
 
@@ -58,14 +58,12 @@ class WebSocket:
         self.watchdog_interval = watchdog_interval
         self.websocket_thread = None
 
-        if self.watchdog_interval > 0:
-            logging.info("Watchdog interval set to %ss" % self.watchdog_interval)
 
     def start(self, detach=True):
-        logging.info("Starting websocket client thread")
-        self.websocket_thread = threading.Thread(target=self.ws.run_forever, args=())
-        self.websocket_thread.daemon = detach
-        self.websocket_thread.start()
+        logging.info("Starting websocket watchdog thread with interval %ss" % self.watchdog_interval)
+        self.watchdog_thread = threading.Thread(target=self._watchdog, args=(detach,))
+        self.watchdog_thread.start()
+
 
     def stop(self):
         self.watchdog_interval=0
@@ -121,7 +119,6 @@ class WebSocket:
         logging.info("Websocket opened")
         # Subscribe (or re-subscribe) to requested channels
         self._ws_ready = True
-        logging.info("self._ws_ready is %s" % self._ws_ready)
         for channel in self.callbacks.keys():
             self._subscribe(channel)
 
@@ -147,25 +144,27 @@ class WebSocket:
         logging.warning("websocket closed")
         self._ws_ready = False
 
-        if self.watchdog_interval > 0 :
-            logging.info("Starting websocket watchdog thread")
-            self.watchdog_thread = threading.Thread(target=self._watchdog, args=())
-            #self.watchdog_thread.daemon = True
-            self.watchdog_thread.start()
-        else:
-            message = "Watchdog is off"
+    def _start_websocket(self, detach):
+        logging.info("Starting websocket client thread with detach = %s" % detach)
+        self.websocket_thread = threading.Thread(target=self.ws.run_forever, args=())
+        self.websocket_thread.daemon = detach
+        self.websocket_thread.start()
 
-    def _watchdog(self):
-        logging.warning("Watchdog will try reconnecting in %s seconds" %self.watchdog_interval)
-
-        time.sleep(self.watchdog_interval)
-
-        if self.websocket_thread and not self.websocket_thread.is_alive():
+    def _watchdog(self, detach_websocket=False):
+        while self.watchdog_interval > 0:
+            if not self.websocket_thread:
+                logging.info("No websocket thread, starting")
+                self._start_websocket(detach_websocket)
+            elif not self.websocket_thread.is_alive():
                 logging.warning("Websocket thread is dead, restarting")
-                self.start()
+                self._start_websocket(detach_websocket)
+
+            time.sleep(self.watchdog_interval)
 
     def _subscribe(self, channel):
+        logging.debug("Sending subscribe for channel %s" % channel)
         self.send('meta.subscribe', { 'channel': channel })
 
     def _unsubscribe(self, channel):
+        logging.debug("Sending unsubscribe for channel %s" % channel)
         self.send('meta.unsubscribe', { 'channel': channel })
