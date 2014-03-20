@@ -14,6 +14,19 @@ Blockly.Blocks['rfid_read'] = {
   },
 };
 
+Blockly.Blocks['rfid_wait_for'] = {
+  init: function() {
+    this.setHelpUrl('http://www.erasme.org');
+    this.setColour(349);
+    this.appendValueInput("TAG")
+        .setCheck("RFIDTag")
+        .appendField("Lire le tag");
+    this.setInputsInline(true);
+    this.setTooltip('RFID Tag');
+    this.setOutput(true);
+  },
+};
+
 Blockly.Blocks['rfid_tag'] = {
   init: function() {
     this.setHelpUrl('http://www.erasme.org');
@@ -25,7 +38,7 @@ Blockly.Blocks['rfid_tag'] = {
     this.setOutput(true, 'RFIDTag');
 
     // This sux big time
-    Griotte.subscribe("digital.event.rfid.tag", Blockly.Blocks['digital_rfid_tag'].setRFID.bind(this))
+    Griotte.subscribe("digital.event.rfid.tag", Blockly.Blocks['rfid_tag'].setRFID.bind(this))
   },
   setRFID: function(message) {
     console.log(this);
