@@ -13,7 +13,7 @@ tmux new-window -t griotte:3 -n Multimedia "griotte/bin/multimedia --logging=$LO
 
 if [ -n "$SSH_CONNECTION" ]; then
   # We're running from ssh - we need sudo :()
-  tmux new-window -t griotte:4 -n Image "sudo PYTHONPATH=${PWD}/griotte/lib:$PYTHONPATH griotte/bin/image --logging=$LOGGING; /bin/bash"
+  tmux new-window -t griotte:4 -n Image "sudo PYTHONPATH=${PWD}/griotte/lib:$PYTHONPATH DISPLAY= griotte/bin/image --logging=$LOGGING; /bin/bash"
 else
   tmux new-window -t griotte:4 -n Image "griotte/bin/image --logging=$LOGGING; /bin/bash"
 fi

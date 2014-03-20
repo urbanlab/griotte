@@ -100,15 +100,16 @@ Blockly.Blocks['multimedia_audio_stop'] = {
   }
 };
 
-Blockly.Blocks['multimedia_black'] = {
+Blockly.Blocks['multimedia_background'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(44);
-    this.appendDummyInput()
-        .appendTitle("Afficher un écran noir");
+    this.appendValueInput("COLOR")
+        .setCheck("")
+        .appendTitle("Afficher un écran");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('Afficher un écran noir');
+    this.setTooltip('Afficher un écran de couleur');
   }
 };
 

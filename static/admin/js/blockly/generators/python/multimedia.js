@@ -56,11 +56,13 @@ Blockly.Python['multimedia_audio_stop'] = function(block) {
   return 'stop_audio()\n';
 };
 
-Blockly.Python['multimedia_black'] = function(block) {
-  Blockly.Python.definitions_['from_griotte_scenario_image_blank_screen'] = 'from griotte.scenario.image import blank_screen';
+Blockly.Python['multimedia_background'] = function(block) {
+  Blockly.Python.definitions_['from_griotte_scenario_image_background'] = 'from griotte.scenario.image import background';
 
-  var code = 'blank_screen()\n';
-  code += ''
+  var color = Blockly.Python.valueToCode(block, 'COLOR',
+    Blockly.Python.ORDER_MULTIPLICATIVE) || "'#000000'";
+
+  var code = 'background(' + color + ')\n';
   return code;
 };
 
@@ -71,7 +73,6 @@ Blockly.Python['multimedia_wait'] = function(block) {
     Blockly.Python.ORDER_MULTIPLICATIVE) || '0';
 
   var code = 'sleep(' + duration + ')\n';
-  code += ''
 
   return code;
 };

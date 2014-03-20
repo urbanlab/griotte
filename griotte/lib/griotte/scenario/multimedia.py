@@ -36,6 +36,9 @@ import logging
 
 from griotte.scenario import Expecter
 
+def background(color):
+    Expecter().send('image.command.')
+
 def play_video(media, sync=True):
     """ Plays video synchronously
 

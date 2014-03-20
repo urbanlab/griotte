@@ -27,6 +27,7 @@ This module implements server-side code generated for image blockly blocks.
 
 """
 
+import logging
 import atexit
 
 from griotte.scenario import Expecter
@@ -41,7 +42,7 @@ def play_image(media):
     logging.info("Playing image %s" % media)
     Expecter().send('image.command.start', { "media": media })
 
-def blank_screen():
+def background(strhex):
     """ Displays image
 
     Plays displays image returns
@@ -49,7 +50,7 @@ def blank_screen():
     :param media: The image to show, relative to the media root folder
     """
     logging.info("Blanking screen")
-    Expecter().send('image.command.start', { "media": "blank.png" })
+    Expecter().send('image.command.start', { "color": strhex })
 
 @atexit.register
 def __goodbye__():
