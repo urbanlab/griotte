@@ -30,14 +30,20 @@ Griotte = {
     var self = this;
 
     if (self._events.hasOwnProperty(message.channel)) {
-      self._events[message.channel](message);
+      for (index = 0; index < self._events[message.channel].length; ++index) {
+       self._events[message.channel][index](message);
+      }
     }
   },
 
   subscribe: function(channel, callback) {
     var self = this;
 
-    self._events[channel] = callback;
+    if (! self._events.hasOwnProperty(channel)) {
+      self._events[channel] = [];
+    }
+
+    self._events[channel].push(callback);
     //console.log("subscribing to " + channel);
 
     if (channel == ".internal.ready" && self.ready) {
@@ -47,13 +53,16 @@ Griotte = {
     self.publish("meta.subscribe", { channel: channel });
   },
 
-  unsubscribe: function(channel) {
+  unsubscribe: function(channel, callback) {
     var self = this;
 
-    delete self._events[channel];
+    var index = self._events[channel].indexOf(callback);
+    if (index > -1) {
+      self._events[channel].splice(index, 1);
+    }
     // console.log("unsubscribing from " + channel);
 
-    self.publish("meta.subscribe", { channel: channel });
+    self.publish("meta.unsubscribe", { channel: channel });
   },
 
   publish: function(channel, data) {
