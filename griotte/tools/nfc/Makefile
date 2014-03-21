@@ -9,5 +9,8 @@ dynamic:
 strip:
 	strip iso14443a-poller
 
+clean:
+	rm iso14443a-poller
+
 install: strip
 	/usr/bin/install -c iso14443a-poller /usr/bin/iso14443a-poller
