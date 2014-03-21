@@ -4,7 +4,7 @@ goog.provide('Blockly.Python.rfid');
 goog.require('Blockly.Python');
 
 Blockly.Python['rfid_read'] = function(block) {
-  Blockly.Python.definitions_['from_griotte_scenario_rfid_read'] = 'from griotte.scenario.digital import rfid_read';
+  Blockly.Python.definitions_['from_griotte_scenario_rfid_read'] = 'from griotte.scenario.rfid import rfid_read';
 
   var code = 'rfid_read(None)\n'
   console.log(code)

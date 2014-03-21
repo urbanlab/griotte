@@ -16,9 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-"""Server-side Analog groups blocks implementation
+"""Server-side RFID groups blocks implementation
 
-This module implements server-side code generated for analog sensors blockly blocks.
+This module implements server-side code generated for RFID reader
+ blockly blocks.
 
 .. moduleauthor:: Michel Blanc <mblanc@erasme.org>
 
@@ -47,7 +48,7 @@ def rfid_read(tag):
 
         logging.debug("rfid_read : received tag %s" % data['tag'])
 
-        if tag == None or tag ==data['tag']
+        if tag == None or tag == data['tag']:
             return data['tag']
 
 @atexit.register

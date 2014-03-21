@@ -38,7 +38,7 @@ Blockly.Blocks['rfid_tag'] = {
     this.setOutput(true, 'RFIDTag');
 
     // This sux big time
-    Griotte.subscribe("digital.event.rfid.tag", Blockly.Blocks['rfid_tag'].setRFID.bind(this))
+    Griotte.subscribe("rfid.event.tag", Blockly.Blocks['rfid_tag'].setRFID.bind(this))
   },
   setRFID: function(message) {
     console.log(this);
