@@ -18,8 +18,17 @@
 
 
 import logging
+import re
+import subprocess
+import sys
 
 """
+This is real crap
+find a better way to read Tags
+=> RFIDiot is not really usable
+=> nfcpy has tons of deps
+
+compile own binary from libnfc ?
 """
 
 class RFIDDevice:
@@ -28,19 +37,27 @@ class RFIDDevice:
     def __init__(self):
         """ Initializes RFID "device"
         """
-        self._process = subprocess.Popen('ncf-poll', shell=False,
-                                         stdin=subprocess.PIPE,
-                                         stdout=subprocess.DEVNULL)
+
 
     def start(self, observer_callback):
-        logging.info("Starting RFIDDevice polling")
+        logging.debug("(Re)starting RFIDDevice polling")
 
-        while self._process.:
-            matches = self._TAG_REXP.match(self._process.stdout.readline())
+        self._process = subprocess.Popen('nfc-poll', shell=False,
+                                         stdin=subprocess.PIPE,
+                                         stdout=subprocess.PIPE)
+
+        while True:
+            line = self._process.stdout.readline()
+            matches = self._TAG_REXP.match(line)
             if matches:
-                logging.debug("Got tag")
-                observer_callback("".join(matches.groups()))
+                tag = ""
+                for m in matches.groups():
+                    tag += m.decode('ascii')
 
+                logging.debug("Got tag %s" % tag)
+                observer_callback(tag)
 
+                self._process.wait()
+                self.start(observer_callback)
 
 

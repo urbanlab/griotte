@@ -21,5 +21,7 @@ fi
 tmux new-window -t griotte:5 -n ADC "griotte/bin/adc --logging=$LOGGING; /bin/bash"
 tmux new-window -t griotte:6 -n GPIO "sudo PYTHONPATH=${PWD}/griotte/lib:$PYTHONPATH griotte/bin/gpio --logging=$LOGGING; /bin/bash"
 
+tmux new-window -t griotte:7 -n GPIO "sudo PYTHONPATH=${PWD}/griotte/lib:$PYTHONPATH griotte/bin/rfid --logging=$LOGGING; /bin/bash"
+
 tmux select-window -t griotte:1
 tmux attach-session -d -t griotte

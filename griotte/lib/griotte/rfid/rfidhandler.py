@@ -35,16 +35,17 @@ class RFIDHandler:
         """
         self._rfiddevice = RFIDDevice()
         self._ws = WebSocket(watchdog_interval=2)
+        self.start()
 
     def start(self):
         logging.info("Starting RFIDDevice polling")
-        self._ws.start()
+        self._ws.start(detach=False)
         self._rfiddevice.start(self.send_tag)
 
-    def send_tag(tag):
+    def send_tag(self, tag):
         logging.info("Sending tag %s" % tag)
         self._ws.send("rfid.event.tag",
-                      message{ 'tag' : tag } )
+                      { 'tag' : tag } )
 
 
 
