@@ -1,0 +1,1 @@
+ATTRS{idVendor}=="072f", ATTRS{idProduct}=="90cc", SUBSYSTEMS=="usb", ACTION=="add", MODE="0666", GROUP="plugdev"

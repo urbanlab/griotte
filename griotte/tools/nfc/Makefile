@@ -14,3 +14,4 @@ clean:
 
 install: strip
 	/usr/bin/install -c iso14443a-poller /usr/bin/iso14443a-poller
+	/usr/bin/install -c iso14443a-poller -m640 /usr/bin/iso14443a-poller
