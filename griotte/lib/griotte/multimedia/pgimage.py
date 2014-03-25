@@ -22,7 +22,7 @@ import pygame
 """
 Handles image display
 
-Just a fbi spawner
+Image display via pygame
 """
 class PgImage(object):
     def __init__(self):
@@ -30,7 +30,7 @@ class PgImage(object):
 
         self._reset_screen()
 
-    def __del__():
+    def __del__(self):
         pygame.display.quit()
 
     def _reset_screen(self):

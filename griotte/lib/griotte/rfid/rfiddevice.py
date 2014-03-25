@@ -18,9 +18,9 @@
 
 
 import logging
-import re
 import subprocess
 import sys
+import pexpect
 
 """
 This is real crap
@@ -32,32 +32,33 @@ compile own binary from libnfc ?
 """
 
 class RFIDDevice:
-    _TAG_REXP = re.compile(b".*UID\s.*: (\w+)\s+(\w+)\s+(\w+)\s+(\w+)\s+(\w+)\s+(\w+)\s+(\w+)")
+    _RFID_CMD = "/bin/bash -c \"/usr/local/bin/iso14443a-poller -d %s 2> /dev/null\""
 
     def __init__(self):
         """ Initializes RFID "device"
         """
 
 
-    def start(self, observer_callback):
-        logging.debug("(Re)starting RFIDDevice polling")
+    def start(self, observer_callback, delay=100):
+        logging.debug("Starting RFIDDevice polling")
 
-        self._process = subprocess.Popen('nfc-poll', shell=False,
-                                         stdin=subprocess.PIPE,
-                                         stdout=subprocess.PIPE)
+        logging.debug(self._RFID_CMD % delay)
 
-        while True:
-            line = self._process.stdout.readline()
-            matches = self._TAG_REXP.match(line)
-            if matches:
-                tag = ""
-                for m in matches.groups():
-                    tag += m.decode('ascii')
+        self._process = pexpect.spawn(self._RFID_CMD % delay, timeout=10 )
 
-                logging.debug("Got tag %s" % tag)
-                observer_callback(tag)
+        while self._process:
+            try:
+                tag = self._process.readline().decode('ascii')
+                if tag != '':
+                    tag = tag.rstrip('\n').rstrip('\r')
+                    logging.debug("Got tag %s" % tag)
+                    observer_callback(tag)
 
-                self._process.wait()
-                self.start(observer_callback)
+            except pexpect.TIMEOUT:
+                pass
+
+        sleep(5)
+        self.start(observer_callback, delay)
+
 
 

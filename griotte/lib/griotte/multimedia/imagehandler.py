@@ -42,11 +42,11 @@ class ImageHandler:
 
         self.start()
 
-
     def image_background(self, channel, message):
         logging.debug("setting background to %s" % message['color'])
         self.backend.background(message['color'])
-        self.send_status('start')
+        self.send_status('start', { "type": "background",
+                                    "color": message['color']} )
         self.ws.send("image.event.background", { "color": message['color']})
 
     def image_start(self, channel, message):
@@ -54,12 +54,20 @@ class ImageHandler:
         # play
         media = MediaManager.get_media_dict('image', message['media'])
 
-        logging.debug("playing image %s" % media['path'])
+        logging.debug("Playing image %s" % media['path'])
+
         self.backend.play(media['path'])
-        self.send_status('start')
+        self.send_status('start', { "type" : "image",
+                                    "media": message['media'] })
         self.ws.send("image.event.start", { "media": self.backend.media })
 
     def start(self):
         logging.info("Starting ImageHandler's websocket")
         self.ws.start(detach=False)
+
+
+    def send_status(self, status, message):
+        logging.debug("sending status")
+
+        self.ws.send("image.event." + status, message)
 

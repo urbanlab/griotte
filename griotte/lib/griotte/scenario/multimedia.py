@@ -36,8 +36,25 @@ import logging
 
 from griotte.scenario import Expecter
 
-def background(color):
-    Expecter().send('image.command.')
+def set_background(strhex):
+    """ Displays image
+
+    Plays displays image returns
+
+    :param media: The image to show, relative to the media root folder
+    """
+    logging.info("Setting background to %s" % strhex)
+    Expecter().send('image.command.background', { "color": strhex })
+
+def play_image(media):
+    """ Displays image
+
+    Plays displays image returns
+
+    :param media: The image to show, relative to the media root folder
+    """
+    logging.info("Playing image %s" % media)
+    Expecter().send('image.command.start', { "media": media })
 
 def play_video(media, sync=True):
     """ Plays video synchronously
@@ -62,19 +79,6 @@ def play_audio(media, sync=True):
     Expecter().send('video.command.start', { "media": media })
     if sync:
         Expecter().expect('video.event.stop')
-
-def play_image(media, duration=0):
-    """ Displays an image
-
-    Displays an image for some time, or forever
-
-    :param media: The media to play, relative to the media root folder
-    :type media: str
-    :param duration: The media to play, relative to the media root folder
-    :type duration: int -- 0 for infinite
-    """
-    Expecter().send('image.command.start', { "media": media })
-    time.sleep(duration)
 
 def set_volume(level):
     """ Changes global volume

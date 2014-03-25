@@ -38,7 +38,7 @@ class RFIDHandler:
         self.start()
 
     def start(self):
-        logging.info("Starting RFIDDevice polling")
+        logging.info("Starting RFIDDevice")
         self._ws.start(detach=False)
         self._rfiddevice.start(self.send_tag)
 

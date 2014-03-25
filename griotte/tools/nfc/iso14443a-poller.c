@@ -16,7 +16,7 @@ nfc_device *pnd;
 nfc_context *context;
 
 void sigint_handler(int whatever) {
-  printf("SIGINT trapped");
+  fprintf(stderr, "SIGINT trapped");
 
   // Abort & close NFC device
   nfc_abort_command(pnd);
@@ -33,16 +33,17 @@ print_hex(const uint8_t *pbtData, const size_t szBytes)
   size_t  szPos;
 
   for (szPos = 0; szPos < szBytes; szPos++) {
-    printf("%02x", pbtData[szPos]);
+    fprintf(stdout, "%02x", pbtData[szPos]);
   }
-  printf("\n");
+  fprintf(stdout, "\n");
+  fflush(stdout);
 }
 
 static void
 print_usage(const char *progname)
 {
-  printf("usage: %s [-d x]\n", progname);
-  printf("  -d x\t wait x msecs after each tag detection\n");
+  fprintf(stderr, "usage: %s [-d x]\n", progname);
+  fprintf(stderr, "  -d x\t wait x msecs after each tag detection\n");
 }
 
 static void
@@ -84,13 +85,13 @@ main(int argc, const char *argv[])
   // Initialize libnfc and set the nfc_context
   nfc_init(&context);
   if (context == NULL) {
-    printf("Unable to init libnfc (malloc)\n");
+    fprintf(stderr, "Unable to init libnfc (malloc)\n");
     exit(EXIT_FAILURE);
   }
 
   // Display libnfc version
   const char *acLibnfcVersion = nfc_version();
-  printf("%s uses libnfc %s\n", argv[0], acLibnfcVersion);
+  fprintf(stderr, "%s uses libnfc %s\n", argv[0], acLibnfcVersion);
 
   // Open, using the first available NFC device which can be in order of selection:
   //   - default device specified using environment variable or
@@ -100,7 +101,7 @@ main(int argc, const char *argv[])
   pnd = nfc_open(context, NULL);
 
   if (pnd == NULL) {
-    printf("ERROR: %s\n", "Unable to open NFC device.");
+    fprintf(stderr, "ERROR: %s\n", "Unable to open NFC device.");
     exit(EXIT_FAILURE);
   }
   // Set opened NFC device to initiator mode
@@ -109,7 +110,8 @@ main(int argc, const char *argv[])
     exit(EXIT_FAILURE);
   }
 
-  printf("NFC reader: %s opened\n", nfc_device_get_name(pnd));
+  fprintf(stderr, "NFC reader: %s opened\n", nfc_device_get_name(pnd));
 
+  setbuf(stdout , NULL);
   poll_tags(delay*1000);
 }
