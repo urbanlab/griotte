@@ -56,13 +56,13 @@ Blockly.Python['multimedia_audio_stop'] = function(block) {
   return 'stop_audio()\n';
 };
 
-Blockly.Python['multimedia_background'] = function(block) {
+Blockly.Python['multimedia_set_background'] = function(block) {
   Blockly.Python.definitions_['from_griotte_scenario_multimedia_set_background'] = 'from griotte.scenario.multimedia import set_background';
 
   var color = Blockly.Python.valueToCode(block, 'COLOR',
     Blockly.Python.ORDER_MULTIPLICATIVE) || "'#000000'";
 
-  var code = 'background(' + color + ')\n';
+  var code = 'set_background(' + color + ')\n';
   return code;
 };
 

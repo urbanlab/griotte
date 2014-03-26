@@ -46,7 +46,7 @@ def set_background(strhex):
     logging.info("Setting background to %s" % strhex)
     Expecter().send('image.command.background', { "color": strhex })
 
-def play_image(media):
+def play_image(media, duration=0):
     """ Displays image
 
     Plays displays image returns

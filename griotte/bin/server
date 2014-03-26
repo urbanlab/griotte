@@ -29,7 +29,7 @@ from tornado.options import options
 import griotte.config
 
 def main():
-    setproctitle("g-server")
+    setproctitle("griotte-server")
     app = tornado.web.Application([
         (r'/ws',   griotte.server.Server),
         (r'/api/(\w+)', griotte.server.Api),

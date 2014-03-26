@@ -100,7 +100,7 @@ Blockly.Blocks['multimedia_audio_stop'] = {
   }
 };
 
-Blockly.Blocks['multimedia_background'] = {
+Blockly.Blocks['multimedia_set_background'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(44);

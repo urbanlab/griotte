@@ -20,6 +20,6 @@
 from setproctitle import setproctitle
 from griotte.rfid.rfidhandler import RFIDHandler
 
-setproctitle("g-rfid")
+setproctitle("griotte-rfid")
 
 RFIDHandler()
