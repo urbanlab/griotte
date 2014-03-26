@@ -1,0 +1,8 @@
+import daemon
+import griotte.scheduler
+from setproctitle import setproctitle
+
+setproctitle("griotte-scheduler")
+
+with daemon.DaemonContext():
+    Scheduler()

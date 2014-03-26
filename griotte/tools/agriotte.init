@@ -1,0 +1,56 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          ascheduler
+# Required-Start:
+# Required-Stop:
+# Should-Start:
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Griotte scheduler
+# Description:       Griotte shceduler that starts all required components
+### END INIT INFO
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
+DESC="Griotte scheduler"
+NAME=griotte
+
+GRIOTTE_BIN_PATH=/usr/local/griotte/bin
+GRIOTTE_DAEMONS='server storage multimedia image adc gpio'
+
+# Read configuration variable file if it is present
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+# Export proper pythonpath
+export PYTHONPATH=${GRIOTTE_BIN_PATH}/../lib:$PYTHONPATH
+
+DAEMON=/usr/local/bin/$NAME
+PIDPATH=/var/run/
+SCRIPTNAME=/etc/init.d/$NAME
+
+
+do_start () {
+
+    $GRIOTTE_BIN_PATH/scheduler
+    exit 0
+}
+
+case "$1" in
+  start|"")
+    do_start
+    ;;
+  restart|reload|force-reload)
+    echo "Error: argument '$1' not supported" >&2
+    exit 3
+    ;;
+  stop)
+    # No-op
+    ;;
+  status)
+    exit 0
+    ;;
+  *)
+    echo "Usage: asplashscreen [start|stop]" >&2
+    exit 3
+    ;;
+esac
