@@ -24,7 +24,7 @@ import logging
 import griotte.graceful
 
 #from griotte.multimedia.fbi import Fbi
-from griotte.dmx.enttec import Enttec
+from griotte.dmx.dmxusb_pro import DMXUniverse
 from griotte.ws import WebSocket
 
 """
@@ -33,10 +33,10 @@ DMX handling class
 
 class DMXHandler:
     def __init__(self):
-        self.backend = Enttec()
+        self.backend = DMXUniverse()
         self.ws = WebSocket(watchdog_interval=2)
         self.ws.add_listener('dmx.command.send', self.send)
-        self.ws.add_listener('dmx.command.clear', self.send)
+        self.ws.add_listener('dmx.command.clear', self.clear)
 
         self.start()
 
