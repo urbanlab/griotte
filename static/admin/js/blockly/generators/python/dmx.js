@@ -13,5 +13,23 @@ Blockly.Python['dmx_send_single'] = function(block) {
   return code;
 };
 
+Blockly.Python['dmx_send_channels'] = function(block) {
+  Blockly.Python.definitions_['from_griotte_scenario_dmx_send_channels'] = 'from griotte.scenario.dmx import dmx_send_channels';
+
+  var values = Blockly.Python.valueToCode(block, 'VALUES', Blockly.Python.ORDER_ATOMIC);
+  var channels = Blockly.Python.valueToCode(block, 'CHANNELS', Blockly.Python.ORDER_ATOMIC);
+  var code = 'dmx_send_channels(' + channels + ', ' + values + ')\n'
+
+  return code;
+};
+
+Blockly.Python['dmx_blackout'] = function(block) {
+  Blockly.Python.definitions_['from_griotte_scenario_dmx_blackout'] = 'from griotte.scenario.dmx import dmx_blackout';
+
+  var code = 'dmx_blackout()\n'
+
+  return code;
+};
+
 
 

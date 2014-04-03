@@ -116,7 +116,7 @@ class GPIOHandler:
         else:
             edge = "rising"
 
-        self._ws.send("digital.event." + port + ".edge." + edge, { 'value' : value == 1, 'raw_value' : value })
+        self._ws.send("digital.event." + port + ".edge." + edge, { 'value': edge, 'raw_value': value })
 
 
 

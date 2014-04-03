@@ -35,12 +35,14 @@
     <script type="text/javascript" src="js/blockly/blocks/digital.js"></script>
     <script type="text/javascript" src="js/blockly/blocks/rfid.js"></script>
     <script type="text/javascript" src="js/blockly/blocks/multimedia.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/dmx.js"></script>
     <script type="text/javascript" src="js/blockly/blocks/monkey_patching.js"></script>
     <script type="text/javascript" src="js/blockly/python_compressed.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/analog.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/digital.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/rfid.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/multimedia.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/dmx.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/monkey_patching.js"></script>
     <script type="text/javascript" src="js/blockly/msg/fr_monkey_patching.js"></script>
     <script type="text/javascript" src="js/scenario.js"></script>
@@ -399,6 +401,11 @@
         <block type="multimedia_set_background"></block>
         <block type="multimedia_wait"></block>
         <block type="multimedia_volume"></block>
+      </category>
+      <category name="DMX">
+        <block type="dmx_send_single"></block>
+        <block type="dmx_send_channels"></block>
+        <block type="dmx_blackout"></block>
       </category>
       <category name="Logique">
         <block type="controls_if"></block>

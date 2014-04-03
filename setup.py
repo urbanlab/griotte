@@ -44,7 +44,7 @@ for root, dirs, files in os.walk('static'):
 
         webapp_content[root].append(filepath)
 
-pprint(webapp_content.items())
+# pprint(webapp_content.items())
 
 setup(name='griotte',
       version=__version__,
