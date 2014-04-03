@@ -21,49 +21,44 @@
 #
 
 from tornado.options import define, options
+import configparser
 import os
 
 """
 Sensible defaults for module
 """
 
-try:
-    define("default_server",
-           default="127.0.0.1",
-           help="Default server to use for websocket client connections")
+class Config:
+    def __init__(self, section):
+        self._config = configparser.ConfigParser()
+        self._section = section
 
-    define("default_port",
-           default=8888,
-           type=int,
-           help="Default port to use for websocket client connections")
+        # Potential config files
+        LOCATIONS = [ '/etc/griotte.ini',
+                      '/usr/local/etc/griotte.ini',
+                      'griotte/config/griotte.ini', # for checkouts
+                      os.path.expanduser("~") + '/.griotte.ini' ]
 
-    define("server_port",
-           default=8888,
-           type=int,
-           help="Port to use for web and websocket server")
+        for file in LOCATIONS:
+            if os.path.exists(file):
+                self._config.read_file(open(file))
+        self.translate_to_tornado()
+        options.parse_command_line()
 
-    define("document_root",
-           default="/usr/local/share/griotte/static",
-           help="Root for static web files served by the internal webserver")
+    def translate_to_tornado(self):
+        if self._config is None:
+            return
 
-    define("store",
-           default="/usr/local/share/griotte/store",
-           help="Storage directory for storage module")
+        for key in self._config[section]:
+            if key in ['default_port', 'server_port']:
+                define(key, default=int(self._config[section][key]), type=int)
+            else:
+                define(key, default=self._config[section][key])
 
-    define("medias",
-           default="/medias",
-           help="Directory containing medias")
 
-    # Potential config files
-    LOCATIONS = [ '/etc/griotte.conf',
-                  '/usr/local/etc/griotte.conf',
-                  'griotte/config/griotte.conf', # for checkouts
-                  os.path.expanduser("~") + '/.griotte.conf' ]
 
-    for file in LOCATIONS:
-        if os.path.exists(file):
-            options.parse_config_file(file, final=False)
 
-    options.parse_command_line()
-except:
-    pass
+
+
+
+
