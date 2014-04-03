@@ -21,6 +21,7 @@
 #
 
 from tornado.options import define, options
+import logging
 import configparser
 import os
 
@@ -41,22 +42,41 @@ class Config:
 
         for file in LOCATIONS:
             if os.path.exists(file):
+                logging.info("reading config file %s" % file)
                 self._config.read_file(open(file))
-        self.translate_to_tornado()
+                # First file wins
+                break;
+
+        self._translate_to_tornado()
         options.parse_command_line()
 
-    def translate_to_tornado(self):
+    def __getitem__(self, name):
+        if name in self._config:
+            return self._config[name]
+
+    def __iter__(self):
+        return iter(self._config)
+
+    def _translate_to_tornado(self):
         if self._config is None:
             return
 
-        for key in self._config[section]:
-            if key in ['default_port', 'server_port']:
-                define(key, default=int(self._config[section][key]), type=int)
-            else:
-                define(key, default=self._config[section][key])
+        try:
+            for key in self._config[self._section]:
+                # If this key doesn't exist for tornado, we make it
+                if not key in options._options:
+                    if key in ['default_port', 'server_port']:
+                        define(key, default=int(self._config[self._section][key]), type=int)
+                    else:
+                        define(key, default=self._config[self._section][key])
 
+                # Set the value in tornado option
+                opt = options._options[key]
+                opt.parse(self._config[self._section][key])
 
-
+        except KeyError:
+            logging.error("unable to find keys for section %s" % self._section)
+            exit(0)
 
 
 

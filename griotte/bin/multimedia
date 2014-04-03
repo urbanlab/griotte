@@ -19,7 +19,9 @@
 
 from setproctitle import setproctitle
 from griotte.multimedia.multimediahandler import MultimediaHandler
+from griotte.config import Config
 
+Config("multimedia")
 setproctitle("griotte-multimedia")
 
 MultimediaHandler()

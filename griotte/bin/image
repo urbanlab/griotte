@@ -19,7 +19,9 @@
 
 from setproctitle import setproctitle
 from griotte.multimedia.imagehandler import ImageHandler
+from griotte.config import Config
 
+Config("image")
 setproctitle("griotte-image")
 
 ImageHandler()

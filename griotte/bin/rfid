@@ -19,7 +19,9 @@
 
 from setproctitle import setproctitle
 from griotte.rfid.rfidhandler import RFIDHandler
+from griotte.config import Config
 
+Config("rfid")
 setproctitle("griotte-rfid")
 
 RFIDHandler()

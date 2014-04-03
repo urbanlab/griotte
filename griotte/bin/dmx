@@ -19,7 +19,9 @@
 
 from setproctitle import setproctitle
 from griotte.dmx.dmxhandler import DMXHandler
+from griotte.config import Config
 
+Config("dmx")
 setproctitle("griotte-dmx")
 
 DMXHandler()

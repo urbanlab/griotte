@@ -29,7 +29,7 @@ import websocket
 from tornado.options import options
 from copy import deepcopy
 
-import griotte.config
+from griotte.config import Config
 
 class WebSocket:
     """ WebSocket client """
@@ -70,6 +70,9 @@ class WebSocket:
         logging.info("Closing websocket")
         if self._ws_ready:
             self.ws.close()
+
+    def is_ready(self):
+        return self._ws_ready
 
     def add_listener(self, channel, callback, *args):
         """ Adds a listener to a specific or wildcard channel

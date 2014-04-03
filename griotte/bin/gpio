@@ -19,7 +19,9 @@
 
 from setproctitle import setproctitle
 from griotte.gpio.gpiohandler import GPIOHandler
+from griotte.config import Config
 
+Config("gpio")
 setproctitle("griotte-gpio")
 
 GPIOHandler()

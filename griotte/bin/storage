@@ -18,8 +18,10 @@
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
 from setproctitle import setproctitle
-from griotte.storage.storagehandler import StorageHandler
-
 setproctitle("griotte-storage")
 
+from griotte.config import Config
+Config("storage")
+
+from griotte.storage.storagehandler import StorageHandler
 StorageHandler()

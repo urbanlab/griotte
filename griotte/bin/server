@@ -26,9 +26,10 @@ import os
 from setproctitle import setproctitle
 
 from tornado.options import options
-import griotte.config
+from griotte.config import Config
 
 def main():
+    Config("server")
     setproctitle("griotte-server")
     app = tornado.web.Application([
         (r'/ws',   griotte.server.Server),

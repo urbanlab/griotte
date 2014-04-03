@@ -19,7 +19,9 @@
 
 from setproctitle import setproctitle
 from griotte.adc.analoghandler import AnalogHandler
+from griotte.config import Config
 
+Config("adc")
 setproctitle("griotte-adc")
 
 AnalogHandler()

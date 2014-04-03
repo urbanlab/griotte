@@ -989,6 +989,8 @@ Code.wrapScenario = function(code) {
   var tail = [
     '',
     'if __name__ == "__main__":',
+    '  from griotte.config import Config',
+    '  Config("DEFAULT")',
     '  run()',
     ].join('\n');
 
