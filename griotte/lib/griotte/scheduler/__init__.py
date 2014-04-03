@@ -20,6 +20,8 @@ import tornado.websocket
 import logging
 import os
 import pygame
+from time import sleep
+
 
 from subprocess import Popen, PIPE
 from griotte.multimedia.pgimage import PgImage
@@ -34,7 +36,7 @@ class Scheduler:
         # Open websocket
         # Subcribe to proper channels (define them !)
         self._pg = PgImage()
-        self._pg = play('/home/pi/store/image/champagne.png')
-
+        self._pg.play('/home/pi/keep-calm.png')
+        sleep(20)
 
 

@@ -16,11 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-"""Server-side Multimedia groups blocks implementation
+"""Server-side DMX group blocks implementation
 
-This module implements server-side code generated for multimedia blockly blocks.
+This module implements server-side code generated for DMX blockly blocks.
 
-.. module:: multimedia
+.. module:: dmx
    :platform: Unix
 
 .. moduleauthor:: Michel Blanc <mblanc@erasme.org>
@@ -43,8 +43,20 @@ def dmx_send_single(channel, value):
 
     :param media: The image to show, relative to the media root folder
     """
-    logging.info("Setting background to %s" % strhex)
-    Expecter().send('dmx.command.send', { "channels": : { channel: int(value) } })
+    logging.info("Setting DMX channel %s to %s" % (channel, value))
+    dmx_send_channels([ channel ], [ value ])
+
+def dmx_send_channels(channels, values):
+    chandict = {}
+    for x in range(len(channels)):
+        chandict[channels[x]] = values[x]
+
+    logging.info("Sending DMX array")
+    Expecter().send('dmx.command.send', { "channels": chandict })
+
+def dmx_blackout():
+    logging.info("Sending DMX blackout")
+    Expecter().send('dmx.command.clear', { "channels": [] })
 
 @atexit.register
 def __goodbye__():

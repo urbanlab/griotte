@@ -56,7 +56,7 @@ class PgImage(object):
         # Check if image fits in display
         if imgsurf.get_width() > self._width or imgsurf.get_height() > self._height:
             # Rescale is needed
-            imgsurf = pygame.transform.scale(imgsurf, self._width, self._height)
+            imgsurf = pygame.transform.scale(imgsurf, (self._width, self._height))
 
         offsetX = (self._width - imgsurf.get_width()) / 2
         offsetY = (self._height - imgsurf.get_height()) / 2

@@ -70,7 +70,7 @@ def wait_edge(port, style="any"):
 
     logging.debug("get_digital : received edge %s for port %s" % (data['value'], port))
 
-    return data['value'] ==  True
+    return data['value']
 
 def set_profile(port, profile):
     """ Sets the profile for port

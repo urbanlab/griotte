@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-"""Server-side RFID groups blocks implementation
+"""Server-side RFID group blocks implementation
 
 This module implements server-side code generated for RFID reader
  blockly blocks.

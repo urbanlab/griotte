@@ -80,11 +80,13 @@ class DMXUniverse(object):
     #  clears all channels to zero. blackout.
     #  with optional channel argument, clears only one channel
         if len(channels) == 0:
-            for c in range (1, 512, 1):
-                self._dmx_frame[c]=0
+            logging.debug("No channels received, full blackout")
+            for c in range (0, 511):
+                self._dmx_frame[c] = 0
         else:
+            logging.debug("Channels received, selective blackout")
             for c in channels:
-                self._dmx_frame[c]=0
+                self._dmx_frame[int(c)] = 0
 
         self._render()
 
