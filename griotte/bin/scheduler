@@ -19,12 +19,8 @@
 
 
 from griotte.scheduler import Scheduler
-from setproctitle import setproctitle
-from griotte.config import Config
 import tornado.ioloop
 
-Config("scheduler")
-setproctitle("griotte-scheduler")
 
 s = Scheduler()
 

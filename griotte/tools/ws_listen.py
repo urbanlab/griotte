@@ -14,7 +14,7 @@ import tornado.ioloop
 
 Config("DEFAULT")
 
-define("watchdog", default=0, help="Watchdog interval")
+define("watchdog", default=0.1, help="Watchdog interval")
 
 if __name__ == "__main__":
     def on_message(channel, message):
@@ -32,5 +32,4 @@ if __name__ == "__main__":
         ws.add_listener(chan, on_message)
 
     ws.start(detach=False)
-    tornado.ioloop.IOLoop.instance().start()
 

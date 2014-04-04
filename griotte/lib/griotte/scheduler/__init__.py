@@ -32,31 +32,35 @@ from sys import exit
 from griotte.ws import WebSocket
 from subprocess import Popen, PIPE
 from griotte.config import Config
-from time import sleep
+from time import sleep, time
 from griotte.multimedia.mediamanager import MediaManager
+from griotte.handler import Handler
+import tornado.ioloop
 
+from griotte.scheduler.subsystem import Subsystem
 import signal
 
-class Scheduler:
+class Scheduler(Handler):
     """ Implements process scheduler that can start, stop, restart compoments
 
     Those components can be input, ouput handlers, but also scenarios.
     """
 
     def __init__(self):
-        # Open websocket
-        # Subcribe to proper channels (define them !)
+        Handler.__init__(self, 'scheduler', watchdog_interval = 2)
+
         self._subsystems = dict()
         self._scenarios = dict()
-        self._conf = Config('scheduler')
 
-        self.ws = WebSocket(watchdog_interval=2)
-        self.ws.add_listener('scheduler.command.start', self.start)
-        self.ws.add_listener('scheduler.command.reload', self.reload)
-        self.ws.add_listener('scheduler.command.restart', self.restart)
-        self.ws.add_listener('scheduler.command.stop', self.stop)
-        self.ws.add_listener('scheduler.command.shutdown', self.shutdown)
-        self.ws.add_listener('scheduler.command.status', self.status)
+        #self.ws = WebSocket(watchdog_interval=2)
+        self._ws.add_listener('scheduler.command.start', self.start)
+        self._ws.add_listener('scheduler.command.reload', self.reload)
+        self._ws.add_listener('scheduler.command.restart', self.restart)
+        self._ws.add_listener('scheduler.command.stop', self.stop)
+        self._ws.add_listener('scheduler.command.shutdown', self.shutdown)
+        self._ws.add_listener('scheduler.command.status', self.status)
+
+        self._ws.add_listener('*.event.pong', self.pong)
 
         signal.signal(signal.SIGINT, self._signal)
         signal.signal(signal.SIGTERM, self._signal)
@@ -94,16 +98,17 @@ class Scheduler:
     def shutdown(self, channel=None, message=None):
         logging.debug("shutting down")
         self._kill_server()
-        self.ws.stop()
+        self._ws.stop()
         exit(0)
 
+    # TODO : send back something interesting...
     def status(self, channel, message):
         daemons = list()
-        for subsys in self._conf:
+        for subsys in self._config:
             if subsys in ['DEFAULT']: continue
             daemons.push(subsys)
 
-        self.ws.send('scheduler.event.status', { "alive": daemons })
+        self._ws.send('scheduler.event.status', { "alive": daemons })
 
     def _signal(self, sig, frame):
         logging.debug("received signal %s" % sig)
@@ -116,18 +121,52 @@ class Scheduler:
     def _start(self):
         if 'server' not in self._subsystems:
             self._start_subsystem('server')
-            self.ws.start()
+            self._ws.start()
 
-        while not self.ws.is_ready():
+        while not self._ws.is_ready():
             sleep(0.1)
 
-        for subsys in self._conf:
+        for subsys in self._config:
             if subsys in ['DEFAULT', 'scheduler']: continue
 
-            if self._conf[subsys]['start'] in ['true','yes'] and subsys not in self._subsystems:
+            if self._config[subsys]['start'] in ['true','yes'] and subsys not in self._subsystems:
                 self._start_subsystem(subsys)
 
+
+        pinger = tornado.ioloop.PeriodicCallback(self._ping_subsystems,
+                                                5000,
+                                                io_loop = tornado.ioloop.IOLoop.instance())
+        pinger.start()
         self._autostart_scenarios()
+
+    def _ping_subsystems(self):
+        if not self._ws.is_ready():
+            logging.warning("ws is not ready to send")
+            return
+
+
+        for subsys in list(self._subsystems):
+            if 'channel_root' in list(self._config[subsys]):
+                name = self._config[subsys]['channel_root']
+            else:
+                name = subsys
+
+            self._ws.send("%s.command.ping" % name, {})
+
+        logging.debug("sent ping to all known subsystems")
+
+    def pong(self, channel, message):
+        daemon = channel.split('.')[0]
+
+        # We just don't care if it's us
+        # Using self._handler_name just in case someone changes it's mind
+        # on the name
+        if daemon == self._handler_name:
+            return
+
+        logging.debug("just had pong from subsystem %s" % daemon)
+        self._subsystems[daemon]['last_seen'] = time()
+        self._subsystems[name].pid
 
     def _autostart_scenarios(self):
         """ Advertises scenarios that have to run at start
@@ -140,11 +179,11 @@ class Scheduler:
 
     def _restart(self):
         self._kill_subsystem()
-        self._conf = Config('scheduler')
+        self._config = Config('scheduler')
         self._start()
 
     def _kill_subsystem(self, name=None):
-        if 'skip_daemons' in self._conf['scheduler'] and self._conf['scheduler']['skip_daemons'] not in ['no', 'false']:
+        if 'skip_daemons' in self._config['scheduler'] and self._config['scheduler']['skip_daemons'] not in ['no', 'false']:
             return
 
         if name is None:
@@ -179,12 +218,11 @@ class Scheduler:
            self._subsystems['server'].kill()
 
     def _start_subsystem(self, name):
-        if 'skip_daemons' in self._conf['scheduler'] and self._conf['scheduler']['skip_daemons'] not in ['no', 'false']:
+        if 'skip_daemons' in self._config['scheduler'] and self._config['scheduler']['skip_daemons'] not in ['no', 'false']:
             return
 
-        full_path = "%s/%s" % (self._conf[name]['binaries_path'], name)
-        self._subsystems[name] = Popen([full_path])
-        logging.info("starting subsystem %s (pid %s)" % (name, self._subsystems[name].pid))
+        full_path = "%s/%s" % (self._config[name]['binaries_path'], name)
+        self._subsystems[name] = Subsystem(name, full_path)
 
     def _start_scenario(self, scenario):
         name = scenario['name']

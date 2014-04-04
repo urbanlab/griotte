@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # (c) 2013-2014 ERASME
 #
@@ -17,6 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-from griotte.multimedia.imagehandler import ImageHandler
+class Subsystem:
+    def __init__(self, name, path):
+        self.name = name
+        self.path = path
+        self.last_seen = None
 
-ImageHandler()
+    def start(self, scenario = False):
+        self.popen = Popen([self.path])
+        logging.info("subsystem %s (pid %s) started" % (self.name, self.popen.pid))

@@ -91,7 +91,7 @@ class MediaManager:
 
         meta = "%s/%s/%s_meta.json" % (options.store, genre, name)
         if os.path.isfile(meta):
-            logging.info("reading metadata for %s from %s" % (name, meta))
+            logging.debug("reading metadata for %s from %s" % (name, meta))
 
             with open(meta) as data_file:
                 response.update(json.load(data_file))

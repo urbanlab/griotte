@@ -35,12 +35,11 @@ Image handling class
 
 class ImageHandler(Handler):
     def __init__(self):
-        Handler.__init__(self, 'image')
+        Handler.__init__(self, 'image', watchdog_interval = 2)
 
         self.backend = PgImage()
         self._ws.add_listener('image.command.start', self.image_start)
         self._ws.add_listener('image.command.background', self.image_background)
-        self._ws.add_listener('image.command.ping', self.image_start)
 
         self.start()
 
@@ -65,7 +64,7 @@ class ImageHandler(Handler):
 
     def start(self):
         logging.info("Starting ImageHandler's websocket")
-        self._ws.start(detach=False)
+        self._ws.start(detach=True)
 
 
     def send_status(self, status, message):

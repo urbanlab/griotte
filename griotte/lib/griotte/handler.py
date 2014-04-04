@@ -16,13 +16,23 @@
 # You should have received a copy of the GNU General Public License
 # along with Raspeomix.  If not, see <http://www.gnu.org/licenses/>.
 
+from griotte.ws import WebSocket
+from setproctitle import setproctitle
+from griotte.config import Config
+import logging
+
 class Handler:
-    def __init__(self, name):
+    def __init__(self, name, watchdog_interval = 2):
         self._handler_name = name
-        self._ws = WebSocket(watchdog_interval=2)
+        self._config = Config(name)
+        setproctitle("griotte-%s" % name)
+
+        self._ws = WebSocket(watchdog_interval = watchdog_interval)
 
         self._ws.add_listener("%s.command.ping" % self._handler_name,
                               self.ping)
+        logging.debug("added ping listener for %s" % self._handler_name)
 
-    def ping(self):
-        self._ws.send("%s.event.pong", '{}')
+    def ping(self, channel, message):
+        self._ws.send("%s.event.pong" % self._handler_name, { "handler": self._handler_name })
+        logging.debug("%s sending pong" % self._handler_name)

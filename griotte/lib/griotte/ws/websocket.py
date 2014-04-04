@@ -91,6 +91,8 @@ class WebSocket:
         # We can thus safely subscribe to the same channel several times
 
         # If the thread is running, we can subscribe immediately
+        # It doesn't matter if the websocket is not ready
+        # When it will be, subscriptions will be resent
         if self._ws_ready:
             logging.debug("Websocket is ready, sending subscription")
             self._subscribe(channel)
