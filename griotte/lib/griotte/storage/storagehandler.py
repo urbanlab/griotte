@@ -143,6 +143,7 @@ class StorageHandler:
         logging.info("Starting StorageHandler's websocket")
         self._ws.stop()
 
+
     def _get_struct(self, chanarr, value):
         """ Converts a channel and variable to a nested structure starting at
         root recursing over subkeys

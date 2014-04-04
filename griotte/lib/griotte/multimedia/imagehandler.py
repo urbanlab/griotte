@@ -22,7 +22,7 @@
 import logging
 
 import griotte.graceful
-
+from griotte.handler import Handler
 from griotte.multimedia.mediamanager import MediaManager
 
 #from griotte.multimedia.fbi import Fbi
@@ -33,12 +33,14 @@ from griotte.ws import WebSocket
 Image handling class
 """
 
-class ImageHandler:
+class ImageHandler(Handler):
     def __init__(self):
+        Handler.__init__(self, 'image')
+
         self.backend = PgImage()
-        self.ws = WebSocket(watchdog_interval=2)
-        self.ws.add_listener('image.command.start', self.image_start)
-        self.ws.add_listener('image.command.background', self.image_background)
+        self._ws.add_listener('image.command.start', self.image_start)
+        self._ws.add_listener('image.command.background', self.image_background)
+        self._ws.add_listener('image.command.ping', self.image_start)
 
         self.start()
 
@@ -47,7 +49,7 @@ class ImageHandler:
         self.backend.background(message['color'])
         self.send_status('start', { "type": "background",
                                     "color": message['color']} )
-        self.ws.send("image.event.background", { "color": message['color']})
+        self._ws.send("image.event.background", { "color": message['color']})
 
     def image_start(self, channel, message):
         # Message types :
@@ -59,15 +61,15 @@ class ImageHandler:
         self.backend.play(media['path'])
         self.send_status('start', { "type" : "image",
                                     "media": message['media'] })
-        self.ws.send("image.event.start", { "media": self.backend.media })
+        self._ws.send("image.event.start", { "media": self.backend.media })
 
     def start(self):
         logging.info("Starting ImageHandler's websocket")
-        self.ws.start(detach=False)
+        self._ws.start(detach=False)
 
 
     def send_status(self, status, message):
         logging.debug("sending status")
 
-        self.ws.send("image.event." + status, message)
+        self._ws.send("image.event." + status, message)
 

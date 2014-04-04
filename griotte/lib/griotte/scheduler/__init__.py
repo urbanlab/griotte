@@ -26,11 +26,14 @@ s._start_subsystem("adc")
 """
 
 import logging
+import json
+
 from sys import exit
 from griotte.ws import WebSocket
 from subprocess import Popen, PIPE
 from griotte.config import Config
 from time import sleep
+from griotte.multimedia.mediamanager import MediaManager
 
 import signal
 
@@ -44,7 +47,9 @@ class Scheduler:
         # Open websocket
         # Subcribe to proper channels (define them !)
         self._subsystems = dict()
+        self._scenarios = dict()
         self._conf = Config('scheduler')
+
         self.ws = WebSocket(watchdog_interval=2)
         self.ws.add_listener('scheduler.command.start', self.start)
         self.ws.add_listener('scheduler.command.reload', self.reload)
@@ -66,10 +71,16 @@ class Scheduler:
             for d in message['daemons']:
                 self._start_subsystem(d)
 
+        if 'scenario' in message:
+            self._start_scenario(message['scenario'])
+
     def stop(self, channel, message):
         if 'daemons' in message and isinstance(message['daemons'], list):
             for d in message['daemons']:
                 self._kill_subsystem(d)
+
+        if 'scenario' in message:
+            self._kill_scenario(s)
 
     def reload(self, channel, message):
         if 'daemons' in message and isinstance(message['daemons'], list):
@@ -116,12 +127,26 @@ class Scheduler:
             if self._conf[subsys]['start'] in ['true','yes'] and subsys not in self._subsystems:
                 self._start_subsystem(subsys)
 
+        self._autostart_scenarios()
+
+    def _autostart_scenarios(self):
+        """ Advertises scenarios that have to run at start
+        """
+        from pprint import pprint
+        for sc in json.loads(MediaManager.get('scenario')):
+            #pprint(sc)
+            if 'autostart' in sc and sc['autostart'] == True:
+                self._start_scenario(sc)
+
     def _restart(self):
         self._kill_subsystem()
         self._conf = Config('scheduler')
         self._start()
 
     def _kill_subsystem(self, name=None):
+        if 'skip_daemons' in self._conf['scheduler'] and self._conf['scheduler']['skip_daemons'] not in ['no', 'false']:
+            return
+
         if name is None:
             for subsys in list(self._subsystems):
                 if subsys != 'server': self._kill_subsystem(subsys)
@@ -134,6 +159,19 @@ class Scheduler:
 
             del self._subsystems[name]
 
+    def _kill_scenario(self, name=None):
+        if name is None:
+            for scen in list(self._scenarios):
+                self._kill_scenario(subsys)
+        else:
+            logging.info("killing scenario %s (pid %s)" % (name, self._scenario[name].pid))
+            self._scenario[name].terminate()
+            if self._scenario[name].poll() is None:
+                logging.info("hard killing scenario %s (pid %s)" % (name, self._scenario[name].pid))
+                self._scenario[name].kill()
+
+            del self._scenario[name]
+
     def _kill_server(self):
         # Killing the server is a one way trip since we have no way to restart it afterwards
         self._kill_subsystem()
@@ -141,10 +179,17 @@ class Scheduler:
            self._subsystems['server'].kill()
 
     def _start_subsystem(self, name):
+        if 'skip_daemons' in self._conf['scheduler'] and self._conf['scheduler']['skip_daemons'] not in ['no', 'false']:
+            return
+
         full_path = "%s/%s" % (self._conf[name]['binaries_path'], name)
         self._subsystems[name] = Popen([full_path])
         logging.info("starting subsystem %s (pid %s)" % (name, self._subsystems[name].pid))
 
+    def _start_scenario(self, scenario):
+        name = scenario['name']
+        self._scenarios[name] = Popen(['/usr/bin/python3', scenario['path']])
+        logging.info("starting scenario %s (pid %s)" % (name, self._scenarios[name].pid))
 
     def __del__(self):
         self._kill_server()

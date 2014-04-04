@@ -9,8 +9,11 @@ import logging
 from tornado.options import define, options
 
 from griotte.ws import WebSocket
+from griotte.config import Config
+import tornado.ioloop
 
-define("url", default="ws://127.0.0.1:8888/ws", help="Websocket server url")
+Config("DEFAULT")
+
 define("watchdog", default=0, help="Watchdog interval")
 
 if __name__ == "__main__":
@@ -29,4 +32,5 @@ if __name__ == "__main__":
         ws.add_listener(chan, on_message)
 
     ws.start(detach=False)
+    tornado.ioloop.IOLoop.instance().start()
 

@@ -9,11 +9,14 @@ import json
 import sys
 
 from time import time
-
 from websocket import create_connection
+from griotte.config import Config
+
+conf = Config("DEFAULT")
 
 def send(channel, data):
-  ws = create_connection("ws://localhost:8888/ws")
+  ws = create_connection("ws://%s:%s/ws" % (conf['DEFAULT']['default_server'],
+                                            conf['DEFAULT']['default_port'] ))
 
   decoded = json.loads(sys.argv[2])
 
