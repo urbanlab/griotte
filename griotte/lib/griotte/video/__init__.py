@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # (c) 2013-2014 ERASME
 #
@@ -17,11 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-from setproctitle import setproctitle
-from griotte.gpio.gpiohandler import GPIOHandler
-from griotte.config import Config
+# from griotte.multimedia.omxplayer import OMXPlayer
+# from griotte.multimedia.fbi import Fbi
+# from griotte.multimedia.multimediahandler import MultimediaHandler
+# from griotte.multimedia.imagehandler import ImageHandler
+# from griotte.multimedia.mediamanager import MediaManager
 
-Config("gpio")
-setproctitle("griotte-gpio")
-
-GPIOHandler()
+# from griotte.video.videohandler import VideoHandler

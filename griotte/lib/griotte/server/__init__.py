@@ -28,7 +28,7 @@ from subprocess import Popen, PIPE
 from shutil import copyfile
 
 import griotte.graceful
-from griotte.multimedia.mediamanager import MediaManager
+from griotte.mediamanager import MediaManager
 from tornado.options import options
 from time import time
 
@@ -185,6 +185,11 @@ class Server(tornado.websocket.WebSocketHandler):
             # Handle unsusbscribe
             logging.info("Got unsubscribe for channel %s" % decoded['data']['channel'])
             Server.channel_watchers[decoded['data']['channel']].remove(self.key())
+        elif decoded['channel'] == 'server.command.ping':
+            Server._dispatch_all({  "channel":"server.event.pong",
+                                    "timestamp": time(),
+                                    "data": {}
+                                })
         else:
             Server._dispatch(decoded)
 

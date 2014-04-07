@@ -16,25 +16,23 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-from griotte.rfid.rfiddevice import RFIDDevice
-from griotte.ws import WebSocket
+from griotte.rfid.rfiddevice import RfidDevice
+
+from griotte.handler import Handler
 
 import logging
 import json
 
 """
-Messages:
-
-All exchanged messages have a timestamp
-
 """
 
-class RFIDHandler:
+class RfidHandler(Handler):
     def __init__(self):
         """ Initializes RFID "device"
         """
-        self._rfiddevice = RFIDDevice()
-        self._ws = WebSocket(watchdog_interval=2)
+        Handler.__init__(self)
+
+        self._rfiddevice = RfidDevice()
         self.start()
 
     def start(self):
@@ -44,7 +42,7 @@ class RFIDHandler:
 
     def send_tag(self, tag):
         logging.info("Sending tag %s" % tag)
-        self._ws.send("rfid.event.tag",
+        self.send_event("rfid.event.tag",
                       { 'tag' : tag } )
 
 

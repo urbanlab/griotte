@@ -17,15 +17,16 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-command = sys.argv[1]
+import sys
+
+subsystem = sys.argv[1]
 try:
-    command_module = __import__("griotte.%s.%shandler" % (command, fromlist=["myapp.commands"])
+    cls = "%sHandler" % subsystem.capitalize()
+    subsys_module = __import__("griotte.%s.%shandler" % (subsystem, subsystem), fromlist=[cls])
+    getattr(subsys_module,cls)()
+
 except ImportError:
     # Display error message
+    import logging
+    logging.error("Unable to import %s class from %s module" % (cls, subsystem))
 
-command_module.run()
-
-
-from griotte.multimedia.imagehandler import ImageHandler
-
-ImageHandler()

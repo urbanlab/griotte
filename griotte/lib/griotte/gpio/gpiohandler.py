@@ -17,7 +17,7 @@
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from griotte.ws import WebSocket
+from griotte.handler import Handler
 
 try:
     import RPIO
@@ -25,7 +25,7 @@ except SystemError:
     logging.error("Unable to load RPIO. Are you using a Raspberry ?")
     pass
 
-class GPIOHandler:
+class GpioHandler(Handler):
     """ GPIO handler
 
     Handles requests for the GPIO subsystem
@@ -47,21 +47,14 @@ class GPIOHandler:
         """ Initialize GPIO subsystem and install websocket handlers
 
         """
-        self._ws = WebSocket(watchdog_interval=2)
+        Handler.__init__(self)
 
         # Install websocket & RPIO callbacks
-        for port in GPIOHandler.PORTS:
-            pin = GPIOHandler.PORTS[port]['bcm']
-            self._ws.add_listener("digital.command." + port + ".sample",
-                                 self._sample)
-            # self._ws.add_listener("digital.command." + port + ".edge",
-            #                      self._edge, "both")
-            # self._ws.add_listener("digital.command." + port + ".rising",
-            #                      self._edge, "rising")
-            # self._ws.add_listener("digital.command." + port + ".falling",
-            #                      self._edge, "falling")
-            self._ws.add_listener("digital.command." + port + ".profile",
-                                 self._profile)
+        for port in GpioHandler.PORTS:
+            pin = GpioHandler.PORTS[port]['bcm']
+            self.add_listener(port + ".sample")
+            self.add_listener(port + ".profile")
+
             logging.debug("installing RPIO handlers for pin %s", pin)
             # For now, we just set everything to input with pull up
             # we'll fix that with profiles later
@@ -73,13 +66,13 @@ class GPIOHandler:
         self.start()
 
     def _pin_to_port(self, pin):
-        for p in GPIOHandler.PORTS:
-            if GPIOHandler.PORTS[p]['bcm'] == pin:
+        for p in GpioHandler.PORTS:
+            if GpioHandler.PORTS[p]['bcm'] == pin:
                 return p
 
         return None
 
-    def _sample(self, port, message):
+    def _wscb_sample(self, port, message):
         """ Request a single sample
 
         :param channel: The websocket channel containing the port to sample (io0-3)
@@ -93,8 +86,25 @@ class GPIOHandler:
 
         boolval = RPIO.input(self.PORTS[port]['bcm'])
 
-        self._ws.send("digital.event." + port + ".sample",
-                      { 'value' : boolval, 'raw_value': int(boolval) } )
+        self.send_event(port + ".sample",
+                        { 'value' : boolval, 'raw_value': int(boolval) } )
+
+    def _wscb_profile(self, port, message):
+        """ Sets profile for port
+
+        :param port: The websocket channel containing the port to set the profile for (io0-3, dip0-1)
+        :type port: str
+        :param message: The message received over the wire
+        :type message: dict -- shoud contain a profile, see :doc:profiles
+        """
+        port = port.split('.')[2]
+
+        jp = message['profile']
+        logging.debug("profile request for port %s with profile %s" % (port, jp['name']))
+
+        # Unpack dict to keywork arguments
+        profile = Profile(**jp)
+        self.PORTS[port]['profile'] = profile
 
     def _edge(self, gpio_id, value):
         """ Callback for RPIO on edge
@@ -116,30 +126,11 @@ class GPIOHandler:
         else:
             edge = "rising"
 
-        self._ws.send("digital.event." + port + ".edge." + edge, { 'value': edge, 'raw_value': value })
-
-
-
-    def _profile(self, port, message):
-        """ Sets profile for port
-
-        :param port: The websocket channel containing the port to set the profile for (io0-3, dip0-1)
-        :type port: str
-        :param message: The message received over the wire
-        :type message: dict -- shoud contain a profile, see :doc:profiles
-        """
-        port = port.split('.')[2]
-
-        jp = message['profile']
-        logging.debug("profile request for port %s with profile %s" % (port, jp['name']))
-
-        # Unpack dict to keywork arguments
-        profile = Profile(**jp)
-        self.PORTS[port]['profile'] = profile
+        self.send(port + ".edge." + edge, { 'value': edge, 'raw_value': value })
 
     def start(self):
-        logging.info("Starting GPIOHandler's websocket thread")
+        logging.info("Starting GpioHandler's websocket thread")
         self._ws.start()
-        logging.info("Starting GPIOHandler's RPIO interrupts thread")
+        logging.info("Starting GpioHandler's RPIO interrupts thread")
         RPIO.wait_for_interrupts(threaded=False)
 

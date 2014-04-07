@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # (c) 2013-2014 ERASME
 #
@@ -17,11 +16,4 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-from setproctitle import setproctitle
-from griotte.dmx.dmxhandler import DMXHandler
-from griotte.config import Config
-
-Config("dmx")
-setproctitle("griotte-dmx")
-
-DMXHandler()
+from griotte.image.imagehandler import ImageHandler

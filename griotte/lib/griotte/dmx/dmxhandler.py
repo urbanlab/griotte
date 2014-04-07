@@ -22,28 +22,30 @@
 import logging
 
 import griotte.graceful
+from griotte.handler import Handler
 
 #from griotte.multimedia.fbi import Fbi
-from griotte.dmx.dmxusb_pro import DMXUniverse
-from griotte.ws import WebSocket
+from griotte.dmx.dmxusb_pro import DmxUniverse
 
 """
 DMX handling class
 """
 
-class DMXHandler:
+class DmxHandler(Handler):
     def __init__(self):
-        self.backend = DMXUniverse()
-        self.ws = WebSocket(watchdog_interval=2)
-        self.ws.add_listener('dmx.command.send', self.send)
-        self.ws.add_listener('dmx.command.clear', self.clear)
+        Handler.__init__(self)
+
+        self.backend = DmxUniverse()
+
+        self.add_listener('send')
+        self.add_listener('clear')
 
         self.start()
 
-    def send(self, channel, message):
+    def _wscb_send(self, channel, message):
         self.backend.set_channels(message['channels'])
 
-    def clear(self, channel, message):
+    def _wscb_clear(self, channel, message):
         # logging.debug("setting background to %s" % message['color'])
         # self.backend.background(message['color'])
         # self.send_status('start', { "type": "background",
@@ -53,4 +55,4 @@ class DMXHandler:
 
     def start(self):
         logging.info("Starting DMXHandler's websocket")
-        self.ws.start(detach=False)
+        self._ws.start(detach=False)

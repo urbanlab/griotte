@@ -23,11 +23,9 @@ import logging
 
 import griotte.graceful
 from griotte.handler import Handler
-from griotte.multimedia.mediamanager import MediaManager
 
-#from griotte.multimedia.fbi import Fbi
-from griotte.multimedia.pgimage import PgImage
-from griotte.ws import WebSocket
+from griotte.mediamanager import MediaManager
+from griotte.image.pgimage import PgImage
 
 """
 Image handling class
@@ -35,22 +33,22 @@ Image handling class
 
 class ImageHandler(Handler):
     def __init__(self):
-        Handler.__init__(self, 'image', watchdog_interval = 2)
+        Handler.__init__(self)
 
         self.backend = PgImage()
-        self._ws.add_listener('image.command.start', self.image_start)
-        self._ws.add_listener('image.command.background', self.image_background)
+        self.add_listener('start')
+        self.add_listener('background')
 
         self.start()
 
-    def image_background(self, channel, message):
+    def _wscb_background(self, channel, message):
         logging.debug("setting background to %s" % message['color'])
         self.backend.background(message['color'])
         self.send_status('start', { "type": "background",
                                     "color": message['color']} )
-        self._ws.send("image.event.background", { "color": message['color']})
+        self.send_event("background", { "color": message['color']})
 
-    def image_start(self, channel, message):
+    def _wscb_start(self, channel, message):
         # Message types :
         # play
         media = MediaManager.get_media_dict('image', message['media'])
@@ -60,15 +58,13 @@ class ImageHandler(Handler):
         self.backend.play(media['path'])
         self.send_status('start', { "type" : "image",
                                     "media": message['media'] })
-        self._ws.send("image.event.start", { "media": self.backend.media })
+        self.send_event('start', { "media": self.backend.media })
 
     def start(self):
         logging.info("Starting ImageHandler's websocket")
         self._ws.start(detach=True)
 
-
     def send_status(self, status, message):
         logging.debug("sending status")
-
-        self._ws.send("image.event." + status, message)
+        self.send_event(status, message)
 

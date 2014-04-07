@@ -87,7 +87,7 @@ def set_volume(level):
 
     :param level: The sound level, in percent (0 - 120)
     """
-    Expecter().send('meta.store.sound_level.set', { "level": level })
+    Expecter().send('storage.set.sound_level', { "level": level })
 
 def stop_video():
     """ Stops currently playing video

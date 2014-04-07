@@ -75,7 +75,7 @@ class Config:
                 opt.parse(self._config[self._section][key])
 
         except KeyError:
-            logging.error("unable to find keys for section %s" % self._section)
+            logging.error("unable to find keys for section %s - check config file" % self._section)
             exit(0)
 
 

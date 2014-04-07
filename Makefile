@@ -55,12 +55,6 @@ doc docs:
 rtfm:
 	xdg-open docs/_build/html/en/index.html
 
-_vdevel:
-	$(PYTHON) devel-bootstrap.py -p $(PYTHON)
-
-_vproduction:
-	$(PYTHON) production-bootstrap.py -p $(PYTHON)
-
 _devel:
 	sudo pip install -r devel-requirements.txt
 	sudo python setup.py install
@@ -72,16 +66,6 @@ _production:
 install.dev: _devel _production
 
 install.prod: _production
-
-virtual.dev: _vdevel _vproduction _vmessage
-
-virtual.prod: _vproduction _vmessage
-
-_vmessage:
-	@echo "\n====================================\n"
-	@echo "Please run :\n"
-	@echo "source griotte/tools/env.sh"
-	@echo
 
 clean:
 	@echo "Cleaning up byte compiled python stuff"

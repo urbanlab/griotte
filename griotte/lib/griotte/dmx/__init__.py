@@ -16,4 +16,4 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-from griotte.dmx.dmxhandler import DMXHandler
+from griotte.dmx.dmxhandler import DmxHandler

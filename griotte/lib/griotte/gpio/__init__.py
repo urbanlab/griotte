@@ -16,8 +16,5 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-from griotte.gpio.gpiohandler import GPIOHandler
-from griotte.ws import WebSocket
-
-import logging
+from griotte.gpio.gpiohandler import GpioHandler
 

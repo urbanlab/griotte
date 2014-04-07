@@ -16,8 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-# from griotte.multimedia.omxplayer import OMXPlayer
-# from griotte.multimedia.fbi import Fbi
-# from griotte.multimedia.multimediahandler import MultimediaHandler
-# from griotte.multimedia.imagehandler import ImageHandler
-# from griotte.multimedia.mediamanager import MediaManager
+from subprocess import Popen, PIPE
+import logging
+
+class Subsystem:
+    def __init__(self, name, path, scenario = False):
+        self.name = name
+        self.path = path
+        self.last_seen = None
+        self.latency = float("inf")
+
+        self.popen = Popen([self.path])
+        self.pid = self.popen.pid
+        logging.info("subsystem %s (pid %s) started" % (self.name, self.pid))
+
+    def __del__(self):
+        self.popen.terminate()
+        if self.popen.poll() is None:
+            logging.info("subsystem %s (pid %s) suiciding" % (self.name, self.pid))
+            self.popen.kill()

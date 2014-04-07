@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # (c) 2013-2014 ERASME
 #
@@ -17,11 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-from setproctitle import setproctitle
-setproctitle("griotte-storage")
 
-from griotte.config import Config
-Config("storage")
+from griotte.analog.devices import *
+from griotte.analog.analogdevice import AnalogDevice
+from griotte.analog.analoghandler import AnalogHandler
+from griotte.analog.profile import Profile
 
-from griotte.storage.storagehandler import StorageHandler
-StorageHandler()
+
+
+

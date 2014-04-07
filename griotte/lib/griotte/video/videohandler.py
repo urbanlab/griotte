@@ -23,28 +23,29 @@ import logging
 import json
 
 import griotte.graceful
+from griotte.handler import Handler
 
 from time import sleep
 
-from griotte.multimedia.omxplayer import OMXPlayer
-from griotte.multimedia.mediamanager import MediaManager
-
-from griotte.ws import WebSocket
+from griotte.video.omxplayer import OMXPlayer
+from griotte.mediamanager import MediaManager
 
 """
 
 """
 
-class MultimediaHandler:
+class VideoHandler(Handler):
     def __init__(self):
+        Handler.__init__(self)
+
         self.backend = OMXPlayer(self.send_status)
-        self.ws = WebSocket(watchdog_interval=2)
-        self.ws.add_listener('video.command.*', self.video_request)
-        self.ws.add_listener('store.command.set.sound_level', self.sound_level)
+
+        self.add_listener('*', callback=self._wscb_video_request)
+        self.add_listener('storage.command.set.sound_level', full_path=True)
 
         self.start()
 
-    def sound_level(self, channel, message):
+    def _wscb_sound_level(self, channel, message):
         # toggle_mute
         # unmute
         # mute
@@ -54,15 +55,12 @@ class MultimediaHandler:
         if 'state' in message['value']:
             self.backend.mute(message['value']['state'])
 
-    def video_request(self, channel, message):
+    def _wscb_video_request(self, channel, message):
         # Message types :
         # toggle_pause
         # play
         # stop
         media = MediaManager.get_media_dict('video', message['media'])
-
-        from pprint import pprint
-        pprint(media)
 
         if channel == 'video.command.pause':
             logging.debug("pausing media")
@@ -87,9 +85,9 @@ class MultimediaHandler:
                     "muted": self.backend.muted,
                     "media": self.backend.media }
 
-        self.ws.send("video.event." + status, message)
+        self.send_event(status, message)
 
     def start(self):
         logging.info("Starting MultimediaHandler's websocket")
-        self.ws.start(detach=False)
+        self._ws.start(detach=False)
 

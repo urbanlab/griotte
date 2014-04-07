@@ -27,7 +27,7 @@ Blockly.Medias.getMediasFor = function(genre) {
 };
 
 /**
- * Callback for store.command.get.medias.* responses
+ * Callback for storage.command.get.medias.* responses
  */
 Blockly.Medias.callbackMedias = function(medialist) {
   console.log(medialist.data.value);

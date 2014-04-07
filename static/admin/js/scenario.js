@@ -1009,7 +1009,7 @@ Code.saveScenario = function() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace()).innerHTML;
   var code = Code.wrapScenario(Blockly.Python.workspaceToCode());
   console.log(xml);
-  Griotte.publish('store.command.set.medias.scenario',
+  Griotte.publish('storage.command.set.medias.scenario',
                   { value:
                     { name: Code.current_scenario,
                       xml: xml,

@@ -31,7 +31,7 @@ find a better way to read Tags
 compile own binary from libnfc ?
 """
 
-class RFIDDevice:
+class RfidDevice:
     _RFID_CMD = "/bin/bash -c \"/usr/local/bin/iso14443a-poller -d %s 2> /dev/null\""
 
     def __init__(self):

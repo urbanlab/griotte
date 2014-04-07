@@ -35,8 +35,7 @@ class WebSocket:
     """ WebSocket client """
 
     def __init__(self,
-                 uri=None,
-                 watchdog_interval=5):
+                 uri=None):
 
         self.callbacks = dict()
 
@@ -55,11 +54,12 @@ class WebSocket:
                                          on_close = self.on_close)
 
         self.ws.on_open = self.on_open
-        self.watchdog_interval = watchdog_interval
         self.websocket_thread = None
 
 
-    def start(self, detach=True):
+    def start(self, detach=True, watchdog_interval=5):
+        self.watchdog_interval = watchdog_interval
+
         logging.info("Starting websocket watchdog thread with interval %ss" % self.watchdog_interval)
         self.watchdog_thread = threading.Thread(target=self._watchdog, args=(detach,))
         self.watchdog_thread.start()

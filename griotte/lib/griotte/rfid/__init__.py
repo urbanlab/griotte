@@ -23,5 +23,5 @@ This module spawns nfc-poll and waits for tags.
 .. moduleauthor:: Michel Blanc <mblanc@erasme.org>
 
 """
-from griotte.rfid.rfidhandler import RFIDHandler
+from griotte.rfid.rfidhandler import RfidHandler
 

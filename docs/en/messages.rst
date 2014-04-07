@@ -38,14 +38,14 @@ Send a message containing <json_data> over <channel> and exits. You don't need t
 If you don't need to send data, just add an empty JSON struct (`'{}'`).
 For instance :
 
-Example : `griotte/tools/ws_send.py store.command.get.sound_level '{}'`
+Example : `griotte/tools/ws_send.py storage.command.get.sound_level '{}'`
 
 `ws_send.py` also supports common configuration parameters (e.g. `--logging`).
 
 `griotte/tools/ws_listen.py <channel>`
 --------------------------------------
 
-Listens for messages on specific channel. Channel can be a wildcard (e.g. `store.set.*`). By default, channel `meta.presence` is watched.
+Listens for messages on specific channel. Channel can be a wildcard (e.g. `storage.set.*`). By default, channel `meta.presence` is watched.
 
 By default, `ws_listen.py` connects to `ws://127.0.0.1:8888/ws` websocket server. Option `--url` can be used to override this value.
 
@@ -203,19 +203,19 @@ Edge events are only available on digital ports.
 Storage events
 --------------
 
-store.event.<var>
-^^^^^^^^^^^^^^^^^
+storage.event.<var>
+^^^^^^^^^^^^^^^^^^^
 
 Returns the value for variable`<var>`, in the `data` field.
 The returned value depend on the request.
 
-For instance, if StorageHandler receives a `store.command.get.foo` message, it will send
-back a `store.event.foo` message like :
+For instance, if StorageHandler receives a `storage.command.get.foo` message, it will send
+back a `storage.event.foo` message like :
 
 .. code-block:: json
 
     {
-      "channel": "store.event.foo",
+      "channel": "storage.event.foo",
       "timestamp": <timestamp>,
       "data":
         {
@@ -228,13 +228,13 @@ back a `store.event.foo` message like :
         }
     }
 
-On the other hand, if the request was receved for `store.command.get.foo.bar`, it will
-send back a `store.event.foo.bar` message like :
+On the other hand, if the request was receved for `storage.command.get.foo.bar`, it will
+send back a `storage.event.foo.bar` message like :
 
 .. code-block:: json
 
     {
-        "channel": "store.event.foo.bar",
+        "channel": "storage.event.foo.bar",
         "timestamp": <timestamp>,
         "data": "baz"
     }
@@ -258,14 +258,14 @@ command, and the player might send several `<video|audio|image>.event.status`_
 events during the playback.
 
 <video|audio>.command.stop
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Stops media playback completely. The media can not be resumed after a stop
 command. A `<video|audio>.event.stop`_ event is emitted in response to a
 stop command.
 
 <video|audio>.command.pause
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Pauses media playback A `<video|audio|image>.event.pause`_ event is emitted in
 response to a pause command. A paused media can be resumed with
@@ -371,13 +371,13 @@ Storage commands allow to get/set variable values. Variables can contain
 whatever you want, since it will hold the content of the `data['value']` field
 in the message.
 
-For instance, the channel `store.command.set.foo` will set the value for the variable
+For instance, the channel `storage.command.set.foo` will set the value for the variable
 `foo`. If you pass this message :
 
 .. code-block:: json
 
     {
-      "channel": "store.command.set.foo",
+      "channel": "storage.command.set.foo",
       "timestamp": <timestamp>,
       "data":
         {
@@ -392,12 +392,12 @@ For instance, the channel `store.command.set.foo` will set the value for the var
 
 then the variable `foo` will hold a hash variable with keys `bar`, `fizz`, `number`.
 
-With the `store.command.get` operation, sending in `store.command.get.foo` will trigger a
-`store.event.foo` message containing the `foo` variable value in the data
+With the `storage.command.get` operation, sending in `storage.command.get.foo` will trigger a
+`storage.event.foo` message containing the `foo` variable value in the data
 variable.
 
-.. warning::  There are no atomic operations : if you get a value (`store.command.get`,
-              followed by a `store.event`), add a new key (`store.command.set`), and
+.. warning::  There are no atomic operations : if you get a value (`storage.command.get`,
+              followed by a `storage.event`), add a new key (`storage.command.set`), and
               send it back, you might override another change that occured
               between the get and the set operation.
 
@@ -423,36 +423,36 @@ Some known vars with a special purpose :
 
 While vars can contain any arbitrary deep structure, a subkey can be used in the
 channel name to address a particular item in a hash. For instance, the channel
-`store.command.set.scenarios.scenario1` will address the scenario names `scenario1` in
-the scenario hash while `store.command.set.scenarios` will retrieve the complete struct
+`storage.command.set.scenarios.scenario1` will address the scenario names `scenario1` in
+the scenario hash while `storage.command.set.scenarios` will retrieve the complete struct
 in the scenarios key.
 
 Thus, you can save a scenario without having to push all the scenarions in the
-`store.command.set.scenarios` hash. While this does not prevent collision when multiple
+`storage.command.set.scenarios` hash. While this does not prevent collision when multiple
 clients work on the same scenario, it will help minimizing conflicts.
 
 .. warning:: while this is a nice feature, it has implications : if one client
              is interested in the key `foo` and this key can be complex, it will
-             have to monitor `store.event.foo` and `store.event.foo.*` to catch
+             have to monitor `storage.event.foo` and `storage.event.foo.*` to catch
              direct subkeys modifications
 
-store.command.get.<var>
-^^^^^^^^^^^^^^^^^^^^^^^
+storage.command.get.<var>
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Asks the <var> value over websocket. The storage handler will respond with a
-store.event.<var> response. The complete value for the entry will be in the
+storage.event.<var> response. The complete value for the entry will be in the
 `value` key in the `data` field of the message.
 
 .. note:: Media requests will be processed externally : medias are not stored by the storage module, but only in the filesystem.
 
-Requests to `store.command.get.medias` will return a hash with `video`, `image` and `audio` keys, containing an array of medias.
+Requests to `storage.command.get.medias` will return a hash with `video`, `image` and `audio` keys, containing an array of medias.
 
-Requests to a specific media type (e.g. `store.command.get.medias.video`) will return an array of media for the specific type.
+Requests to a specific media type (e.g. `storage.command.get.medias.video`) will return an array of media for the specific type.
 
 Example responses
 """""""""""""""""
 
-A get request to `store.command.get.medias` would return the following data in a `store.event.medias` response (you can send the request with with `griotte/tools/ws_send.py store.command.get.medias '{}'`) :
+A get request to `storage.command.get.medias` would return the following data in a `storage.event.medias` response (you can send the request with with `griotte/tools/ws_send.py storage.command.get.medias '{}'`) :
 
 .. code-block:: json
 
@@ -503,7 +503,7 @@ A get request to `store.command.get.medias` would return the following data in a
        ]
     }
 
-A get request to `store.command.get.medias.video` would return the following data in a `store.event.medias.video` response (you can send the request with with `griotte/tools/ws_send.py store.command.get.video '{}'`) :
+A get request to `storage.command.get.medias.video` would return the following data in a `storage.event.medias.video` response (you can send the request with with `griotte/tools/ws_send.py storage.command.get.video '{}'`) :
 
 .. code-block:: json
 
@@ -524,8 +524,8 @@ A get request to `store.command.get.medias.video` would return the following dat
        }
     ]
 
-store.command.set.<var>
-^^^^^^^^^^^^^^^^^^^^^^^
+storage.command.set.<var>
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Sets the <var> value. The value to set must be in the `data` field, under the
 `value` key. If the `data` field contains a `persistent` key and is set to true,

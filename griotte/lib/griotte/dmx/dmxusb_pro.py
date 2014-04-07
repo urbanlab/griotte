@@ -22,7 +22,7 @@ import serial, sys, time
 import logging
 import atexit
 
-class DMXUniverse(object):
+class DmxUniverse(object):
     START_VAL = 0x7E
     END_VAL = 0xE7
 

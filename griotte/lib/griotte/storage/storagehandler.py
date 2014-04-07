@@ -13,7 +13,7 @@ Test me with :
 
 .. code-block:: bash
 
-    griotte/tools/ws_send.py store.command.set.wtf '{ "value" : { "a": { "b": "z" } }, "persistent": true }'
+    griotte/tools/ws_send.py storage.command.set.wtf '{ "value" : { "a": { "b": "z" } }, "persistent": true }'
 
 """
 
@@ -26,29 +26,29 @@ import os
 
 from tornado.options import options
 
-from griotte.ws import WebSocket
-from griotte.utils import dict_merge
-from griotte.multimedia.mediamanager import MediaManager
+from griotte.handler import Handler
 
-class StorageHandler:
+from griotte.utils import dict_merge
+from griotte.mediamanager import MediaManager
+
+class StorageHandler(Handler):
     """ Storage handling class
 
     Store and sends values over websockets
     """
+    def __init__(self):
+        Handler.__init__(self)
 
-    def __init__(self, store="%s/store.json" % options.store):
-        logging.debug("Starting StorageHandler")
-
-        self._store_path = store
+        self._store_path = "%s/store.json" % self._config['store']
         self._store = self._thaw()
 
-        self._ws = WebSocket(watchdog_interval=2)
-        self._ws.add_listener('store.command.set.*', self.set)
-        self._ws.add_listener('store.command.get.*', self.get)
+#        self._ws = WebSocket(watchdog_interval=2)
+        self.add_listener('set.*', callback=self._wscb_set)
+        self.add_listener('get.*', callback=self._wscb_get)
 
         self.start()
 
-    def get(self, channel, message):
+    def _wscb_get(self, channel, message):
         """ Callback for the get operation
 
         :param channel: The name of the channel containing the get request
@@ -73,11 +73,11 @@ class StorageHandler:
             value = self._get_struct(variable_arr, self._store)
 
         logging.debug("got get request for value %s, sending back value %s" % (variable, value))
-        return_channel = "store.event.%s" % variable
+        return_channel = "storage.event.%s" % variable
 
         self._ws.send(return_channel, { 'value': value })
 
-    def set(self, channel, data):
+    def _wscb_set(self, channel, data):
         """ Callback for the set operation
 
         Data, passed via a dict, can come in two flavors :
@@ -85,7 +85,7 @@ class StorageHandler:
         * { 'a' : { 'b' : 'c' } } : deep structure
 
         The later is the same as publishing 'c' in the
-        `store.command.set.a.b` channel.
+        `storage.command.set.a.b` channel.
 
         :param channel: The name of the channel containing the set request
         :type channel: str
@@ -149,7 +149,7 @@ class StorageHandler:
         root recursing over subkeys
 
         For instance, if { 'value' : 42 } is passed in channel
-        `store.command.set.some.deep.structure`, `_get_struct` will return a dict :
+        `storage.command.set.some.deep.structure`, `_get_struct` will return a dict :
         { 'some' : { 'deep' : { 'structure' : 42 }}}
 
         :param chanarr: Array containing subkeys
@@ -170,7 +170,7 @@ class StorageHandler:
         root recursing over subkeys
 
         For instance, if { 'value' : 42 } is passed in channel
-        `store.command.set.some.deep.structure`, `_set_struct` will return a dict :
+        `storage.command.set.some.deep.structure`, `_set_struct` will return a dict :
         { 'some' : { 'deep' : { 'structure' : 42 }}}
 
         :param chanarr: Array containing subkeys

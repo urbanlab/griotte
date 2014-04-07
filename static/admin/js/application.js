@@ -190,8 +190,7 @@ Application = {
       Application.graph_range = 10000;
     });
     $('#radio-1min').click(function() {
-      Application.graph_range = 60000;
-    });
+      Application.graph_range = 60000s    });
     console.log("Application initialized");
 
     setInterval(Application.normalize_digital_data, 200);
@@ -202,8 +201,8 @@ Application = {
 
   launch: function() {
     console.log("Application.launch called");
-    Griotte.subscribe("store.command.set.sound_level", Application.sound_in);
-    Griotte.subscribe("store.event.sound_level", Application.sound_in);
+    Griotte.subscribe("storage.command.set.sound_level", Application.sound_in);
+    Griotte.subscribe("storage.event.sound_level", Application.sound_in);
     Griotte.subscribe("video.event.status", Application.video_in);
     Griotte.subscribe("video.event.stop", Application.video_in);
     Griotte.subscribe("analog.event.an0.sample", Application.sensor_in);
@@ -218,17 +217,17 @@ Application = {
     Griotte.subscribe("digital.event.io1.edge.falling", Application.sensor_in);
     Griotte.subscribe("digital.event.io2.edge.falling", Application.sensor_in);
     Griotte.subscribe("digital.event.io3.edge.falling", Application.sensor_in);
-    Griotte.subscribe("store.event.medias", Blockly.Medias.callbackMedias);
+    Griotte.subscribe("storage.event.medias", Blockly.Medias.callbackMedias);
 
     for (var i = 0; i < 4; i++) {
       Griotte.publish("analog.command.an" + i + ".periodic_sample", { every: 2.0 } );
     };
 
     // Get initial sound settings
-    Griotte.publish("store.command.get.sound_level", {});
+    Griotte.publish("storage.command.get.sound_level", {});
 
     // Get initial medias
-    Griotte.publish("store.command.get.medias", {});
+    Griotte.publish("storage.command.get.medias", {});
   },
 
   upload_progress: function(evnt){
@@ -245,7 +244,7 @@ Application = {
   },
 
   sound: function(state, volume) {
-    Griotte.publish("store.command.set.sound_level", { persistent: true, value: { state: state, level: parseInt(volume) } } );
+    Griotte.publish("storage.command.set.sound_level", { persistent: true, value: { state: state, level: parseInt(volume) } } );
   },
 
   normalize_digital_data: function() {
