@@ -27,7 +27,6 @@ Image display via pygame
 class PgImage(object):
     def __init__(self):
         self._screen = self._bg_surface =  None
-
         self._reset_screen()
 
     def __del__(self):
@@ -35,13 +34,20 @@ class PgImage(object):
 
     def _reset_screen(self):
         if pygame.display.get_init():
+            logging.debug("pygame.display.get_init")
             pygame.display.quit()
 
+        logging.debug("pygame.display.init")
         pygame.display.init()
+        logging.debug("pygame.mouse_set_visible")
         pygame.mouse.set_visible(False)
         self._width = pygame.display.Info().current_w
         self._height = pygame.display.Info().current_h
+        logging.debug("pygame.set_mode")
+
         self._screen = pygame.display.set_mode((self._width, self._height), pygame.FULLSCREEN)
+
+        logging.debug("pygame is ready")
 
     """
     Shows image

@@ -38,7 +38,7 @@ import tornado.ioloop
 from griotte.subsystem import Subsystem
 import signal
 
-class Scheduler(Handler):
+class SchedulerHandler(Handler):
     """ Implements process scheduler that can start, stop, restart compoments
 
     Those components can be input, ouput handlers, but also scenarios.
@@ -51,14 +51,14 @@ class Scheduler(Handler):
         self._scenarios = dict()
 
         #self.ws = WebSocket(watchdog_interval=2)
-        self._ws.add_listener('start')
-        self._ws.add_listener('reload')
-        self._ws.add_listener('restart')
-        self._ws.add_listener('stop')
-        self._ws.add_listener('shutdown')
-        self._ws.add_listener('status')
+        self.add_listener('start')
+        self.add_listener('reload')
+        self.add_listener('restart')
+        self.add_listener('stop')
+        self.add_listener('shutdown')
+        self.add_listener('status')
 
-        self._ws.add_listener('*.event.pong', full_path=True, callback=self._wscb_pong)
+        self.add_listener('*.event.pong', full_path=True, callback=self._wscb_pong)
 
         signal.signal(signal.SIGINT, self._signal)
         signal.signal(signal.SIGTERM, self._signal)
@@ -66,6 +66,15 @@ class Scheduler(Handler):
         signal.signal(signal.SIGHUP, self._signal)
 
         self._start()
+        tornado.ioloop.IOLoop.instance().start()
+
+    def shutdown(self):
+        logging.debug("shutting down")
+        tornado.ioloop.IOLoop.instance().stop()
+        self._kill_server()
+        self._subsystems = None
+        self._ws.stop()
+        exit(0)
 
     # ws handlers
     def _wscb_start(self, channel, message):
@@ -94,20 +103,20 @@ class Scheduler(Handler):
         self._restart()
 
     def _wscb_shutdown(self, channel=None, message=None):
-        logging.debug("shutting down")
-        self._kill_server()
-        self._subsystems = None
-        self._ws.stop()
-        exit(0)
+        self.shutdown()
+
 
     # TODO : send back something interesting...
     def _wscb_status(self, channel, message):
-        daemons = list()
+        daemons = dict()
         for subsys in self._config:
-            if subsys in ['DEFAULT']: continue
-            daemons.push(subsys)
+            if subsys in ['DEFAULT', self._handler_name]: continue
+            daemons[subsys] = self._subsystems[subsys].last_seen
 
-        self._ws.send('scheduler.event.status', { "alive": daemons })
+        daemons[self._handler_name] = time()
+
+        logging.error("sending back status")
+        self.send_event('status', { "subsystems": daemons })
 
 
     def _wscb_pong(self, channel, message):
@@ -120,8 +129,7 @@ class Scheduler(Handler):
             return
 
         logging.debug("just had pong from subsystem %s" % daemon)
-        self._subsystems[daemon].latency   = time() - message['timestamp']
-        self._subsystems[daemon].last_seen = message['timestamp']
+        self._subsystems[daemon].last_seen = time()
 
     def _signal(self, sig, frame):
         logging.debug("received signal %s" % sig)
@@ -133,14 +141,14 @@ class Scheduler(Handler):
 
     def _start(self):
         if 'server' not in self._subsystems:
-            self._start_subsystem('server')
+            self._start_subsystem('server', handler = False)
             self._ws.start()
 
         while not self._ws.is_ready():
             sleep(0.1)
 
         for subsys in self._config:
-            if subsys in ['DEFAULT', 'scheduler']: continue
+            if subsys in ['DEFAULT', self._handler_name]: continue
 
             if self._config[subsys]['start'] in ['true','yes'] and subsys not in self._subsystems:
                 self._start_subsystem(subsys)
@@ -158,12 +166,12 @@ class Scheduler(Handler):
             return
 
         for subsys in list(self._subsystems):
-            self._ws.send("%s.command.ping" % name, {})
+            self._ws.send("%s.command.ping" % subsys, {})
 
-            if self._subsystems[name].last_seen is None:
-                logging.warning("%s was never seen" % name)
+            if self._subsystems[subsys].last_seen is None:
+                logging.warning("%s was never seen" % subsys)
             else:
-                logging.debug("%s was last seen %s seconds ago" % (name, time() - self._subsystems[name].last_seen))
+                logging.debug("%s was last seen %s seconds ago" % (subsys, time() - self._subsystems[subsys].last_seen))
 
         logging.debug("sent ping to all known subsystems")
 
@@ -204,12 +212,12 @@ class Scheduler(Handler):
         if self._subsystems['server'] is not None:
            del self._subsystems['server']
 
-    def _start_subsystem(self, name):
+    def _start_subsystem(self, name, handler = True):
         if 'skip_daemons' in self._config['scheduler'] and self._config['scheduler']['skip_daemons'] not in ['no', 'false']:
             return
 
         full_path = "%s/%s" % (self._config[name]['binaries_path'], name)
-        self._subsystems[name] = Subsystem(name, full_path)
+        self._subsystems[name] = Subsystem(name, full_path, handler = handler)
 
     def _start_scenario(self, scenario):
         name = scenario['name']

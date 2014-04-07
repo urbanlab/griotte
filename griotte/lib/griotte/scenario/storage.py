@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # (c) 2013-2014 ERASME
 #
@@ -17,11 +16,24 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
+"""Server-side Storage groups blocks implementation
 
-from griotte.scheduler import Scheduler
-import tornado.ioloop
+This module implements server-side code generated for storage blockly blocks.
 
+.. module:: storage
+   :platform: Unix
 
-s = Scheduler()
+.. moduleauthor:: Michel Blanc <mblanc@erasme.org>
 
-tornado.ioloop.IOLoop.instance().start()
+"""
+
+from griotte.scenario import Expecter
+
+def set_volume(level):
+    """ Changes global volume
+
+    Changes Griotte global volume
+
+    :param level: The sound level, in percent (0 - 120)
+    """
+    Expecter().send('storage.set.sound_level', { "level": level })

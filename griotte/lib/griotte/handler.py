@@ -53,7 +53,7 @@ class Handler:
             callback = getattr(self, "_wscb_%s" % command.split(".")[-1])
 
         if full_path:
-            path = full_path
+            path = command
         else:
             path = "%s.command.%s" % (self._handler_name, command)
 

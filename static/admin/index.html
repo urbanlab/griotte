@@ -32,17 +32,23 @@
     <script type="text/javascript" src="js/blockly/core/medias.js"></script>
     <script type="text/javascript" src="js/blockly/core/field_media.js"></script>
     <script type="text/javascript" src="js/blockly/blocks/analog.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/audio.js"></script>
     <script type="text/javascript" src="js/blockly/blocks/digital.js"></script>
-    <script type="text/javascript" src="js/blockly/blocks/rfid.js"></script>
-    <script type="text/javascript" src="js/blockly/blocks/multimedia.js"></script>
     <script type="text/javascript" src="js/blockly/blocks/dmx.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/image.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/misc.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/rfid.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/video.js"></script>
     <script type="text/javascript" src="js/blockly/blocks/monkey_patching.js"></script>
     <script type="text/javascript" src="js/blockly/python_compressed.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/analog.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/audio.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/digital.js"></script>
-    <script type="text/javascript" src="js/blockly/generators/python/rfid.js"></script>
-    <script type="text/javascript" src="js/blockly/generators/python/multimedia.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/dmx.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/image.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/misc.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/rfid.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/video.js"></script>
     <script type="text/javascript" src="js/blockly/generators/python/monkey_patching.js"></script>
     <script type="text/javascript" src="js/blockly/msg/fr_monkey_patching.js"></script>
     <script type="text/javascript" src="js/scenario.js"></script>
@@ -393,14 +399,20 @@
         </category>
       </category>
       <category name="Multimédia">
-        <block type="multimedia_video_play"></block>
-        <block type="multimedia_audio_play"></block>
-        <block type="multimedia_image_play"></block>
-        <block type="multimedia_video_stop"></block>
-        <block type="multimedia_audio_stop"></block>
-        <block type="multimedia_set_background"></block>
-        <block type="multimedia_wait"></block>
-        <block type="multimedia_volume"></block>
+        <category name="Vidéo">
+          <block type="video_play"></block>
+          <block type="video_stop"></block>
+        </category>
+        <category name="Audio">
+          <block type="audio_play"></block>
+          <block type="audio_stop"></block>
+        </category>
+        <category name="Image">
+          <block type="image_play"></block>
+          <block type="image_set_background"></block>
+        </category>
+        <block type="misc_wait"></block>
+        <block type="misc_volume"></block>
       </category>
       <category name="DMX">
         <block type="dmx_send_single"></block>

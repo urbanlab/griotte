@@ -24,9 +24,6 @@ This module implements server-side code generated for analog sensors blockly blo
 
 """
 
-import sys
-import time
-
 import logging
 import atexit
 
@@ -39,8 +36,8 @@ def get_digital(port):
 
     :param port: port to wait for
     """
-    data = Expecter().send_expect("digital.command." + port + ".sample",
-                                  "digital.event." + port + ".sample",
+    data = Expecter().send_expect("gpio.command." + port + ".sample",
+                                  "gpio.event." + port + ".sample",
                                   data  = { "every": 0.5 },
                                   flush = True)
 
@@ -62,10 +59,10 @@ def wait_edge(port, style="any"):
         raise ValueError("edge argument can only be 'rising', 'falling' of 'any'")
 
     if style == 'any':
-        data = Expecter().expect("digital.event." + port + ".edge.*",
+        data = Expecter().expect("gpio.event." + port + ".edge.*",
                                  flush = True)
     else:
-        data = Expecter().expect("digital.event." + port + ".edge." + style,
+        data = Expecter().expect("gpio.event." + port + ".edge." + style,
                                  flush = True)
 
     logging.debug("get_digital : received edge %s for port %s" % (data['value'], port))

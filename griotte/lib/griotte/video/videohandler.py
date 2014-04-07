@@ -40,7 +40,10 @@ class VideoHandler(Handler):
 
         self.backend = OMXPlayer(self.send_status)
 
-        self.add_listener('*', callback=self._wscb_video_request)
+        #self.add_listener('pause', callback=self._wscb_video_request)
+        self.add_listener('pause')
+        self.add_listener('start')
+        self.add_listener('stop')
         self.add_listener('storage.command.set.sound_level', full_path=True)
 
         self.start()
@@ -55,25 +58,20 @@ class VideoHandler(Handler):
         if 'state' in message['value']:
             self.backend.mute(message['value']['state'])
 
-    def _wscb_video_request(self, channel, message):
-        # Message types :
-        # toggle_pause
-        # play
-        # stop
+    def _wscb_pause(self, channel, message):
+        logging.debug("pausing media")
+        self.backend.toggle_pause()
+
+    def _wscb_start(self, channel, message):
         media = MediaManager.get_media_dict('video', message['media'])
 
-        if channel == 'video.command.pause':
-            logging.debug("pausing media")
-            self.backend.toggle_pause()
-            #self.send_status('toggle_pause') => send by cb
-        elif channel == 'video.command.start':
-            logging.debug("playing media %s" % media['path'])
-            self.backend.play(media['path'])
-            self.send_status('start')
-        elif channel == 'video.command.stop':
+        logging.debug("playing media %s" % media['path'])
+        self.backend.play(media['path'])
+        self.send_status('start')
+
+    def _wscb_stop(self, channel, message):
             logging.debug("stopping current media")
             self.backend.stop()
-            #self.send_status('stop')
 
     def send_status(self, status = "status"):
         logging.debug("sending status")

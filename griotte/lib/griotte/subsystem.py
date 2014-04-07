@@ -20,13 +20,17 @@ from subprocess import Popen, PIPE
 import logging
 
 class Subsystem:
-    def __init__(self, name, path, scenario = False):
+    def __init__(self, name, path, handler = True, scenario = False):
         self.name = name
         self.path = path
         self.last_seen = None
         self.latency = float("inf")
 
-        self.popen = Popen([self.path])
+        if handler:
+            self.popen = Popen(['subsystem', self.name])
+        else:
+            self.popen = Popen([self.path])
+
         self.pid = self.popen.pid
         logging.info("subsystem %s (pid %s) started" % (self.name, self.pid))
 

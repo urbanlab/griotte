@@ -27,11 +27,7 @@ This module implements server-side code generated for DMX blockly blocks.
 
 """
 
-import json
-import sys
-import time
 import atexit
-
 import logging
 
 from griotte.scenario import Expecter

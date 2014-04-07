@@ -28,7 +28,7 @@ This module implements socket communications for scenarios.
 
 At first sight, it could seem quite trivial. Just use the ws.recv() blocking
 call and wait for data to arrive before returning back to the caller function in
-the scenario (e.g. `griotte.scenario.digital.get_digital`).
+the scenario (e.g. `griotte.scenario.gpio.get_digital`).
 
 However, consider the following scenario :
 

@@ -8,7 +8,7 @@ import sys
 import logging
 from tornado.options import define, options
 
-from griotte.ws import WebSocket
+from griotte.websocket import WebSocket
 from griotte.config import Config
 import tornado.ioloop
 
@@ -27,9 +27,9 @@ if __name__ == "__main__":
         logging.warning("No channel specified, watching meta.presence")
         channels.append("meta.presence")
 
-    ws = WebSocket(watchdog_interval=options.watchdog)
+    ws = WebSocket()
     for chan in channels:
         ws.add_listener(chan, on_message)
 
-    ws.start(detach=False)
+    ws.start(detach=False, watchdog_interval=options.watchdog)
 

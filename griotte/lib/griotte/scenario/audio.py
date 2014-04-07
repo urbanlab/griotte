@@ -16,39 +16,25 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-"""Server-side RFID group blocks implementation
+"""Server-side Audio groups blocks implementation
 
-This module implements server-side code generated for RFID reader
- blockly blocks.
+This module implements server-side code generated for audio blockly blocks.
+
+.. module:: audio
+   :platform: Unix
 
 .. moduleauthor:: Michel Blanc <mblanc@erasme.org>
 
 """
 
-import logging
-import atexit
 
-from griotte.scenario import Expecter
+def play_audio(media, sync=True):
+    """ Plays sound synchronously
 
-def rfid_read(tag):
-    """ Returns when tag is read
+    Plays sound and wait for completion
 
-    This will block until a tag is read on the RFID reader
-
-    :param tag: tag to wait for. If None, will return first tag seen
-    :rtype: string -- tag read on reader
+    :param media: The media to play, relative to the media root folder
     """
-
-    while True:
-        data = Expecter().expect("rfid.event.tag",
-                                 flush = True)
-
-        logging.debug("rfid_read : received tag %s" % data['tag'])
-
-        if tag == None or tag == data['tag']:
-            return data['tag']
-
-@atexit.register
-def __goodbye__():
-    Expecter().quit()
-
+    Expecter().send('audio.command.start', { "media": media })
+    if sync:
+        Expecter().expect('audio.event.stop')

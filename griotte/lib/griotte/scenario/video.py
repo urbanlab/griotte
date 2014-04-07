@@ -16,41 +16,42 @@
 # You should have received a copy of the GNU General Public License
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
-"""Server-side Analog groups blocks implementation
+"""Server-side Video groups blocks implementation
 
-This module implements server-side code generated for analog sensors blockly blocks.
+This module implements server-side code generated for video blockly blocks.
+
+.. module:: video
+   :platform: Unix
 
 .. moduleauthor:: Michel Blanc <mblanc@erasme.org>
 
 """
 
-import logging
 import atexit
 
 from griotte.scenario import Expecter
 
-def get_analog(port):
-    """ Returns current analog value for port
+def play_video(media, sync=True):
+    """ Plays video synchronously
 
-    This will block until an analog value is received on the requested port
+    Plays video and wait for completion
 
-    :param port: port to wait for
+    :param media: The media to play, relative to the media root folder
     """
-    data = Expecter().send_expect("analog.command." + port + ".periodic_sample",
-                          "analog.event." + port + ".sample",
-                          data  = { "every": 0.5 },
-                          flush = True)
+    Expecter().send('video.command.start', { "media": media })
 
-    logging.debug("get_analog : received sample %s" % data['raw_value'])
+    if sync:
+        Expecter().expect('video.event.stop')
 
-    return data['raw_value']
 
-def set_profile(port, profile):
-    """ Sets the profile for port
+
+def stop_video():
+    """ Stops currently playing video
+
+    Sends a ws message asking for the video to stop
     """
-    return
+    Expecter().send('video.command.stop')
 
 @atexit.register
 def __goodbye__():
     Expecter().quit()
-

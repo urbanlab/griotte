@@ -27,11 +27,7 @@ This module implements server-side code generated for multimedia blockly blocks.
 
 """
 
-import json
-import sys
-import time
 import atexit
-
 import logging
 
 from griotte.scenario import Expecter
@@ -55,53 +51,6 @@ def play_image(media, duration=0):
     """
     logging.info("Playing image %s" % media)
     Expecter().send('image.command.start', { "media": media })
-
-def play_video(media, sync=True):
-    """ Plays video synchronously
-
-    Plays video and wait for completion
-
-    :param media: The media to play, relative to the media root folder
-    """
-    Expecter().send('video.command.start', { "media": media })
-
-    if sync:
-        print("sync mode, expecting stop")
-        Expecter().expect('video.event.stop')
-
-def play_audio(media, sync=True):
-    """ Plays sound synchronously
-
-    Plays sound and wait for completion
-
-    :param media: The media to play, relative to the media root folder
-    """
-    Expecter().send('video.command.start', { "media": media })
-    if sync:
-        Expecter().expect('video.event.stop')
-
-def set_volume(level):
-    """ Changes global volume
-
-    Changes Griotte global volume
-
-    :param level: The sound level, in percent (0 - 120)
-    """
-    Expecter().send('storage.set.sound_level', { "level": level })
-
-def stop_video():
-    """ Stops currently playing video
-
-    Sends a ws message asking for the video to stop
-    """
-    Expecter().send('video.command.stop')
-
-def stop_audio():
-    """ Stops currently playing video
-
-    Sends a ws message asking for the video to stop
-    """
-    Expecter().send('audio.command.stop')
 
 @atexit.register
 def __goodbye__():
