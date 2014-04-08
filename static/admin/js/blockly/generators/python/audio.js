@@ -13,7 +13,7 @@ Blockly.Python['audio_play'] = function(block) {
 };
 
 Blockly.Python['audio_stop'] = function(block) {
-  Blockly.Python.definitions_['from_griotte_scenario_multimedia_stop_audio'] = 'from griotte.scenario.multimedia import stop_audio';
+  Blockly.Python.definitions_['from_griotte_scenario_multimedia_stop_audio'] = 'from griotte.scenario.audio import stop_audio';
 
   return 'stop_audio()\n';
 };

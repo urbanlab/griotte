@@ -72,7 +72,7 @@ import time
 import fnmatch
 
 from queue import Queue
-from griotte.ws import WebSocket
+from griotte.websocket import WebSocket
 
 import griotte.graceful
 
@@ -82,8 +82,8 @@ class Expecter:
 
         """
         def __init__(self, uri=None):
-            self._ws = WebSocket(watchdog_interval=2, uri=uri)
-            self._ws.start()
+            self._ws = WebSocket(uri=uri)
+            self._ws.start(watchdog_interval=2)
             self._subscriptions = {}
 
         def send_expect(self, channel_out, channel_in, data='{}', flush=False):

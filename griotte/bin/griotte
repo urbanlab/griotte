@@ -18,15 +18,24 @@
 # along with griotte. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+import logging
+from griotte.config import Config
 
-subsystem = sys.argv[1]
+# Default is to start the scheduler
 try:
+    subsystem = sys.argv[1]
+except IndexError:
+    subsystem = 'scheduler'
+
+try:
+    Config("DEFAULT")
+    logging.info("Griotte called with argument %s" % subsystem)
     cls = "%sHandler" % subsystem.capitalize()
+    logging.info("Loading handler %s from griotte.%s.%shandler" % (cls, subsystem, subsystem))
     subsys_module = __import__("griotte.%s.%shandler" % (subsystem, subsystem), fromlist=[cls])
     getattr(subsys_module,cls)()
 
 except ImportError:
     # Display error message
-    import logging
     logging.error("Unable to import %s class from %s module" % (cls, subsystem))
 

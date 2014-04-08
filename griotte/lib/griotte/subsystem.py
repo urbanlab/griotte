@@ -25,11 +25,20 @@ class Subsystem:
         self.path = path
         self.last_seen = None
         self.latency = float("inf")
+        self.popen = None
 
-        if handler:
-            self.popen = Popen(['subsystem', self.name])
+        if scenario:
+            command = ['python3', self.path]
+        elif handler:
+            command = ["%s/griotte" % self.path, self.name]
         else:
-            self.popen = Popen([self.path])
+            command = ["%s/%s" % (self.path, self.name)]
+
+        logging.info("executing '%s' for %s" % (' '.join(command), self.name))
+        try:
+            self.popen = Popen(command)
+        except OSError as e:
+            logging.error("Error %s executing '%s' : %s" % (e.errno, ' '.join(command), e.strerror))
 
         self.pid = self.popen.pid
         logging.info("subsystem %s (pid %s) started" % (self.name, self.pid))

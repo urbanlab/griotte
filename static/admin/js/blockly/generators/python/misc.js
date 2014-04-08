@@ -1,3 +1,8 @@
+'use strict';
+
+goog.provide('Blockly.Python.misc');
+goog.require('Blockly.Python');
+
 Blockly.Python['misc_wait'] = function(block) {
   Blockly.Python.definitions_['from_time_sleep'] = 'from time import sleep';
 

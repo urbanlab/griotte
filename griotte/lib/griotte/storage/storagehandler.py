@@ -39,7 +39,7 @@ class StorageHandler(Handler):
     def __init__(self):
         Handler.__init__(self)
 
-        self._store_path = "%s/store.json" % self._config['store']
+        self._store_path = "%s/store.json" % self._config['storage']['store']
         self._store = self._thaw()
 
 #        self._ws = WebSocket(watchdog_interval=2)

@@ -22,7 +22,7 @@
 
 from tornado.options import define, options
 import logging
-import configparser
+from configparser import ConfigParser, ExtendedInterpolation
 import os
 
 """
@@ -31,21 +31,18 @@ Sensible defaults for module
 
 class Config:
     def __init__(self, section):
-        self._config = configparser.ConfigParser()
+        self._config = ConfigParser(interpolation=ExtendedInterpolation())
         self._section = section
 
         # Potential config files
         LOCATIONS = [ '/etc/griotte.ini',
                       '/usr/local/etc/griotte.ini',
-                      'griotte/config/griotte.ini', # for checkouts
                       os.path.expanduser("~") + '/.griotte.ini' ]
 
         for file in LOCATIONS:
             if os.path.exists(file):
                 logging.info("reading config file %s" % file)
                 self._config.read_file(open(file))
-                # First file wins
-                break;
 
         self._translate_to_tornado()
         options.parse_command_line()

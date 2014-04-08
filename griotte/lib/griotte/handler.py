@@ -21,6 +21,7 @@ from griotte.websocket import WebSocket
 
 from setproctitle import setproctitle
 
+import signal
 import logging
 
 class Handler:
@@ -40,6 +41,15 @@ class Handler:
         self._ws = WebSocket()
         self._ws.add_listener("%s.command.ping" % self._handler_name, self.ping)
         logging.debug("Added ping listener for %s" % self._handler_name)
+
+        # Install signal handlers that child class can override
+        signal.signal(signal.SIGINT, self._signal)
+        signal.signal(signal.SIGTERM, self._signal)
+        signal.signal(signal.SIGUSR1, self._signal)
+        signal.signal(signal.SIGHUP, self._signal)
+
+    def _signal(self, signum, frame):
+        pass
 
     def ping(self, channel, message):
         self._ws.send("%s.event.pong" % self._handler_name, { "handler": self._handler_name })

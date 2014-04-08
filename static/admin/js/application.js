@@ -190,7 +190,8 @@ Application = {
       Application.graph_range = 10000;
     });
     $('#radio-1min').click(function() {
-      Application.graph_range = 60000s    });
+      Application.graph_range = 60000
+    });
     console.log("Application initialized");
 
     setInterval(Application.normalize_digital_data, 200);
@@ -209,14 +210,14 @@ Application = {
     Griotte.subscribe("analog.event.an1.sample", Application.sensor_in);
     Griotte.subscribe("analog.event.an2.sample", Application.sensor_in);
     Griotte.subscribe("analog.event.an3.sample", Application.sensor_in);
-    Griotte.subscribe("digital.event.io0.edge.rising", Application.sensor_in);
-    Griotte.subscribe("digital.event.io1.edge.rising", Application.sensor_in);
-    Griotte.subscribe("digital.event.io2.edge.rising", Application.sensor_in);
-    Griotte.subscribe("digital.event.io3.edge.rising", Application.sensor_in);
-    Griotte.subscribe("digital.event.io0.edge.falling", Application.sensor_in);
-    Griotte.subscribe("digital.event.io1.edge.falling", Application.sensor_in);
-    Griotte.subscribe("digital.event.io2.edge.falling", Application.sensor_in);
-    Griotte.subscribe("digital.event.io3.edge.falling", Application.sensor_in);
+    Griotte.subscribe("gpio.event.io0.edge.rising", Application.sensor_in);
+    Griotte.subscribe("gpio.event.io1.edge.rising", Application.sensor_in);
+    Griotte.subscribe("gpio.event.io2.edge.rising", Application.sensor_in);
+    Griotte.subscribe("gpio.event.io3.edge.rising", Application.sensor_in);
+    Griotte.subscribe("gpio.event.io0.edge.falling", Application.sensor_in);
+    Griotte.subscribe("gpio.event.io1.edge.falling", Application.sensor_in);
+    Griotte.subscribe("gpio.event.io2.edge.falling", Application.sensor_in);
+    Griotte.subscribe("gpio.event.io3.edge.falling", Application.sensor_in);
     Griotte.subscribe("storage.event.medias", Blockly.Medias.callbackMedias);
 
     for (var i = 0; i < 4; i++) {

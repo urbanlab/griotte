@@ -30,9 +30,16 @@ class PgImage(object):
         self._reset_screen()
 
     def __del__(self):
+        self._shutdown()
+
+    def _shutdown(self):
+        logging.debug("pygame shutting down")
         pygame.display.quit()
+        pygame.quit()
 
     def _reset_screen(self):
+        pygame.display.quit()
+        pygame.quit()
         if pygame.display.get_init():
             logging.debug("pygame.display.get_init")
             pygame.display.quit()

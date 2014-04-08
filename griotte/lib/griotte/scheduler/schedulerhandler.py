@@ -27,6 +27,7 @@ s._start_subsystem("adc")
 
 import logging
 import json
+import signal
 
 from sys import exit
 from griotte.config import Config
@@ -36,7 +37,6 @@ from griotte.handler import Handler
 import tornado.ioloop
 
 from griotte.subsystem import Subsystem
-import signal
 
 class SchedulerHandler(Handler):
     """ Implements process scheduler that can start, stop, restart compoments
@@ -59,11 +59,6 @@ class SchedulerHandler(Handler):
         self.add_listener('status')
 
         self.add_listener('*.event.pong', full_path=True, callback=self._wscb_pong)
-
-        signal.signal(signal.SIGINT, self._signal)
-        signal.signal(signal.SIGTERM, self._signal)
-        signal.signal(signal.SIGUSR1, self._signal)
-        signal.signal(signal.SIGHUP, self._signal)
 
         self._start()
         tornado.ioloop.IOLoop.instance().start()
@@ -109,18 +104,21 @@ class SchedulerHandler(Handler):
     # TODO : send back something interesting...
     def _wscb_status(self, channel, message):
         daemons = dict()
-        for subsys in self._config:
-            if subsys in ['DEFAULT', self._handler_name]: continue
-            daemons[subsys] = self._subsystems[subsys].last_seen
-
         daemons[self._handler_name] = time()
 
-        logging.error("sending back status")
+        for subsys in self._subsystems:
+            daemons[subsys] = self._subsystems[subsys].last_seen
+
+        logging.info("sending back status")
         self.send_event('status', { "subsystems": daemons })
 
 
     def _wscb_pong(self, channel, message):
         daemon = channel.split('.')[0]
+
+        if not self._scenarios and self._system_ready():
+            logging.debug("system is ready, starting scenarios")
+            self._autostart_scenarios()
 
         # We just don't care if it's us
         # Using self._handler_name just in case someone changes it's mind
@@ -151,6 +149,7 @@ class SchedulerHandler(Handler):
             if subsys in ['DEFAULT', self._handler_name]: continue
 
             if self._config[subsys]['start'] in ['true','yes'] and subsys not in self._subsystems:
+                logging.info("starting subsystem %s" % subsys)
                 self._start_subsystem(subsys)
 
 
@@ -158,7 +157,14 @@ class SchedulerHandler(Handler):
                                                 5000,
                                                 io_loop = tornado.ioloop.IOLoop.instance())
         pinger.start()
-        self._autostart_scenarios()
+
+    def _system_ready(self):
+        for subsys in self._subsystems:
+            if self._subsystems[subsys].last_seen is None:
+                logging.info("%s is not ready yet" % subsys)
+                return False
+
+        return True
 
     def _ping_subsystems(self):
         if not self._ws.is_ready():
@@ -212,12 +218,13 @@ class SchedulerHandler(Handler):
         if self._subsystems['server'] is not None:
            del self._subsystems['server']
 
-    def _start_subsystem(self, name, handler = True):
+    def _start_subsystem(self, name, handler= True):
         if 'skip_daemons' in self._config['scheduler'] and self._config['scheduler']['skip_daemons'] not in ['no', 'false']:
             return
 
-        full_path = "%s/%s" % (self._config[name]['binaries_path'], name)
-        self._subsystems[name] = Subsystem(name, full_path, handler = handler)
+        self._subsystems[name] = Subsystem(name,
+                                           self._config[name]['binaries_path'],
+                                           handler = handler)
 
     def _start_scenario(self, scenario):
         name = scenario['name']

@@ -126,7 +126,7 @@ class GpioHandler(Handler):
         else:
             edge = "rising"
 
-        self.send(port + ".edge." + edge, { 'value': edge, 'raw_value': value })
+        self.send_event(port + ".edge." + edge, { 'value': edge, 'raw_value': value })
 
     def start(self):
         logging.info("Starting GpioHandler's websocket thread")

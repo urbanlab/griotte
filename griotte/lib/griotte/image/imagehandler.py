@@ -20,6 +20,7 @@
 # tools/ws_send.py request.video '{ "command": "play", "media": "/home/pi/kitten.mp4" }'
 
 import logging
+import signal
 
 import griotte.graceful
 from griotte.handler import Handler
@@ -41,6 +42,9 @@ class ImageHandler(Handler):
 
         self.start()
 
+    def _signal(self, signum, frame):
+        self.backend._shutdown()
+
     def _wscb_background(self, channel, message):
         logging.debug("setting background to %s" % message['color'])
         self.backend.background(message['color'])
@@ -58,7 +62,7 @@ class ImageHandler(Handler):
         self.backend.play(media['path'])
         self.send_status('start', { "type" : "image",
                                     "media": message['media'] })
-        self.send_event('start', { "media": self.backend.media })
+        self.send_event('start', { "media": self.backend.image })
 
     def start(self):
         logging.info("Starting ImageHandler's websocket")
