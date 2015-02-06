@@ -63,9 +63,9 @@ Compiled
 [warning] ofShader: GL_FRAGMENT_SHADER shader reports:
 Compiled
 [notice ] ofAppEGLWindow: runAppViaInfiniteLoop(): setting up notifications complete
-[notice ] bool ofxOMXPlayer::openEngine(int): DELETE TOOK 6 MS
-[notice ] bool ofxOMXPlayerEngine::didReadFile(bool): didOpenMovie TOOK 201 MS
-[notice ] bool ofxOMXPlayer::openEngine(int): setup TOOK 212 MS
+[notice ] bool ofxOMXPlayer::openEngine(int): DELETE TOOK 1 MS
+[notice ] bool ofxOMXPlayerEngine::didReadFile(bool): didOpenMovie TOOK 65 MS
+[notice ] bool ofxOMXPlayer::openEngine(int): setup TOOK 76 MS
 [notice ] bool ofxOMXPlayerEngine::openPlayer(int): duration SET: 52.2083
 [notice ] bool OMXClock::OMXStart(double, bool): at pts: 0
 [notice ] bool ofxOMXPlayerEngine::openPlayer(int): Opened video PASS
@@ -74,6 +74,3 @@ Compiled
 [ error ] OMX_ERRORTYPE COMXCoreComponent::SetStateForComponent(OMX_STATETYPE):  OMX_GetState FAIL OMX_ErrorInsufficientResources
 [ error ] OMX_ERRORTYPE COMXCoreComponent::SetStateForComponent(OMX_STATETYPE):  OMX_GetState FAIL OMX_ErrorInsufficientResources
 [ error ] OMX_ERRORTYPE COMXCoreComponent::SetStateForComponent(OMX_STATETYPE):  OMX_GetState FAIL OMX_ErrorInsufficientResources
-[notice ] ofAppEGLWindow: destroyNativeKeyboard()
-[notice ] ofAppEGLWindow: destroyNativeKeyboard(): unable to reset terminal
-[notice ] ofAppEGLWindow: destroySurface(): destroying EGL surface

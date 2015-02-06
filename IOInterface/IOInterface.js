@@ -66,7 +66,7 @@ IOInterface.prototype.stayAlive = function(){
 
 
 IOInterface.prototype.receiveMessageOSC = function(message,rinfo){	
-		console.log(message);
+		//console.log(message);
 	
 		var mes = message.slice();
 		var address = mes.shift();

@@ -21,13 +21,13 @@ trap control_c SIGINT
 #initial clean up
 cleanup
 
-forever start -o logs/Webserver.log WebServer/WebServer.js
-forever start -o logs/OSCDispatcher.log OSCDispatcher/OSCDispatcher.js
-forever start -o logs/ScenarioPlayer.log ScenarioPlayer/init.js
-sudo forever start -o logs/IOInterface.log IOInterface/IOInterface.js
+sudo /usr/local/lib/node_modules/forever/bin/forever start -o /home/pi/griotte/logs/Webserver.log /home/pi/griotte/WebServer/WebServer.js
+sudo /usr/local/lib/node_modules/forever/bin/forever start -o /home/pi/griotte/logs/OSCDispatcher.log /home/pi/griotte/OSCDispatcher/OSCDispatcher.js
+sudo /usr/local/lib/node_modules/forever/bin/forever start -o /home/pi/griotte/logs/ScenarioPlayer.log /home/pi/griotte/ScenarioPlayer/init.js
+sudo /usr/local/lib/node_modules/forever/bin/forever start -o l/home/pi/griotte/ogs/IOInterface.log /home/pi/griotte/IOInterface/IOInterface.js
 echo "Starting HPlayer in background\n"
-echo "" > logs/HPlayer.log
-bin/HPlayer/bin/HPlayer > logs/HPlayer.log 2>&1 &
+echo "" > /home/pi/griotte/logs/HPlayer.log
+/home/pi/griotte/bin/HPlayer/bin/HPlayer > /home/pi/griotte/logs/HPlayer.log 2>&1 &
 
 echo "Press [CTRL+C] to stop.."
 while :
