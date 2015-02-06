@@ -1,6 +1,9 @@
 [submodule "mcp3424"]
-    path = IOInterface/node_modules/mcp3424
-    url = https://github.com/AlainBarthelemy/mcp3424
+	path = IOInterface/node_modules/mcp3424
+	url = https://github.com/AlainBarthelemy/mcp3424
 [submodule "bin/HPlayer"]
 	path = bin/HPlayer
 	url = https://github.com/Hemisphere-Project/HPlayer
+[submodule "IOInterface/node_modules/mcp3424"]
+	path = IOInterface/node_modules/mcp3424
+	url = https://github.com/AlainBarthelemy/mcp3424
