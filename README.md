@@ -23,6 +23,7 @@ Griotte can play scenarios written with Blockly simply by dragging and dropping 
 
 Applications include museum players (that can react to visitors for instance), educational tools (learning about programming or sensors), home automation, lighting systems, ...
 
+
 Installation
 -------------
 
@@ -87,8 +88,8 @@ Installation
 
   4. Get Started :
 
-  	cd HController
-  	node HController.js
+  	cd griotte
+    ./startup.sh
 
 
 OSC Messages
