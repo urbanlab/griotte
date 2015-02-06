@@ -1,0 +1,14 @@
+{
+  "name": "ProcessManager",
+  "version": "1.0.0",
+  "description": "simple process manager",
+  "main": "ProcessManager.js",
+  "dependencies": {
+    "colors": "^0.6.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AlainBarthelemy <alain@hemisphere-project.com>",
+  "license": "GPL"
+}

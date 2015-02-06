@@ -1,0 +1,640 @@
+
+/* shades of grey */
+
+@g1 : #43464B;
+/*@g1 : #5A6568;*/
+@g1-p : @g1 + #222;
+@g1-pp : @g1 + #444;
+@g1-ppp : @g1 + #888;
+
+/* b&w */
+@b1: #262B2C;
+@w:white;
+
+/* color specific to a player */
+/*@id-color: #78BDE7;*/
+@id-color: #DCDF5E;
+@id-color-m: @id-color - #222;
+
+/* fonts */
+@lato: "Lato", Helvetica, Arial, sans-serif;
+@navbar-fs: 18px;
+
+/* variable heights */
+@player-head-height:100px;
+@navbar-height:60px;
+@toolbar-height:35px;
+@slider-and-pb-height:18px;
+@controls-panel-heading-height:50px;
+/*@player-controls-height:20px;*/
+@player-controls-th-height:40px;
+@player-controls-tb-height:230px;
+
+/* transistions */
+.ez-trans{
+  -webkit-transition: all .2s ease-in-out;
+   -o-transition: all .2s ease-in-out;
+	  transition: all .2s ease-in-out;
+}
+
+/* effects */
+.ds (@x: 0, @y: 1px, @blur: 2px, @spread: 0, @alpha: 0.25) {
+	-webkit-box-shadow:	@x @y @blur @spread rgba(0, 0, 0, @alpha);
+	-moz-box-shadow:	@x @y @blur @spread rgba(0, 0, 0, @alpha);
+	box-shadow:		@x @y @blur @spread rgba(0, 0, 0, @alpha);
+}
+
+
+.bs-none{
+	-webkit-box-shadow:	none;
+	-moz-box-shadow: none;
+	box-shadow:	none;		
+}
+
+#now-playing{
+	height:@toolbar-height;
+	color:@g1;
+	padding:7px;
+}
+#now-playing::before{
+	content:"now playing : ";
+	color:@g1-pp;	
+}
+
+
+
+
+/* global */
+html, body {
+  height: 100%;
+}
+*:focus {
+    outline: none,
+}
+body {
+  background-color: #fff;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: @lato;
+  color:@b1;
+}
+iframe {
+  border-style: none;
+}
+
+a{
+	color: @b1 ;
+	background-color: @g1-p ;	
+}
+a:hover{
+	color: @w ;
+	background-color: @g1-pp ;	
+}
+
+.container{
+	width:100%;
+	height:100%;
+	padding-left:0px;
+	padding-right:0px;	
+}
+
+.glyphicon{
+	margin-right:4px;	
+}
+
+/* popup */
+
+.popup{
+  position: relative;
+  background: @g1-p;
+  padding: 20px;
+  width: auto;
+  max-width: 500px;
+  margin: 20px auto;
+  
+	.btn{
+		height:@toolbar-height;
+		border-radius: 0;
+		border-style: none;
+		background-color: @g1-pp;
+	}
+	.btn:hover{
+		background-color: @g1-ppp;
+	}
+	.selected{
+		&,
+		&:hover{
+			color: @w;
+			background-color: @id-color-m;
+		}
+	}
+	.ti-container{
+		margin-top:20px;
+		margin-bottom: 15px;
+	}
+	.form-control{
+		height:40px;
+		font-size: 18px;
+		border-radius:0;		
+	}
+
+	.delete-sco-message{
+		margin-bottom: 15px;	
+	}
+}
+
+/* header */
+
+#player-head{
+	height: @player-head-height;
+	background-color: @g1-p;
+	position:fixed;
+	width:100%;
+	z-index:1000;
+}
+.player-name{
+	font-size: 65px;
+	padding-left:20px;
+	padding-right:20px;
+	display:inline-block;
+	/*width:100%;*/
+	height: 100%;
+	background-color: @g1;
+	color:@id-color;
+}
+.player-ip{
+	position:absolute;
+	left:5px;
+	bottom:0px;
+	color:@id-color-m;
+}
+
+
+/* nav bar */
+
+.navbar{
+	position:fixed;
+	top:@player-head-height;
+	/*min-height:@navbar-height;*/
+	margin-bottom: 0px;
+	border-style: none;	
+	.ds(0,2px,3px,0,0.2);
+	
+	li,a{
+		font-size:@navbar-fs;
+		line-height: 1;
+		.ez-trans;
+
+	}
+	.nav-pills {
+			
+		  > li {
+		  	
+			&.active > a {
+			  &,
+			  &:hover,
+			  &:focus {
+				color: @w ;
+				background-color:  @id-color-m ;
+			  }
+			}
+			> a{
+				height:@navbar-height;
+				padding-top:@navbar-height/2 - @navbar-fs/2;
+				border-style: none;
+				border-radius: 0;	
+			}
+		  }
+	}
+
+}
+
+/* tool bar */
+
+.toolbar {
+	
+	/*line-height:@toolbar-height;*/
+	background: @g1-ppp;
+	.row{
+		margin:0;	
+	}
+	
+	.btn{
+		height:@toolbar-height;
+		border-radius: 0;
+		border-style: none;
+		background-color: @g1-pp;
+	}
+	.btn:hover{
+		background-color: @g1-ppp;
+	}
+	.caret{
+		position:absolute;
+		right:10px;
+		top:@toolbar-height/2;
+	}
+	.dropdown-menu{
+		border-radius: 0;
+		border-style: none;	
+		width:100%;
+		margin:0px;
+		padding: 0px 0;
+		max-height:350px;
+		overflow-y: scroll;
+		.ds(0,2px,3px,0,0.2);
+
+		li{
+			a{
+				background-color: @g1-ppp;
+			}
+			a:hover{
+				background-color: @g1-pp;
+			}
+			.divider{
+				margin:0px;
+				background-color: @g1-pp;
+			}
+		}	
+	}
+	.btn-warning{
+		background-color: @id-color;	
+	}
+	.btn-warning:focus{
+		background-color: @id-color-m;	
+	}
+
+}
+
+/* progress-bar */
+
+.progress-container{
+	padding: 0px 10px;	
+	height: 32px;
+
+}
+.progress{
+	margin-top:	@toolbar-height/2 - @slider-and-pb-height/2;
+	border-radius:15px;
+	height: 15px;
+}
+.progress-bar{
+	background-color: @id-color-m;	
+	.bs-none;
+}
+
+
+/* media list */
+
+.media-list{
+	table {
+		margin:0;	
+		height:100%;
+	}
+	thead, tbody, tr, td, th { 
+		display: block;
+		border-style: none;
+	}
+	tr:after {
+		content: ' ';
+		display: block;
+		visibility: hidden;
+		clear: both;
+	}
+	thead th {
+		height:@player-controls-th-height;
+		
+	}
+	tbody {
+		height: calc(~"100% - "@player-controls-th-height);
+		overflow-y: auto;
+		background-color: @g1-ppp;
+	}
+	thead {
+		background-color: @g1-ppp;
+		border-bottom-style: dashed;
+		border-bottom-width:1px;
+		border-bottom-color: @g1-pp;
+	}
+	tbody td, thead th {
+		width: 25%;
+		float: left;
+	}
+	.table-striped {
+	  > tbody > tr:nth-child(odd) {
+		background-color: @g1-ppp+#111;
+	  }
+	  > tbody > tr:nth-child(even) {
+		background-color: @g1-ppp;
+	  }
+	  > tbody > tr:last-child {
+		.ds(0,2px,3px,0,0.2);
+	  }
+	}
+	
+	.table-hover {
+	  > tbody > tr:hover {
+		background-color: @g1-pp;
+		color:@w;
+	  }
+	}
+}
+
+
+
+
+/* content section */
+
+.content-section{
+	background-color:@g1;
+	margin-top:@player-head-height + @navbar-height ;
+	height:calc(~"100% - "@player-head-height + @navbar-height);
+}
+
+#scenario-section{
+	overflow:hidden;
+	/*height: calc(~"100% - "@player-head-height + @navbar-height + @toolbar-height);*/
+}
+
+#blockly-frame-container{
+	height: calc(~"100% - "@toolbar-height);
+}
+#blockly-iframe{
+	width:100%;
+	height:100%;
+}
+
+
+
+
+#controls-section{
+	
+	/*height:calc(~"100% - "@player-head-height + @navbar-height + @toolbar-height);*/
+	
+	.panel-group{
+		height: 100%;
+		margin-bottom:0;
+		background-color: @g1;
+	}
+	
+	.panel{
+		
+		.bs-none;
+		border-style: none;
+		border-radius: 0;
+		margin-top:0;
+		
+		.panel-heading {
+			height:@controls-panel-heading-height;	
+			.ds(0,2px,3px,0,0.2);
+			position:relative;
+			color:@b1;
+			background-color: @g1-pp;
+			border-radius: 0;
+			padding: 0;
+			.panel-title{
+				>a{
+					position:absolute;
+					width:100%;
+					padding-left:10px;
+					text-decoration:none;
+					background-color: @g1-pp;
+					line-height:@controls-panel-heading-height;
+				}
+				>a{
+					&:hover,
+					&:focus {
+						background-color: @g1-p;
+						color:@w;
+					}
+				}
+			}
+		}
+		.panel-body{
+			padding:0;
+			height:100%;
+			background-color: @g1-ppp; 
+		}
+		
+	}
+	#media-player{
+			
+			overflow:hidden !important;
+		
+			.media-list{
+			  	height:calc(~"100% - 34px");
+/*				table {
+					margin:0;	
+					height:100%;
+				}
+				thead, tbody, tr, td, th { 
+					display: block;
+					border-style: none;
+				}
+				tr:after {
+					content: ' ';
+					display: block;
+					visibility: hidden;
+					clear: both;
+				}
+				thead th {
+					height:@player-controls-th-height;
+					
+				}
+				tbody {
+					height: calc(~"100% - "@player-controls-th-height);
+					overflow-y: auto;
+					background-color: @g1-ppp;
+				}
+				thead {
+					background-color: @g1-ppp;
+					border-bottom-style: dashed;
+					border-bottom-width:1px;
+					border-bottom-color: @g1-pp;
+				}
+				tbody td, thead th {
+					width: 25%;
+					float: left;
+				}
+				.table-striped {
+				  > tbody > tr:nth-child(odd) {
+					background-color: @g1-ppp+#111;
+				  }
+				  > tbody > tr:nth-child(even) {
+					background-color: @g1-ppp;
+				  }
+				  > tbody > tr:last-child {
+					.ds(0,2px,3px,0,0.2);
+				  }
+				}
+				
+				.table-hover {
+				  > tbody > tr:hover {
+					background-color: @g1-pp;
+					color:@w;
+				  }
+				}*/
+			}
+
+
+			#player-controls{
+				width:100%;
+				height:@toolbar-height;
+				background-color: @g1-ppp+#111;
+				
+				border-top-style: dashed;
+				border-top-width:1px;
+				border-top-color: @g1-pp;
+				
+				.btn-default{
+					background-color: @g1-ppp;
+				}
+				.btn-default:hover{
+					background-color: @g1-pp;
+					color:@w;
+				}
+				
+				.btn-warning{
+					background-color: @id-color;	
+				}
+				.btn-warning:hover{
+					background-color: @id-color-m;	
+				}
+				
+				.slider-container{
+					padding: 0px 10px;
+					#volume-sli{
+						margin-top:	@toolbar-height/2 - @slider-and-pb-height/2;
+						margin-bottom: 0;
+					}
+					.ui-slider-range{
+						background-color: @id-color-m;
+					}
+					.ui-slider-handle{
+						background-color: @id-color;
+					}
+					
+				}
+
+			}
+			
+		}
+		#sensors{
+			
+			#sensor-left-menu{
+				height:100%;
+				ul{
+					height:100%;
+					border-style:none;
+					padding:0;
+				}
+				li{
+					margin-bottom:0;
+					height:100%/3;
+					width:100%;
+				}
+				a{
+					&,
+					&:hover,
+					&:focus{
+						border-style:none;
+						border-radius:0;
+						height:100%;
+						/*line-height:200%;*/
+						text-align:center;
+					}
+				}
+			}
+			#sensor-panes-container{
+				background-color:@g1-ppp;
+				height:100%;
+			}
+
+		}
+		#network{
+			#lonely-container{
+				display: -webkit-flex;
+				display: flex;
+				height: 300px;	
+			}
+			
+			#lonely{
+				margin: auto;
+				font-size: 4rem;
+			}
+		}
+}
+#media-section{
+	
+	background-color: @g1;
+	/*height:100%;*/
+	#media-controls{
+		.ds(0,2px,3px,0,0.2);
+		position:relative;
+	}
+	.media-preview{
+		height:60px;	
+	}
+	.media-list{
+		height:calc(~"100% - 60px");
+	}
+	/*#media-list{
+		min-height: 100%;
+		height: auto;
+	}
+	table {
+		margin:0;	
+		height:100%
+	}
+	thead, tbody, tr, td, th { 
+		display: block;
+		border-style: none;
+	}
+	tr:after {
+		content: ' ';
+		display: block;
+		visibility: hidden;
+		clear: both;
+	}
+	thead th {
+		height: 33px;
+		
+	}
+	tbody {
+		overflow-y: auto;
+		background-color: @g1-ppp;
+		height: 300px;
+	}
+	thead {
+		background-color: @g1-ppp;
+		border-bottom-style: dashed;
+		border-bottom-width:1px;
+		border-bottom-color: @g1-pp;
+	}
+	tbody td, thead th {
+		width: 25%;
+		float: left;
+	}
+	.table-striped {
+	  > tbody > tr:nth-child(odd) {
+		background-color: @g1-ppp+#111;
+	  }
+	}
+	
+	.table-hover {
+	  > tbody > tr:hover {
+		background-color: @g1-pp;
+		color:@w;
+	  }
+	}
+
+	.media-preview{
+		height:60px;	
+	}*/
+}
+#settings-section{
+	
+}
+
+
+
+/*# sourceMappingURL=style.css.map */

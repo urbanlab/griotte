@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <link href="css/blockly.css" rel="stylesheet">
+    
+    <script type="text/javascript" src="lib/ace-builds/src-noconflict/ace.js" charset="utf-8"></script>
+    
+    <script type="text/javascript" src="lib/blockly/blockly_compressed.js"></script>
+    <script type="text/javascript" src="lib/blockly/blocks_compressed.js"></script>
+    <script type="text/javascript" src="lib/blockly/javascript_compressed.js"></script>
+    <script type="text/javascript" src="lib/blockly/python_compressed.js"></script>
+    <script type="text/javascript" src="lib/blockly/dart_compressed.js"></script>
+    
+    <script type="text/javascript" src="lib/blockly/msg/js/fr.js"></script>
+    
+    <script type="text/javascript" src="js/blockly/core/medias.js"></script>
+    
+    <script type="text/javascript" src="js/blockly/blocks/raspiomix.js"></script>
+    
+    <!--<script type="text/javascript" src="js/blockly/blocks/analog.js"></script>-->
+    <script type="text/javascript" src="js/blockly/blocks/audio.js"></script>
+    <!--<script type="text/javascript" src="js/blockly/blocks/digital.js"></script>-->
+    <script type="text/javascript" src="js/blockly/blocks/dmx.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/image.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/misc.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/rfid.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/video.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/monkey_patching.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/tempo.js"></script>
+    
+    <script type="text/javascript" src="js/blockly/generators/js/raspiomix.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/js/multimedia.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/js/tempo.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/js/dmx.js"></script>
+    
+    <script type="text/javascript" src="js/blockly/generators/js/monkey_patching.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/analog.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/audio.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/digital.js"></script>
+    <!--<script type="text/javascript" src="js/blockly/generators/python/dmx.js"></script>-->
+    <script type="text/javascript" src="js/blockly/generators/python/image.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/misc.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/rfid.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/video.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/python/monkey_patching.js"></script>
+    
+    <script type="text/javascript" src="js/blockly/msg/fr_monkey_patching.js"></script>  
+    
+    <script type="text/javascript" src="js/blockly/blockly.js"></script>
+    
+
+    <script>
+      function init() {
+        Blockly.inject(document.getElementById('left-container'),
+            {toolbox: document.getElementById('toolbox')});
+        // Let the top-level application know that Blockly is ready.
+        window.parent.blocklyLoaded(Blockly);
+        
+        
+        Code.jseditor = ace.edit("content_javascript");
+       	Code.jseditor.setTheme("ace/theme/chrome");
+       	Code.jseditor.getSession().setMode("ace/mode/javascript");
+       	Code.jseditor.setReadOnly(true);
+       	Code.jseditor.setHighlightActiveLine(false);
+       	Code.jseditor.renderer.setShowGutter(false); 
+       	Code.jseditor.setShowPrintMargin(false);
+       	Code.jseditor.getSession().setUseWrapMode(false);
+ 
+       	Code.xmleditor = ace.edit("content_xml");
+       	Code.xmleditor.setTheme("ace/theme/chrome");
+       	Code.xmleditor.getSession().setMode("ace/mode/xml");
+       	Code.xmleditor.setReadOnly(false);
+       	Code.xmleditor.setHighlightActiveLine(false);
+       	Code.xmleditor.renderer.setShowGutter(true); 
+       	Code.xmleditor.setShowPrintMargin(false);
+       	Code.xmleditor.getSession().setUseWrapMode(false);
+       	
+      
+        
+        Code.init();
+        
+        Blockly.addChangeListener(function(){
+        	console.log("render content");
+        	Code.renderContent();
+        	//editor.setValue(document.getElementById("content_javascript").innerHTML);
+        });
+        
+      }
+      
+    </script>
+  </head>
+  <body onload="init()">
+  	<div id="main-container">
+  		<div id="left-container" class="left-column"></div>
+  		<div class="right-column">
+				<table width="100%">
+						<tr>
+							<td colspan=2>
+								<table width="100%">
+									<tr id="tabRow" height="1em">
+										<td id="tab_javascript" class="tabon">JavaScript</td>
+										<td id="tab_xml" class="taboff">XML</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+				</table>
+				<div id="content_javascript" class="content"></div>
+				<div id="content_xml" class="content"></div> 
+  		</div>
+  	</div>
+  
+
+  
+     <xml id="toolbox" style="display: none">
+      <category name="Capteurs">
+      	<category name="raspiomix">
+      	     <category name="analog">
+      	     		<block type="readanalog"></block>
+      	     		<block type="onanalog"></block>
+      	     </category>
+      	     <category name="digital">
+      	     		<block type="readdigital"></block>
+      	     		<block type="writedigital"></block>
+      	     		<block type="ondigital"></block>
+      	     		<block type="ondigitalchange"></block>
+      	     </category>
+      	</category>
+        <!--<category name="Analogiques">
+        <block type="analog_sensor"></block>
+        </category>
+        <category name="Digitaux">
+          <block type="digital_sensor"></block>
+          <block type="digital_sensor_edge"></block>
+        </category>-->
+        <category name="RFID">
+          <block type="rfid_read"></block>
+          <block type="rfid_wait_for"></block>
+          <block type="rfid_tag"></block>
+        </category>
+      </category>
+      <category name="Multimédia">
+        <category name="Vidéo">
+          <block type="video_play"></block>
+          <block type="video_pause"></block>
+          <block type="video_resume"></block>
+          <block type="video_stop"></block>
+        </category>
+        <category name="Audio">
+          <block type="audio_play"></block>
+          <block type="audio_stop"></block>
+        </category>
+        <category name="Image">
+          <block type="image_play"></block>
+          <block type="image_set_background"></block>
+        </category>
+        <block type="misc_wait"></block>
+        <block type="misc_volume"></block>
+      </category>
+      <category name="Temporisation">
+				<block type="settimeout"></block>
+				<block type="cleartimeout"></block>
+				<block type="setinterval"></block>
+				<block type="clearinterval"></block>
+      </category>
+      <category name="DMX">
+        <block type="dmx_send_single"></block>
+        <block type="dmx_send_channels"></block>
+        <block type="dmx_blackout"></block>
+      </category>
+      <category name="Logique">
+        <block type="controls_if"></block>
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean"></block>
+        <block type="logic_null"></block>
+        <block type="logic_ternary"></block>
+      </category>
+      <category name="Boucles">
+        <block type="controls_repeat_forever"></block>
+        <block type="controls_repeat_ext">
+          <value name="TIMES">
+            <block type="math_number">
+              <title name="NUM">10</title>
+            </block>
+          </value>
+        </block>
+        <block type="controls_whileUntil"></block>
+        <block type="controls_for">
+          <value name="FROM">
+            <block type="math_number">
+              <title name="NUM">1</title>
+            </block>
+          </value>
+          <value name="TO">
+            <block type="math_number">
+              <title name="NUM">10</title>
+            </block>
+          </value>
+          <value name="BY">
+            <block type="math_number">
+              <title name="NUM">1</title>
+            </block>
+          </value>
+        </block>
+        <block type="controls_forEach"></block>
+        <block type="controls_flow_statements"></block>
+      </category>
+      <category name="Math">
+        <block type="math_number"></block>
+        <block type="math_arithmetic"></block>
+        <block type="math_single"></block>
+        <block type="math_trig"></block>
+        <block type="math_constant"></block>
+        <block type="math_number_property"></block>
+        <block type="math_change">
+          <value name="DELTA">
+            <block type="math_number">
+              <title name="NUM">1</title>
+            </block>
+          </value>
+        </block>
+        <block type="math_round"></block>
+        <block type="math_on_list"></block>
+        <block type="math_modulo"></block>
+        <block type="math_constrain">
+          <value name="LOW">
+            <block type="math_number">
+              <title name="NUM">1</title>
+            </block>
+          </value>
+          <value name="HIGH">
+            <block type="math_number">
+              <title name="NUM">100</title>
+            </block>
+          </value>
+        </block>
+        <block type="math_random_int">
+          <value name="FROM">
+            <block type="math_number">
+              <title name="NUM">1</title>
+            </block>
+          </value>
+          <value name="TO">
+            <block type="math_number">
+              <title name="NUM">100</title>
+            </block>
+          </value>
+        </block>
+        <block type="math_random_float"></block>
+      </category>
+      <category name="Texte">
+        <block type="text"></block>
+        <block type="text_join"></block>
+        <block type="text_append">
+          <value name="TEXT">
+            <block type="text"></block>
+          </value>
+        </block>
+        <block type="text_length"></block>
+        <block type="text_isEmpty"></block>
+        <block type="text_indexOf">
+          <value name="VALUE">
+            <block type="variables_get">
+              <title name="VAR">texte</title>
+            </block>
+          </value>
+        </block>
+        <block type="text_charAt">
+          <value name="VALUE">
+            <block type="variables_get">
+              <title name="VAR">texte</title>
+            </block>
+          </value>
+        </block>
+        <block type="text_getSubstring">
+          <value name="STRING">
+            <block type="variables_get">
+              <title name="VAR">texte</title>
+            </block>
+          </value>
+        </block>
+        <block type="text_changeCase"></block>
+        <block type="text_trim"></block>
+        <block type="text_print"></block>
+        <block type="text_prompt"></block>
+      </category>
+      <category name="Listes">
+        <block type="lists_create_empty"></block>
+        <block type="lists_create_with"></block>
+        <block type="lists_repeat">
+          <value name="NUM">
+            <block type="math_number">
+              <title name="NUM">5</title>
+            </block>
+          </value>
+        </block>
+        <block type="lists_length"></block>
+        <block type="lists_isEmpty"></block>
+        <block type="lists_indexOf">
+          <value name="VALUE">
+            <block type="variables_get">
+              <title name="VAR">liste</title>
+            </block>
+          </value>
+        </block>
+        <block type="lists_getIndex">
+          <value name="VALUE">
+            <block type="variables_get">
+              <title name="VAR">liste</title>
+            </block>
+          </value>
+        </block>
+        <block type="lists_setIndex">
+          <value name="LIST">
+            <block type="variables_get">
+              <title name="VAR">liste</title>
+            </block>
+          </value>
+        </block>
+        <block type="lists_getSublist">
+          <value name="LIST">
+            <block type="variables_get">
+              <title name="VAR">liste</title>
+            </block>
+          </value>
+        </block>
+      </category>
+      <category name="Couleur">
+        <block type="colour_picker"></block>
+        <block type="colour_random"></block>
+        <block type="colour_rgb"></block>
+        <block type="colour_blend"></block>
+      </category>
+      <category name="Variables" custom="VARIABLE"></category>
+      <category name="Procédures" custom="PROCEDURE"></category>
+    </xml>
+  </body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flat UI Free</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="css/flat-ui.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="images/favicon.ico">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+    
+    <style type="text/css">
+    	#player_head{
+    		width:100%;
+    		height:60px;
+    		font-size:32px;
+    		color:white;
+    		border-radius:4px;
+    		background-color:#48c9b0;
+    		/*background-color:yellow;*/
+    		text-align:center;
+    		margin-bottom:20px;
+    	}
+    
+    </style>
+    
+    
+  </head>
+  <body>
+ 	 <div class="container">
+ 	 	<div id="player_head"></div>
+ 	 </div>
+   	<!-- Fixed navbar -->
+    <div class="navbar" role="navigation">
+	  <div class="container">
+		<ul class="nav nav-pills">
+			<li class="active"><a href="#"><span class="glyphicon glyphicon-play"> Now Playing</a></li>
+			<li class="disabled" ><a href="#"><span class="glyphicon glyphicon-th-list"></span> Playlist</a></li>
+			<li class="disabled"><a href="#"><span class="glyphicon glyphicon-file"> Media</a></li>
+			<li class="disabled"><a href="#"><span class="glyphicon glyphicon-wrench"> Settings</a></li>
+		</ul>
+	  </div>
+	</div>
+	<div class="container">
+		<div id="server_info" class="form-control" style="margin-bottom:20px;">Salut</div>
+	</div>
+    <div id="now_playing_container" class="container">
+    		<div id="mediaList" class="list-group">
+    		<!--<a href="#" class="list-group-item">ok</a>
+			  <a href="#" class="list-group-item active"> 
+			  	<div>media lol</div>
+			  	<div class="progress" >
+       		    		<div class="progress-bar" style="width: 40%;"></div>
+       		   </div>		
+			  </a>
+			  <a href="#" class="list-group-item">bim</a>
+			  <a href="#" class="list-group-item">bam</a>
+			  <a href="#" class="list-group-item">boom</a>-->
+			</div>
+    		
+       		<button id="play_btn"class="btn btn-wide btn-primary" ><span class="glyphicon glyphicon-play"></span></button>
+       		<button id="prev_btn"class="btn btn-info "><span class="glyphicon glyphicon-backward"></span></button>
+       		<button id="next_btn"class="btn btn-info "><span class="glyphicon glyphicon-forward"></span></button>
+       		<button id="pause_btn"class="btn btn-wide btn-primary disabled"><span class="glyphicon glyphicon-pause"></span></button>
+       		<button id="stop_btn"class="btn btn-wide btn-danger"><span class="glyphicon glyphicon-stop"></span></button>
+       		<button id="mute_btn"class="btn btn btn-primary"><span class="glyphicon glyphicon-volume-off"></span></button>
+       		<button id="loop_btn"class="btn btn-primary"><span class="glyphicon glyphicon-retweet"></span></button>
+       		<button id="quit_btn"class="btn btn-primary btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+       		<div id="volume_sli" class="ui-slider" style="margin-top:20px;"></div>
+       		<div id="zoom_sli" class="ui-slider" style="margin-top:20px;"></div>
+       		<div id="blur_sli" class="ui-slider" style="margin-top:20px;"></div>
+		
+       		    		
+    </div>
+
+       	
+    
+    <!-- /.container -->
+
+
+
+    <!-- Load JS here for greater good =============================-->
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-select.js"></script>
+    <script src="js/bootstrap-switch.js"></script>
+    <script src="js/flatui-checkbox.js"></script>
+    <script src="js/flatui-radio.js"></script>
+    <script src="js/jquery.tagsinput.js"></script>
+    <script src="js/jquery.placeholder.js"></script>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    
+    
+    
+	<script type="text/javascript">
+	
+		if (!window.location.origin)
+			window.location.origin = window.location.protocol+"//"+window.location.host;
+	
+		console.log(window.location.origin);
+		
+		var currentStatus = {
+			name : "",
+			isPlaying : false,
+			media : null,
+			isPaused : false,
+			idStoped : false,
+			isMuted : false,
+			volume : 0,
+			zoom : 0,
+			blur: 0
+		}
+		var currentMediaList = [];
+		var selectedMedia = {
+			name :"",
+			path : "",
+			element:null
+		}
+			
+		var socket = io.connect(window.location.origin);
+		//var socket = io.connect('http://localhost:8080');
+		
+		socket.on('playerStatus', function (status) {
+			updateWithPlayerStatus(status);
+		  	console.log(status);
+			//$("#server_info").text(JSON.stringify(data));
+		});
+		socket.on('mediaList', function (list) {
+			populateMediaList(list);
+		  	//console.log(list);
+			//$("#server_info").text(JSON.stringify(data));
+		});
+	
+		if ($("#volume_sli").length > 0) {
+		  $("#volume_sli").slider({
+			min: 0,
+			max: 100,
+			value: 0,
+			orientation: "horizontal",
+			range: "min"
+		  });
+		}
+		if ($("#zoom_sli").length > 0) {
+		  $("#zoom_sli").slider({
+			min: 0,
+			max: 100,
+			value: 0,
+			orientation: "horizontal",
+			range: "min"
+		  });
+		}
+		if ($("#blur_sli").length > 0) {
+		  $("#blur_sli").slider({
+			min: 0,
+			max: 100,
+			value: 0,
+			orientation: "horizontal",
+			range: "min"
+		  });
+		}
+		$('#play_btn').click(function () {
+			if(!currentStatus.isPlaying && selectedMedia.element !== null)
+				socket.emit('play',selectedMedia.path);
+		});
+		$('#prev_btn').click(function () {
+			var prev = $(selectedMedia.element).prev();
+			if(prev.get(0) === undefined)
+				prev = $('.mediaElement').last();
+					
+			if(currentStatus.isPlaying){
+				socket.emit('prev');
+			}else{
+				//selectMedia({media:prev.text(),element:prev.get(0)});
+				selectMedia(currentMediaList[mediaIndex({name:"",path:"",element:prev.get(0)})]);
+			}
+		});
+		$('#next_btn').click(function () {
+			var next = $(selectedMedia.element).next();
+			if(next.get(0) === undefined)
+				next = $('.mediaElement').first();
+					
+			if(currentStatus.isPlaying){
+				socket.emit('next');
+			}else{
+				//selectMedia({media:next.text(),element:next.get(0)});
+				selectMedia(currentMediaList[mediaIndex({name:"",path:"",element:next.get(0)})]);
+			}
+		});
+		$('#pause_btn').click(function () {
+			if(!currentStatus.isPaused)
+				socket.emit('pause');
+			else
+				socket.emit('resume');
+				
+		});
+		$('#stop_btn').click(function () {
+			if(!currentStatus.isStoped)
+				socket.emit('stop');
+		});
+		$('#mute_btn').click(function () {
+			if(currentStatus.isMuted)
+				socket.emit('unmute');
+			else
+				socket.emit('mute');
+		});
+		$('#loop_btn').click(function () {
+			if(currentStatus.loop)
+				socket.emit('unloop');
+			else
+				socket.emit('loop');
+		});
+		$('#quit_btn').click(function () {
+				socket.emit('quit');
+		});
+		$("#volume_sli").on( "slide", function( event, ui ) {
+			socket.emit('volume',ui.value);
+		});
+		$("#zoom_sli").on( "slide", function( event, ui ) {
+			socket.emit('zoom',ui.value);
+		});
+		$("#blur_sli").on( "slide", function( event, ui ) {
+			socket.emit('blur',ui.value);
+		});
+		$(".mediaElement").live('click',function (event) {
+			//selectMedia({media : $(event.currentTarget).text(),	element : event.currentTarget});
+			if(currentStatus.isPlaying){
+				// just do something
+				socket.emit('play',currentMediaList[mediaIndex({name:"",path:"",element:event.currentTarget})].path);
+			}else{
+				selectMedia(currentMediaList[mediaIndex({name:"",path:"",element:event.currentTarget})]);
+			}
+		});
+		
+		function selectMedia(media){
+			
+			if(currentMediaList.length === 0)
+				return;
+		
+			if(!selectedMedia.element){
+				$(media.element).addClass("active")
+			}else if(media.element.id !== selectedMedia.element.id){
+				$(media.element).addClass("active");
+				$(selectedMedia.element).removeClass("active");
+			}else{
+				return;
+			}
+			selectedMedia = media;		
+		}
+		
+		
+		function populateMediaList(list){
+			
+			// we do it the hard way for the moment :
+			currentMediaList = []
+			$('#mediaList').text("");
+			
+			list.forEach(function(file){
+				$('#mediaList').append('<a class="mediaElement list-group-item">'+file.filename+'</a>');
+				var media = {
+						name :file.filename,
+						path :file.filepath,
+						element:$('#mediaList a:last-child').get(0)
+				}
+				currentMediaList.push(media);
+			});
+			
+			$('#mediaList').children().uniqueId();
+			
+			if(!selectedMedia.element && currentMediaList.length > 0)
+				selectMedia(currentMediaList[0]);
+				//selectMedia({media:$('#mediaList a:first-child').text(),element:$('#mediaList a:first-child').get(0)});
+		}
+		
+		function mediaIndex(media){
+			var k = 0;
+			while(k<currentMediaList.length && currentMediaList[k].element.id != media.element.id)
+				k++;
+			if(k<currentMediaList.length)
+				return k;
+			else
+				return null;
+		}
+		
+		function mediaIndexFromPath(filepath){
+			var k = 0;
+			while(k<currentMediaList.length && currentMediaList[k].path != filepath)
+				k++;
+			if(k<currentMediaList.length)
+				return k;
+			else
+				return null;
+		}
+		
+		
+		function updateWithPlayerStatus(status){
+		
+			$('#player_head').text(status.name);
+			
+			if(status.isPlaying){
+				var statusMedia = currentMediaList[mediaIndexFromPath(status.media.filepath)];
+			
+				if(!currentStatus.isPlaying ){
+					$('#play_btn').removeClass("btn-primary");
+					$('#play_btn').addClass("btn-warning");
+					
+					$('#pause_btn').removeClass("disabled");
+					
+					if(selectedMedia !== statusMedia)
+						selectMedia(statusMedia);
+
+					$(selectedMedia.element).append('<div id="play-info"><div class="progress" ><div class="progress-bar" style="width:'+100*status.media.progress/status.media.duration+'%;"></div></div></div>');
+
+					
+				}else{
+					if(selectedMedia !== statusMedia){
+						$("#play-info").remove();
+						selectMedia(statusMedia);
+						$(selectedMedia.element).append('<div id="play-info"><div class="progress" ><div class="progress-bar" style="width:'+100*status.media.progress/status.media.duration+'%;"></div></div></div>');
+					}else{
+						// update progress
+						$(".progress-bar").css('width',100*status.media.progress/status.media.duration+'%');
+					}
+				}
+				
+			}else{
+				if(currentStatus.isPlaying){
+					$('#play_btn').addClass("btn-primary");
+					$('#play_btn').removeClass("btn-warning");
+					
+					$('#pause_btn').addClass("disabled");
+					
+					//remove things
+					$("#play-info").remove();
+				}
+			}
+			if(status.isPaused){
+				if(!currentStatus.isPaused){
+					$('#pause_btn').removeClass("btn-primary");
+					$('#pause_btn').addClass("btn-warning");
+				}
+			}else{
+				if(currentStatus.isPaused){
+					$('#pause_btn').addClass("btn-primary");
+					$('#pause_btn').removeClass("btn-warning");
+				}			
+			}
+			if(status.isMuted){
+				if(!currentStatus.isMuted){
+					$('#mute_btn').removeClass("btn-primary");
+					$('#mute_btn').addClass("btn-warning");
+				}
+			}else{
+				if(currentStatus.isMuted){
+					$('#mute_btn').addClass("btn-primary");
+					$('#mute_btn').removeClass("btn-warning");
+				}
+			}
+			if(status.loop){
+				if(!currentStatus.loop){
+					$('#loop_btn').removeClass("btn-primary");
+					$('#loop_btn').addClass("btn-warning");
+				}
+			}else{
+				if(currentStatus.loop){
+					$('#loop_btn').addClass("btn-primary");
+					$('#loop_btn').removeClass("btn-warning");
+				}
+			}
+			if(status.volume !== currentStatus.volume){
+				$("#volume_sli").slider("value",status.volume);
+			}
+			console.log(status.zoom);
+			if(status.zoom !== currentStatus.zoom){
+				$("#zoom_sli").slider("value",status.zoom);
+			}
+			if(status.blur !== currentStatus.blur){
+				$("#blur_sli").slider("value",status.blur);
+			}
+			
+			currentStatus = status;
+		}
+		
+	</script>
+  </body>
+</html>

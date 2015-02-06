@@ -1,0 +1,29 @@
+{
+  "name": "site template",
+  "version": "0.0.1",
+  "authors": [
+    "alain@hemisphere-project.com"
+  ],
+  "description": "template for simple website dev",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "blockly": "https://github.com/google/blockly.git",
+    "bootstrap": "~3.3.1",
+    "jquery-ui": "~1.11.2",
+    "bootstrap-vertical-tabs": "~1.2.1",
+    "filesize": "~2.0.4",
+    "google-closure-library": "*",
+    "magnific-popup": "~1.0.0",
+    "ace-builds": "~1.1.8"
+  }
+}

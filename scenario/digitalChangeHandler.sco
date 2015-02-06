@@ -1,0 +1,7 @@
+{
+  "name": "digital change handler",
+  "type": "block",
+  "xml": "<block type=\"ondigitalchange\" id=\"4\" x=\"174\" y=\"79\"><field name=\"channel\">DIP1</field><field name=\"VAR\">v</field><statement name=\"callback\"><block type=\"controls_if\" id=\"12\" inline=\"false\"><mutation elseif=\"1\"></mutation><value name=\"IF0\"><block type=\"logic_compare\" id=\"20\" inline=\"true\"><field name=\"OP\">EQ</field><value name=\"A\"><block type=\"variables_get\" id=\"29\"><field name=\"VAR\">v</field></block></value><value name=\"B\"><block type=\"math_number\" id=\"48\"><field name=\"NUM\">1</field></block></value></block></value><statement name=\"DO0\"><block type=\"text_print\" id=\"85\" inline=\"false\"><value name=\"TEXT\"><block type=\"text\" id=\"68\"><field name=\"TEXT\">oui</field></block></value></block></statement><value name=\"IF1\"><block type=\"logic_compare\" id=\"49\" inline=\"true\"><field name=\"OP\">EQ</field><value name=\"A\"><block type=\"variables_get\" id=\"50\"><field name=\"VAR\">v</field></block></value><value name=\"B\"><block type=\"math_number\" id=\"51\"><field name=\"NUM\">0</field></block></value></block></value><statement name=\"DO1\"><block type=\"text_print\" id=\"86\" inline=\"false\"><value name=\"TEXT\"><block type=\"text\" id=\"87\"><field name=\"TEXT\">non</field></block></value></block></statement></block></statement></block>",
+  "codejs": "var v;\n\n\nonDigitalChange(\"DIP1\",function(v){\n  if (v == 1) {\n    print('oui');\n  } else if (v == 0) {\n    print('non');\n  }\n});\n",
+  "codepy": ""
+}
