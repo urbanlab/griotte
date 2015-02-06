@@ -1,3 +1,0 @@
-echo -n "Setting PYTHONPATH......"
-export PYTHONPATH=${PWD}/src/lib:$PYTHONPATH
-echo "done"
