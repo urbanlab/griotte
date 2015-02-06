@@ -1,0 +1,68 @@
+[notice ] -HP- WOKE UP 
+[notice ] ofAppEGLWindow: setupRPiNativeWindow(): screenRect: 1280x800
+[notice ] ofAppEGLWindow: setupRPiNativeWindow(): windowRect: 1280x800
+[notice ] ofAppEGLWindow: createSurface(): setting up EGL Display
+[notice ] ofAppEGLWindow: createSurface(): EGL Display correctly set
+[notice ] ofAppEGLWindow: createSurface(): current renderer type: ProgrammableGL
+[notice ] ofAppEGLWindow: createSurface(): GLES2 renderer detected
+[notice ] ofAppEGLWindow: createSurface(): surface created correctly
+[notice ] ofAppEGLWindow: createSurface(): API bound correctly
+[notice ] ofAppEGLWindow: createSurface(): -----EGL-----
+[notice ] ofAppEGLWindow: createSurface(): EGL_VERSION_MAJOR = 1
+[notice ] ofAppEGLWindow: createSurface(): EGL_VERSION_MINOR = 4
+[notice ] ofAppEGLWindow: createSurface(): EGL_CLIENT_APIS = OpenGL_ES OpenVG
+[notice ] ofAppEGLWindow: createSurface(): EGL_VENDOR = Broadcom
+[notice ] ofAppEGLWindow: createSurface(): EGL_VERSION = 1.4
+[notice ] ofAppEGLWindow: createSurface(): EGL_EXTENSIONS = EGL_KHR_image EGL_KHR_image_base EGL_KHR_image_pixmap EGL_KHR_vg_parent_image EGL_KHR_gl_texture_2D_image EGL_KHR_gl_texture_cubemap_image EGL_KHR_lock_surface 
+[notice ] ofAppEGLWindow: createSurface(): GL_RENDERER = VideoCore IV HW
+[notice ] ofAppEGLWindow: createSurface(): GL_VERSION  = OpenGL ES 2.0
+[notice ] ofAppEGLWindow: createSurface(): GL_VENDOR   = Broadcom
+[notice ] ofAppEGLWindow: createSurface(): -------------
+[ error ] ofShader: begin(): couldn't begin, shader not loaded
+[ error ] ofShader: begin(): couldn't begin, shader not loaded
+[ error ] ofShader: begin(): couldn't begin, shader not loaded
+[ error ] ofShader: begin(): couldn't begin, shader not loaded
+[notice ] ofAppEGLWindow: setupPeripherals(): peripheral setup complete
+[notice ] ofAppEGLWindow: setupNativeUDev(): created udev object
+[notice ] ofAppEGLWindow: setupMouse(): unabled to find mouse
+[ error ] ofAppEGLWindow: setupMouse(): did not open mouse
+[ error ] ofAppEGLWindow: setupMouse(): did not open mouse, mouse_fd < 0
+[warning] ofAppEGLWindow: setupKeyboard(): unabled to find keyboard
+[ error ] ofAppEGLWindow: setupKeyboard(): did not open keyboard
+[ error ] ofAppEGLWindow: setupKeyboard(): did not open keyboard, keyboard_fd < 0
+[notice ] ofAppEGLWindow: setupPeripherals(): native event setup complete
+[notice ] ofAppEGLWindow: setupOpenGL(): peripheral setup complete
+[warning] ofShader: GL_VERTEX_SHADER shader reports:
+Compiled
+[warning] ofShader: GL_FRAGMENT_SHADER shader reports:
+Compiled
+[notice ] ofAppEGLWindow: runAppViaInfiniteLoop(): entering infinite loop
+[warning] ofShader: GL_VERTEX_SHADER shader reports:
+Compiled
+[warning] ofShader: GL_FRAGMENT_SHADER shader reports:
+Compiled
+[warning] ofShader: GL_VERTEX_SHADER shader reports:
+Compiled
+[warning] ofShader: GL_FRAGMENT_SHADER shader reports:
+Compiled
+[notice ] bool ofxOMXPlayer::openEngine(int): DELETE TOOK 0 MS
+[ error ] COMXPlayer::OpenFile -  
+[notice ] bool ofxOMXPlayerEngine::didReadFile(bool): didOpenMovie TOOK 0 MS
+[warning] bool ofxOMXPlayerEngine::setup(ofxOMXPlayerSettings&): FAST PATH MOVE OPEN FAILED - LIKELY A STREAM, TRYING SLOW PATH
+[ error ] COMXPlayer::OpenFile -  
+[notice ] bool ofxOMXPlayerEngine::didReadFile(bool): didOpenMovie TOOK 0 MS
+[ error ] omxReader open moviePath FAIL: 
+[notice ] bool ofxOMXPlayer::openEngine(int): setup TOOK 2 MS
+[ error ] bool ofxOMXPlayer::openEngine(int): engine->setup FAIL
+[warning] ofShader: GL_VERTEX_SHADER shader reports:
+Compiled
+[warning] ofShader: GL_FRAGMENT_SHADER shader reports:
+Compiled
+[warning] ofShader: GL_VERTEX_SHADER shader reports:
+Compiled
+[warning] ofShader: GL_FRAGMENT_SHADER shader reports:
+Compiled
+[notice ] ofAppEGLWindow: runAppViaInfiniteLoop(): setting up notifications complete
+[notice ] ofAppEGLWindow: destroyNativeKeyboard()
+[notice ] ofAppEGLWindow: destroyNativeKeyboard(): unable to reset terminal
+[notice ] ofAppEGLWindow: destroySurface(): destroying EGL surface

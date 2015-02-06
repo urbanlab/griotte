@@ -1,0 +1,54 @@
+{
+	"ModuleManager":{
+		"playlistAutoLaunch":true
+	},
+	"MediaManager":{
+		"mediaDir": "../media",
+		"USBDir":"/media/usb"
+	},
+	"ScenarioManager":{
+		"scenarioDir": "./scenario"
+	},
+	"OSCInterface":{
+		"url":"127.0.0.1",
+		"clientPort":9000,
+		"serverPort":9001,
+		"baseAddress":"",
+		"base64Encode":false
+	},
+	"RemoteInterface":"",
+	"WebServer":{
+		"root_dir":"./w/static",
+		"port":8080,
+		"refreshStatusPeriod":5000,
+		"debug":false
+	},
+	"ProcessManager":{
+		"HPlayerPath":"./bin/HPlayer/bin/HPlayer"
+	},
+	"HPlayer":{
+		"name" : "Larry",
+		"ip" : "127.0.0.1",
+		"isPlaying" : false,
+		"media" : {
+					"filepath":null,
+					"progress":null,
+					"duration":null
+		},
+		"loop"		: true,
+		"zoom"		: 100,
+		"blur"		: 0,
+		"isPaused"  : false,
+		"isMuted"   : false,
+		"volume"    : 50,
+		"hdmiAudio"	: true,
+		"info"		: true
+	},
+	"SerialInterface":{
+		"baudRate":9600
+	},
+	"IcePicker":{
+		"stepsBeforeRampage":10,
+		"timeBetweenSteps":2000
+	}
+}

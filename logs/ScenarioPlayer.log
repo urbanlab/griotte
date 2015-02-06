@@ -1,0 +1,366 @@
+play ! - relay dip
+writeDigital(IO3,0);
+[32m[Process Manager] [39mnode started with pid 12144
+[Process Manager] 12144[31m exited with code [39m8[31m and signal [39mnull
+play ! - relay dip
+writeDigital(IO3,0);
+[32m[Process Manager] [39mnode started with pid 12177
+[Process Manager] 12177[31m exited with code [39m8[31m and signal [39mnull
+play ! - tempo
+var handler;
+var v;
+
+
+handler = setInterval(function(){
+  print('It\'s about time !!');
+}
+,1000);
+
+onDigitalChange("DIP0",function(v){
+  print('STOOOOOOP !');
+  clearInterval(handler);
+});
+
+[32m[Process Manager] [39mnode started with pid 12196
+[32mIt's about time !![39m
+
+[32mIt's about time !![39m
+
+[32mIt's about time !![39m
+
+[32mIt's about time !![39m
+
+[32mIt's about time !![39m
+
+[32mIt's about time !![39m
+
+[32mIt's about time !![39m
+
+[32mSTOOOOOOP ![39m
+
+[31m[Process Manager] [39m12196 killed
+[Process Manager] 12196[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - relay dip
+writeDigital(IO3,0);
+[32m[Process Manager] [39mnode started with pid 12260
+[Process Manager] 12260[31m exited with code [39m8[31m and signal [39mnull
+play ! - relay dip
+writeDigital(IO3,0);
+[32m[Process Manager] [39mnode started with pid 12349
+[Process Manager] 12349[31m exited with code [39m8[31m and signal [39mnull
+play ! - analog handler
+var v;
+
+
+onAnalog(0,function(v){
+  print(String('sur le an 0 :') + String(v));
+});
+
+[32m[Process Manager] [39mnode started with pid 12371
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[31m[Process Manager] [39m12371 killed
+[Process Manager] 12371[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - relay dip
+writeDigital(IO3,0);
+[32m[Process Manager] [39mnode started with pid 12395
+[Process Manager] 12395[31m exited with code [39m8[31m and signal [39mnull
+play ! - relay dip
+writeDigital("IO3",0);
+[32m[Process Manager] [39mnode started with pid 12463
+IO3  0
+
+[31m[Process Manager] [39m12463 killed
+[Process Manager] 12463[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - relay dip
+writeDigital("IO3",0);
+[32m[Process Manager] [39mnode started with pid 12493
+[Process Manager] 12493[31m exited with code [39m8[31m and signal [39mnull
+play ! - relay dip
+writeDigital("IO3",0);
+[32m[Process Manager] [39mnode started with pid 12573
+[31m[Process Manager] [39m12573 killed
+[Process Manager] 12573[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - analog read
+var valeur;
+
+
+readAnalog(1,function(valeur){
+  print(valeur);
+});
+
+[32m[Process Manager] [39mnode started with pid 13137
+[32m0[39m
+
+[31m[Process Manager] [39m13137 killed
+[Process Manager] 13137[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - analog handler
+var v;
+
+
+onAnalog(0,function(v){
+  print(String('sur le an 0 :') + String(v));
+});
+
+[32m[Process Manager] [39mnode started with pid 13151
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[31m[Process Manager] [39m13151 killed
+[Process Manager] 13151[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - digital change handler
+var v;
+
+
+onDigitalChange("DIP1",function(v){
+  if (v == 1) {
+    print('oui');
+  } else if (v == 0) {
+    print('non');
+  }
+});
+
+[32m[Process Manager] [39mnode started with pid 13169
+[32mnon[39m
+
+[32moui[39m
+
+[31m[Process Manager] [39m13169 killed
+[Process Manager] 13169[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - digital read
+var v;
+
+
+readDigital("DIP0",function(v){
+  print(v);
+});
+
+[32m[Process Manager] [39mnode started with pid 13200
+[32m0[39m
+
+[31m[Process Manager] [39m13200 killed
+[Process Manager] 13200[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - digital handler
+var v;
+
+
+onDigital("IO0",function(v){
+  if (v == 1) {
+    print('Bouton appuyC) !');
+  } else {
+    print('Bouton pas appuyC) !');
+  }
+});
+
+[32m[Process Manager] [39mnode started with pid 13217
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[32mBouton appuyC) ![39m
+
+[31m[Process Manager] [39m13217 killed
+[Process Manager] 13217[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - relais clignotte
+var RelayState;
+
+
+RelayState = 0;
+writeDigital("IO3",0);// comment
+RelayState = setInterval(function(){
+  if (RelayState == 0) {
+    RelayState = 1;
+    writeDigital("IO3",1);} else {
+    RelayState = 0;
+    writeDigital("IO3",0);}
+}
+,1000);
+
+[32m[Process Manager] [39mnode started with pid 13527
+[31m[Process Manager] [39m13527 killed
+[Process Manager] 13527[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - relais clignotte
+var RelayState;
+
+
+RelayState = 0;
+writeDigital("IO3",0);// comment
+RelayState = setInterval(function(){
+  if (RelayState == 0) {
+    RelayState = 1;
+    writeDigital("IO3",1);} else {
+    RelayState = 0;
+    writeDigital("IO3",0);}
+}
+,500);
+
+[32m[Process Manager] [39mnode started with pid 13552
+[31m[Process Manager] [39m13552 killed
+[Process Manager] 13552[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - relais clignotte
+var RelayState;
+
+
+RelayState = 0;
+writeDigital("IO3",0);// comment
+RelayState = setInterval(function(){
+  if (RelayState == 0) {
+    RelayState = 1;
+    writeDigital("IO3",1);} else {
+    RelayState = 0;
+    writeDigital("IO3",0);}
+}
+,100);
+
+[32m[Process Manager] [39mnode started with pid 13570
+[31m[Process Manager] [39m13570 killed
+[Process Manager] 13570[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - relais clignotte
+var RelayState;
+
+
+RelayState = 0;
+writeDigital("IO3",0);// comment
+RelayState = setInterval(function(){
+  if (RelayState == 0) {
+    RelayState = 1;
+    writeDigital("IO3",1);} else {
+    RelayState = 0;
+    writeDigital("IO3",0);}
+}
+,10);
+
+[32m[Process Manager] [39mnode started with pid 13602
+[31m[Process Manager] [39m13602 killed
+[Process Manager] 13602[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - relais clignotte
+var RelayState;
+
+
+RelayState = 0;
+writeDigital("IO3",0);// comment
+RelayState = setInterval(function(){
+  if (RelayState == 0) {
+    RelayState = 1;
+    writeDigital("IO3",1);} else {
+    RelayState = 0;
+    writeDigital("IO3",0);}
+}
+,500);
+
+[32m[Process Manager] [39mnode started with pid 13646
+[31m[Process Manager] [39m13646 killed
+[Process Manager] 13646[31m exited with code [39mnull[31m and signal [39mSIGKILL

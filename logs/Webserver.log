@@ -1,0 +1,50 @@
+[32m[WebServer][39m started on port 8080
+play scenario  relay dip
+stopScenario
+play scenario  relay dip
+stopScenario
+play scenario  tempo
+stopScenario
+play scenario  relay dip
+stopScenario
+play scenario  relay dip
+stopScenario
+play scenario  analog handler
+stopScenario
+play scenario  relay dip
+stopScenario
+play scenario  relay dip
+stopScenario
+play scenario  relay dip
+stopScenario
+play scenario  relay dip
+stopScenario
+scenario saved
+scenario deleted
+scenario saved
+scenario saved
+play scenario  analog read
+stopScenario
+play scenario  analog handler
+stopScenario
+play scenario  digital change handler
+stopScenario
+play scenario  digital read
+stopScenario
+play scenario  digital handler
+stopScenario
+scenario saved
+scenario deleted
+play scenario  relais clignotte
+stopScenario
+scenario saved
+play scenario  relais clignotte
+stopScenario
+play scenario  relais clignotte
+stopScenario
+play scenario  relais clignotte
+stopScenario
+stopScenario
+scenario saved
+play scenario  relais clignotte
+stopScenario
