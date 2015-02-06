@@ -51,7 +51,7 @@ OSCDispatcher.prototype.start = function(){
 }
 
 OSCDispatcher.prototype.receiveMessageOSC = function(message,rinfo){
-	console.log(message);
+	//console.log(message);
 	//shallow clone
 	var mes = message.slice();
 	//console.log(rinfo);

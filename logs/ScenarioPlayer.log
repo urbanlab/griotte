@@ -1,53 +1,3 @@
-play ! - relay dip
-writeDigital(IO3,0);
-[32m[Process Manager] [39mnode started with pid 12144
-[Process Manager] 12144[31m exited with code [39m8[31m and signal [39mnull
-play ! - relay dip
-writeDigital(IO3,0);
-[32m[Process Manager] [39mnode started with pid 12177
-[Process Manager] 12177[31m exited with code [39m8[31m and signal [39mnull
-play ! - tempo
-var handler;
-var v;
-
-
-handler = setInterval(function(){
-  print('It\'s about time !!');
-}
-,1000);
-
-onDigitalChange("DIP0",function(v){
-  print('STOOOOOOP !');
-  clearInterval(handler);
-});
-
-[32m[Process Manager] [39mnode started with pid 12196
-[32mIt's about time !![39m
-
-[32mIt's about time !![39m
-
-[32mIt's about time !![39m
-
-[32mIt's about time !![39m
-
-[32mIt's about time !![39m
-
-[32mIt's about time !![39m
-
-[32mIt's about time !![39m
-
-[32mSTOOOOOOP ![39m
-
-[31m[Process Manager] [39m12196 killed
-[Process Manager] 12196[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relay dip
-writeDigital(IO3,0);
-[32m[Process Manager] [39mnode started with pid 12260
-[Process Manager] 12260[31m exited with code [39m8[31m and signal [39mnull
-play ! - relay dip
-writeDigital(IO3,0);
-[32m[Process Manager] [39mnode started with pid 12349
-[Process Manager] 12349[31m exited with code [39m8[31m and signal [39mnull
 play ! - analog handler
 var v;
 
@@ -56,311 +6,1307 @@ onAnalog(0,function(v){
   print(String('sur le an 0 :') + String(v));
 });
 
-[32m[Process Manager] [39mnode started with pid 12371
-[32msur le an 0 :0[39m
+[32m[Process Manager] [39mnode started with pid 14304
+[32msur le an 0 :0.21497699618339539[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21497699618339539[39m
+[32msur le an 0 :0.22238999605178833[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.22238999605178833[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21497699618339539[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21744799613952637[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21497699618339539[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21497699618339539[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21744799613952637[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21497699618339539[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21497699618339539[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21744799613952637[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21744799613952637[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21497699618339539[39m
 
-[32msur le an 0 :0[39m
+[32msur le an 0 :0.21744799613952637[39m
 
-[31m[Process Manager] [39m12371 killed
-[Process Manager] 12371[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relay dip
-writeDigital(IO3,0);
-[32m[Process Manager] [39mnode started with pid 12395
-[Process Manager] 12395[31m exited with code [39m8[31m and signal [39mnull
-play ! - relay dip
-writeDigital("IO3",0);
-[32m[Process Manager] [39mnode started with pid 12463
-IO3  0
+[32msur le an 0 :0.21497699618339539[39m
 
-[31m[Process Manager] [39m12463 killed
-[Process Manager] 12463[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relay dip
-writeDigital("IO3",0);
-[32m[Process Manager] [39mnode started with pid 12493
-[Process Manager] 12493[31m exited with code [39m8[31m and signal [39mnull
-play ! - relay dip
-writeDigital("IO3",0);
-[32m[Process Manager] [39mnode started with pid 12573
-[31m[Process Manager] [39m12573 killed
-[Process Manager] 12573[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - analog read
-var valeur;
+[32msur le an 0 :0.21497699618339539[39m
 
+[32msur le an 0 :0.21744799613952637[39m
 
-readAnalog(1,function(valeur){
-  print(valeur);
-});
+[32msur le an 0 :0.21744799613952637[39m
 
-[32m[Process Manager] [39mnode started with pid 13137
-[32m0[39m
+[32msur le an 0 :0.21744799613952637[39m
 
-[31m[Process Manager] [39m13137 killed
-[Process Manager] 13137[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - analog handler
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.2125059962272644[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.2125059962272644[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.2125059962272644[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.16802799701690674[39m
+
+[32msur le an 0 :0.18285399675369263[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.19273799657821655[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.16555699706077576[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.2125059962272644[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.17791199684143066[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.16555699706077576[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.19273799657821655[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.04941999912261963[39m
+
+[32msur le an 0 :0.10872399806976318[39m
+
+[32msur le an 0 :0.10378199815750122[39m
+
+[32msur le an 0 :0.05436199903488159[39m
+
+[32msur le an 0 :0.16555699706077576[39m
+
+[32msur le an 0 :0.11119499802589417[39m
+
+[32msur le an 0 :0.1877959966659546[39m
+
+[32msur le an 0 :0.05189099907875061[39m
+
+[32msur le an 0 :0.12107899785041809[39m
+
+[32msur le an 0 :0.1581439971923828[39m
+
+[32msur le an 0 :0.09636899828910828[39m
+
+[32msur le an 0 :0.09636899828910828[39m
+
+[32msur le an 0 :0.1482599973678589[39m
+
+[32msur le an 0 :0.09636899828910828[39m
+
+[32msur le an 0 :0.1729699969291687[39m
+
+[32msur le an 0 :0.08648499846458435[39m
+
+[32msur le an 0 :0.09636899828910828[39m
+
+[32msur le an 0 :0.08895599842071533[39m
+
+[32msur le an 0 :0.1581439971923828[39m
+
+[32msur le an 0 :0.059303998947143555[39m
+
+[32msur le an 0 :0.0790719985961914[39m
+
+[32msur le an 0 :0.05436199903488159[39m
+
+[32msur le an 0 :0.04941999912261963[39m
+
+[32msur le an 0 :0.05436199903488159[39m
+
+[32msur le an 0 :0.04694899916648865[39m
+
+[32msur le an 0 :0.08154299855232239[39m
+
+[32msur le an 0 :0.08154299855232239[39m
+
+[32msur le an 0 :0.07660099864006042[39m
+
+[32msur le an 0 :0.04694899916648865[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.15567299723625183[39m
+
+[32msur le an 0 :0.07412999868392944[39m
+
+[32msur le an 0 :0.04694899916648865[39m
+
+[32msur le an 0 :0.11613699793815613[39m
+
+[32msur le an 0 :0.11860799789428711[39m
+
+[32msur le an 0 :0.09636899828910828[39m
+
+[32msur le an 0 :0.11860799789428711[39m
+
+[32msur le an 0 :0.11860799789428711[39m
+
+[32msur le an 0 :0.09636899828910828[39m
+
+[32msur le an 0 :0.11860799789428711[39m
+
+[32msur le an 0 :0.12602099776268005[39m
+
+[32msur le an 0 :0.13096299767494202[39m
+
+[32msur le an 0 :0.13096299767494202[39m
+
+[32msur le an 0 :0.133433997631073[39m
+
+[32msur le an 0 :0.15320199728012085[39m
+
+[32msur le an 0 :0.09636899828910828[39m
+
+[32msur le an 0 :0.1457889974117279[39m
+
+[32msur le an 0 :0.11613699793815613[39m
+
+[32msur le an 0 :0.0938979983329773[39m
+
+[32msur le an 0 :0.10872399806976318[39m
+
+[32msur le an 0 :0.07660099864006042[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.17544099688529968[39m
+
+[32msur le an 0 :0.17791199684143066[39m
+
+[32msur le an 0 :0.16555699706077576[39m
+
+[32msur le an 0 :0.18038299679756165[39m
+
+[32msur le an 0 :0.1877959966659546[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.15567299723625183[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.17791199684143066[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21991899609565735[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.16802799701690674[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.22238999605178833[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.2248609960079193[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21497699618339539[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[32msur le an 0 :0.21744799613952637[39m
+
+[31m[Process Manager] [39m14304 killed
+[Process Manager] 14304[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - relais proxi
 var v;
+var relais;
 
+function ouvre_relais() {
+  writeDigital("IO3",0);relais = 0;
+}
+
+function ferme_relais() {
+  writeDigital("IO3",1);relais = 1;
+}
+
+
+ouvre_relais();
 
 onAnalog(0,function(v){
-  print(String('sur le an 0 :') + String(v));
-});
-
-[32m[Process Manager] [39mnode started with pid 13151
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[32msur le an 0 :0[39m
-
-[31m[Process Manager] [39m13151 killed
-[Process Manager] 13151[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - digital change handler
-var v;
-
-
-onDigitalChange("DIP1",function(v){
-  if (v == 1) {
-    print('oui');
-  } else if (v == 0) {
-    print('non');
+  if (v < 0.2 && relais == 0) {
+    ferme_relais();
+  } else if (v >= 0.2 && relais == 1) {
+    ouvre_relais();
   }
 });
 
-[32m[Process Manager] [39mnode started with pid 13169
-[32mnon[39m
-
-[32moui[39m
-
-[31m[Process Manager] [39m13169 killed
-[Process Manager] 13169[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - digital read
+[32m[Process Manager] [39mnode started with pid 14966
+[31m[Process Manager] [39m14966 killed
+[Process Manager] 14966[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - relais proxi
 var v;
+var seuil;
+var relais;
+
+function ouvre_relais() {
+  writeDigital("IO3",0);relais = 0;
+}
+
+function ferme_relais() {
+  writeDigital("IO3",1);relais = 1;
+}
 
 
-readDigital("DIP0",function(v){
-  print(v);
-});
+seuil = 0.15;
+ouvre_relais();
 
-[32m[Process Manager] [39mnode started with pid 13200
-[32m0[39m
-
-[31m[Process Manager] [39m13200 killed
-[Process Manager] 13200[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - digital handler
-var v;
-
-
-onDigital("IO0",function(v){
-  if (v == 1) {
-    print('Bouton appuyC) !');
-  } else {
-    print('Bouton pas appuyC) !');
+onAnalog(0,function(v){
+  if (v < seuil && relais == 0) {
+    ferme_relais();
+  } else if (v >= seuil && relais == 1) {
+    ouvre_relais();
   }
 });
 
-[32m[Process Manager] [39mnode started with pid 13217
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[32mBouton appuyC) ![39m
-
-[31m[Process Manager] [39m13217 killed
-[Process Manager] 13217[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relais clignotte
-var RelayState;
-
-
-RelayState = 0;
-writeDigital("IO3",0);// comment
-RelayState = setInterval(function(){
-  if (RelayState == 0) {
-    RelayState = 1;
-    writeDigital("IO3",1);} else {
-    RelayState = 0;
-    writeDigital("IO3",0);}
-}
-,1000);
-
-[32m[Process Manager] [39mnode started with pid 13527
-[31m[Process Manager] [39m13527 killed
-[Process Manager] 13527[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relais clignotte
-var RelayState;
-
-
-RelayState = 0;
-writeDigital("IO3",0);// comment
-RelayState = setInterval(function(){
-  if (RelayState == 0) {
-    RelayState = 1;
-    writeDigital("IO3",1);} else {
-    RelayState = 0;
-    writeDigital("IO3",0);}
-}
-,500);
-
-[32m[Process Manager] [39mnode started with pid 13552
-[31m[Process Manager] [39m13552 killed
-[Process Manager] 13552[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relais clignotte
-var RelayState;
-
-
-RelayState = 0;
-writeDigital("IO3",0);// comment
-RelayState = setInterval(function(){
-  if (RelayState == 0) {
-    RelayState = 1;
-    writeDigital("IO3",1);} else {
-    RelayState = 0;
-    writeDigital("IO3",0);}
-}
-,100);
-
-[32m[Process Manager] [39mnode started with pid 13570
-[31m[Process Manager] [39m13570 killed
-[Process Manager] 13570[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relais clignotte
-var RelayState;
-
-
-RelayState = 0;
-writeDigital("IO3",0);// comment
-RelayState = setInterval(function(){
-  if (RelayState == 0) {
-    RelayState = 1;
-    writeDigital("IO3",1);} else {
-    RelayState = 0;
-    writeDigital("IO3",0);}
-}
-,10);
-
-[32m[Process Manager] [39mnode started with pid 13602
-[31m[Process Manager] [39m13602 killed
-[Process Manager] 13602[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relais clignotte
-var RelayState;
-
-
-RelayState = 0;
-writeDigital("IO3",0);// comment
-RelayState = setInterval(function(){
-  if (RelayState == 0) {
-    RelayState = 1;
-    writeDigital("IO3",1);} else {
-    RelayState = 0;
-    writeDigital("IO3",0);}
-}
-,500);
-
-[32m[Process Manager] [39mnode started with pid 13646
-[31m[Process Manager] [39m13646 killed
-[Process Manager] 13646[31m exited with code [39mnull[31m and signal [39mSIGKILL
+[32m[Process Manager] [39mnode started with pid 15074
+[31m[Process Manager] [39m15074 killed
+[Process Manager] 15074[31m exited with code [39mnull[31m and signal [39mSIGKILL
