@@ -1,23 +1,28 @@
+// check OLA configuration
+//http://192.168.x.xx:9090/ola.html
+
+
 var DMX = require('dmx');
 
 
 function DMXInterface(){
 	
 	this.dmx = new DMX();
-	this.universe = this.dmx.addUniverse('myuniverse', 'enttec-usb-dmx-pro', 0);
+	//this.universe = this.dmx.addUniverse('myuniverse', 'enttec-usb-dmx-pro', 0);
+	this.universe = this.dmx.addUniverse('myuniverse', 'null', 0);
 }
 
 DMXInterface.prototype.send = function(channel,value){
 	var val = {};
 	val[channel] = value
 	this.universe.update(val);
-	//console.log(this.universe);
+	console.log(this.universe);
 }
 
 DMXInterface.prototype.sendM = function(valueObj){
 	// valueObj : {chan0:val0,chan15:val15,...}
 	this.universe.update(valueObj);
-	//console.log(this.universe);
+	console.log(this.universe);
 	
 }
 
@@ -28,7 +33,7 @@ DMXInterface.prototype.blackout = function(){
 	
 	//console.log(values);
 	this.universe.update(values);
-	//console.log(this.universe);
+	console.log(this.universe);
 }
 /*var dmxInterface = new DMXInterface();
 dmxInterface.send(3,0xFF);

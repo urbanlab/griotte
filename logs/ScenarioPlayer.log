@@ -1,69 +1,15 @@
-play ! - relais proxi
-var seuil;
-var v;
-var relais;
+play ! - test
+sendDmxBlackout();
 
-function ouvre_relais() {
-  writeDigital("IO3",0);relais = 0;
-}
+[32m[Process Manager] [39mnode started with pid 11222
+[31m[Process Manager] [39m11222 killed
+[Process Manager] 11222[31m exited with code [39mnull[31m and signal [39mSIGKILL
+play ! - test
+sendDmxBlackout();
 
-function ferme_relais() {
-  writeDigital("IO3",1);relais = 1;
-}
-
-
-seuil = 0.15;
-ouvre_relais();
-
-// Exemple : actionne une relais en fonction de la proximitC) d'une personne
-
-// Pour faire fonctionner cet exemple :
-// - brancher un relais sur IO3
-// - brancher un capteur de proximitC) (type maxbotics EZ) sur AN0
-onAnalog(0,function(v){
-  if (v < seuil && relais == 0) {
-    ferme_relais();
-  } else if (v >= seuil && relais == 1) {
-    ouvre_relais();
-  }
-});
-
-[32m[Process Manager] [39mnode started with pid 2205
-[31m[Process Manager] [39m2205 killed
-[Process Manager] 2205[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relais proxi
-var seuil;
-var v;
-var relais;
-
-function ouvre_relais() {
-  writeDigital("IO3",0);relais = 0;
-}
-
-function ferme_relais() {
-  writeDigital("IO3",1);relais = 1;
-}
-
-
-seuil = 0.15;
-ouvre_relais();
-
-// Exemple : actionne une relais en fonction de la proximitC) d'une personne
-
-// Pour faire fonctionner cet exemple :
-// - brancher un relais sur IO3
-// - brancher un capteur de proximitC) (type maxbotics EZ) sur AN0
-onAnalog(0,function(v){
-  if (v < seuil && relais == 0) {
-    ferme_relais();
-  } else if (v >= seuil && relais == 1) {
-    ouvre_relais();
-  }
-});
-
-[32m[Process Manager] [39mnode started with pid 2340
-[31m[Process Manager] [39m2340 killed
-[Process Manager] 2340[31m exited with code [39mnull[31m and signal [39mSIGKILL
+[32m[Process Manager] [39mnode started with pid 11373
+[31m[Process Manager] [39m11373 killed
+[Process Manager] 11373[31m exited with code [39mnull[31m and signal [39mSIGKILL
 play ! - analog handler
 var v;
 
@@ -72,75 +18,1018 @@ onAnalog(0,function(v){
   print(String('sur le an 0 :') + String(v));
 });
 
-[32m[Process Manager] [39mnode started with pid 2375
-[31m[Process Manager] [39m2375 killed
-[Process Manager] 2375[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relais clignotte
-var RelayState;
+[32m[Process Manager] [39mnode started with pid 11420
+[32msur le an 0 :0[39m
 
+[32msur le an 0 :0[39m
 
-RelayState = 0;
-writeDigital("IO3",0);// comment
-RelayState = setInterval(function(){
-  if (RelayState == 0) {
-    RelayState = 1;
-    writeDigital("IO3",1);} else {
-    RelayState = 0;
-    writeDigital("IO3",0);}
-}
-,500);
+[32msur le an 0 :0[39m
 
-[32m[Process Manager] [39mnode started with pid 2465
-[31m[Process Manager] [39m2465 killed
-[Process Manager] 2465[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relais clignotte
-var RelayState;
+[32msur le an 0 :0[39m
 
+[32msur le an 0 :0[39m
 
-RelayState = 0;
-writeDigital("IO3",0);// comment
-RelayState = setInterval(function(){
-  if (RelayState == 0) {
-    RelayState = 1;
-    writeDigital("IO3",1);} else {
-    RelayState = 0;
-    writeDigital("IO3",0);}
-}
-,500);
+[32msur le an 0 :0[39m
 
-[32m[Process Manager] [39mnode started with pid 2568
-[31m[Process Manager] [39m2568 killed
-[Process Manager] 2568[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - relais proxi
-var seuil;
-var v;
-var relais;
+[32msur le an 0 :0[39m
 
-function ouvre_relais() {
-  writeDigital("IO3",0);relais = 0;
-}
+[32msur le an 0 :0[39m
 
-function ferme_relais() {
-  writeDigital("IO3",1);relais = 1;
-}
+[32msur le an 0 :0[39m
 
+[32msur le an 0 :0[39m
 
-seuil = 0.15;
-ouvre_relais();
+[32msur le an 0 :0[39m
 
-// Exemple : actionne une relais en fonction de la proximitC) d'une personne
+[32msur le an 0 :0[39m
 
-// Pour faire fonctionner cet exemple :
-// - brancher un relais sur IO3
-// - brancher un capteur de proximitC) (type maxbotics EZ) sur AN0
-onAnalog(0,function(v){
-  if (v < seuil && relais == 0) {
-    ferme_relais();
-  } else if (v >= seuil && relais == 1) {
-    ouvre_relais();
-  }
-});
+[32msur le an 0 :0[39m
 
-[32m[Process Manager] [39mnode started with pid 2583
-[31m[Process Manager] [39m2583 killed
-[Process Manager] 2583[31m exited with code [39mnull[31m and signal [39mSIGKILL
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[32msur le an 0 :0[39m
+
+[31m[Process Manager] [39m11420 killed
+[Process Manager] 11420[31m exited with code [39mnull[31m and signal [39mSIGKILL

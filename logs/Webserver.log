@@ -1,15 +1,8 @@
 [32m[WebServer][39m started on port 8080
-play scenario  relais proxi
+scenario saved
+play scenario  test
 stopScenario
-play scenario  relais proxi
+play scenario  test
 stopScenario
 play scenario  analog handler
-play  /home/pi/media/sintel_trailer-720p.mp4
-stop
-stopScenario
-play scenario  relais clignotte
-stopScenario
-play scenario  relais clignotte
-stopScenario
-play scenario  relais proxi
 stopScenario
