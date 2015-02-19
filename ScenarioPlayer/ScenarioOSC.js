@@ -46,6 +46,30 @@ function ScenarioOSC(config){
 				1:[],
 				2:[],
 				3:[]
+			},
+			fdigital:{
+				0:[],
+				1:[],
+				2:[],
+				3:[],
+				4:[],
+				5:[],
+				6:[],
+				7:[],
+				8:[],
+				9:[],
+				10:[],
+				11:[],
+				12:[],
+				13:[]
+			},
+			fanalog:{
+				0:[],
+				1:[],
+				2:[],
+				3:[],
+				4:[],
+				5:[]
 			}
 	};
 	
@@ -97,6 +121,23 @@ ScenarioOSC.prototype.receiveMessageOSC = function(message,rinfo){
 						case "grovepi" :
 						break;
 						case "arduino" :
+							var command = addressElements.shift();
+							switch(command){
+								case "digitalValue" :
+									var pin = mes.shift();
+									var value = mes.shift();
+									// trouver un meilleur system pour firmata
+									var callback = this.cbfifos.fdigital[pin][0];
+									callback(value);
+								break;
+								case "analogValue" :
+									var pin = mes.shift();
+									var value = mes.shift();
+									var callback = this.cbfifos.fanalog[pin][0];
+									callback(value);
+								break;
+								default: console.log("message not recognized: "+ message);	
+							}
 						break;
 						default: console.log("device not recognized: "+ message);	
 					}	
@@ -113,26 +154,41 @@ ScenarioOSC.prototype.receiveMessageOSC = function(message,rinfo){
 
 /***************************   IOInterface Commands   ************************/
 
+// RASPIOMIX
+
 ScenarioOSC.prototype.getDigital = function(channel,callback){
-	
-	// TODO !!!
-	//need something more specific here
 	this.cbfifos.digital[channel].push(callback);
-	//console.log(this.responsesPending);
 	this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/raspiomix','getDigital',[channel]);
 	
 }
 ScenarioOSC.prototype.writeDigital = function(channel,value){
 	this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/raspiomix','writeDigital',[channel,value]);
 }
-ScenarioOSC.prototype.getAnalog = function(channel,callback){
-	
-	// TODO !!!
-	//need something more specific here
+ScenarioOSC.prototype.getAnalog = function(channel,callback){	
 	this.cbfifos.analog[channel].push(callback);
-	//console.log(this.responsesPending);
 	this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/raspiomix','getAnalog',[channel]);
+}
+
+// ARDUINO - FIRMATA
+
+ScenarioOSC.prototype.fgetDigital = function(pin,callback){
+	this.cbfifos.fdigital[pin].push(callback);
+	this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/arduino','getDigital',[pin]);
 	
+}
+ScenarioOSC.prototype.fwriteDigital = function(pin,value){
+	this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/arduino','writeDigital',[pin,value]);
+}
+ScenarioOSC.prototype.fgetAnalog = function(pin,callback){	
+	this.cbfifos.fanalog[pin].push(callback);
+	this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/arduino','getAnalog',[pin]);
+}
+ScenarioOSC.prototype.fwriteServo = function(pin,value){
+	this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/arduino','writeServo',[pin,value]);
+
+}
+ScenarioOSC.prototype.fwritePWM = function(pin,value){
+	this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/arduino','writePWM',[pin,value]);
 }
 
 ScenarioOSC.prototype.printFifos = function(){

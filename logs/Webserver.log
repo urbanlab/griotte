@@ -1,8 +1,22 @@
 [32m[WebServer][39m started on port 8080
+play scenario  firmata
+play scenario  firmata
+stopScenario
+play scenario  firmata
+stopScenario
 scenario saved
-play scenario  test
+play scenario  firmata
 stopScenario
-play scenario  test
+play scenario  firmata
 stopScenario
-play scenario  analog handler
+play scenario  firmata
+stopScenario
+play scenario  firmata
+stopScenario
+scenario deleted
+scenario saved
+play scenario  light servo
+stopScenario
+scenario saved
+play scenario  light servo
 stopScenario

@@ -21,10 +21,11 @@ trap control_c SIGINT
 #initial clean up
 cleanup
 
+sudo /usr/local/lib/node_modules/forever/bin/forever start -o /home/pi/griotte/logs/IOInterface.log /home/pi/griotte/IOInterface/IOInterface.js
 sudo /usr/local/lib/node_modules/forever/bin/forever start -o /home/pi/griotte/logs/Webserver.log /home/pi/griotte/WebServer/WebServer.js
 sudo /usr/local/lib/node_modules/forever/bin/forever start -o /home/pi/griotte/logs/OSCDispatcher.log /home/pi/griotte/OSCDispatcher/OSCDispatcher.js
-sudo /usr/local/lib/node_modules/forever/bin/forever start -o /home/pi/griotte/logs/ScenarioPlayer.log /home/pi/griotte/ScenarioPlayer/init.js
-sudo /usr/local/lib/node_modules/forever/bin/forever start -o l/home/pi/griotte/logs/IOInterface.log /home/pi/griotte/IOInterface/IOInterface.js
+sudo /usr/local/lib/node_modules/forever/bin/forever start -o /home/pi/griotte/logs/ScenarioPlayer.log /home/pi/griotte/ScenarioPlayer/ScenarioPlayer.js
+
 echo "Starting HPlayer in background\n"
 echo "" > /home/pi/griotte/logs/HPlayer.log
 /home/pi/griotte/bin/HPlayer/bin/HPlayer > /home/pi/griotte/logs/HPlayer.log 2>&1 &

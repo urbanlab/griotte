@@ -18,6 +18,7 @@
     <script type="text/javascript" src="js/blockly/core/medias.js"></script>
     
     <script type="text/javascript" src="js/blockly/blocks/raspiomix.js"></script>
+    <script type="text/javascript" src="js/blockly/blocks/arduino.js"></script>
     
     <!--<script type="text/javascript" src="js/blockly/blocks/analog.js"></script>-->
     <script type="text/javascript" src="js/blockly/blocks/audio.js"></script>
@@ -31,6 +32,7 @@
     <script type="text/javascript" src="js/blockly/blocks/tempo.js"></script>
     
     <script type="text/javascript" src="js/blockly/generators/js/raspiomix.js"></script>
+    <script type="text/javascript" src="js/blockly/generators/js/arduino.js"></script>
     <script type="text/javascript" src="js/blockly/generators/js/multimedia.js"></script>
     <script type="text/javascript" src="js/blockly/generators/js/tempo.js"></script>
     <script type="text/javascript" src="js/blockly/generators/js/dmx.js"></script>
@@ -126,6 +128,17 @@
       	     		<block type="writedigital"></block>
       	     		<block type="ondigital"></block>
       	     		<block type="ondigitalchange"></block>
+      	     </category>
+      	</category>
+      	<category name="arduino">
+      	     <category name="analog">
+      	     		<block type="fonanalog"></block>
+      	     </category>
+      	     <category name="digital">
+      	     		<block type="fondigitalchange"></block>
+      	     		<block type="fwritedigital"></block>
+      	     		<block type="fwriteservo"></block>
+      	     		<block type="fwritepwm"></block>
       	     </category>
       	</category>
         <!--<category name="Analogiques">

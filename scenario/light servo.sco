@@ -1,0 +1,7 @@
+{
+  "name": "light servo",
+  "type": "block",
+  "xml": "<block type=\"fonanalog\" id=\"39\" x=\"455\" y=\"131\"><field name=\"pin\">2</field><field name=\"VAR\">v</field><statement name=\"callback\"><block type=\"variables_set\" id=\"62\" inline=\"true\"><field name=\"VAR\">v</field><value name=\"VALUE\"><block type=\"math_arithmetic\" id=\"81\" inline=\"true\"><field name=\"OP\">MULTIPLY</field><value name=\"A\"><block type=\"variables_get\" id=\"86\"><field name=\"VAR\">v</field></block></value><value name=\"B\"><block type=\"math_arithmetic\" id=\"105\" inline=\"true\"><field name=\"OP\">DIVIDE</field><value name=\"A\"><block type=\"math_number\" id=\"124\"><field name=\"NUM\">180</field></block></value><value name=\"B\"><block type=\"math_number\" id=\"125\"><field name=\"NUM\">1024</field></block></value></block></value></block></value><next><block type=\"fwriteservo\" id=\"135\" inline=\"true\"><field name=\"pin\">3</field><value name=\"angle\"><block type=\"variables_get\" id=\"140\"><field name=\"VAR\">v</field></block></value></block></next></block></statement></block>",
+  "codejs": "var v;\n\n\nfonAnalog(2,function(v){\n  v = v * 180 / 1024;\n  fwriteServo(3,v);});\n",
+  "codepy": ""
+}

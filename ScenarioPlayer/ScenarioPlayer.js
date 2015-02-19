@@ -14,6 +14,14 @@ function ScenarioPlayer(){
 		nowplaying:""
 	}
 	
+	var configJSON = fs.readFileSync(__dirname +"/scenarioplayer.config");
+	if(typeof configJSON === 'undefined')
+		return error.log("no config found for ScenarioPlayer");
+	var config = JSON.parse(configJSON);
+	
+	this.autoplay = typeof config.autoplay !== 'undefined' ? config.autoplay : false;
+	this.autoplaysco = typeof config.autoplaysco !== 'undefined' ? config.autoplaysco : "";
+	
 	this.processManager = new ProcessManager();
 	
 	this.scenarioPlayerOSC = new ScenarioPlayerOSC();
@@ -27,7 +35,9 @@ function ScenarioPlayer(){
 	this.scenarioPlayerOSC.eventEmitter.on('stop', function(from){
 		self.stop();
 		self.status.nowplaying = "";
-		self.scenarioPlayerOSC.sendStatus(from,self.status)
+		self.scenarioPlayerOSC.sendStatus(from,self.status);
+		// temporary
+		self.scenarioPlayerOSC.oscClient.sendMessage("scenarioplayer:iointerface/arduino","resetAll");
 	});
 	this.scenarioPlayerOSC.eventEmitter.on('status', function(from){
 		self.scenarioPlayerOSC.sendStatus(from,self.status)
@@ -37,10 +47,17 @@ function ScenarioPlayer(){
 
 	this.options = this.parseArgs();
 	//console.log(this.options);
-	if(this.options.input){
+	if(config.autoplay){
+		var sco = this.openSCO(config.autoplaysco);
+		if(!sco)
+			return error.log("could not open auto play sco");
+		this.status.nowplaying = sco.name;
+		this.play(sco.codejs);
+	}else if(this.options.input){
 		var sco = this.openSCO(this.options.input);
 		if(!sco)
 			return;
+		this.status.nowplaying = sco.name;
 		//var script = vm.createScript(sco.codejs);
 		this.play(sco.codejs);
 		
@@ -67,7 +84,7 @@ ScenarioPlayer.prototype.parseArgs = function(){
 
 ScenarioPlayer.prototype.play = function(scenario){
 	if(!this.status.isPlaying){
-		this.processManager.spawn("node",["/home/pi/HController/ScenarioPlayer/Runner.js",scenario],false,true); 
+		this.processManager.spawn("node",["/home/pi/griotte/ScenarioPlayer/Runner.js",scenario],false,true); 
 		this.status.isPlaying = true;
 	}
 	
@@ -93,6 +110,7 @@ ScenarioPlayer.prototype.openSCO = function(file){
 	return JSON.parse(scoFile);
 }
 
+var scenarioPlayer = new ScenarioPlayer();
 
 module.exports = ScenarioPlayer;
 

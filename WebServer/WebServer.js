@@ -183,8 +183,7 @@ Client.prototype.addEventListeners = function(webserver){
     
 function WebServer(){
 		
-	
-	var configJSON = fs.readFileSync("/home/pi/HController/WebServer/webserver.config");
+	var configJSON = fs.readFileSync(__dirname +"/webserver.config");
 	if(typeof configJSON === 'undefined')
 		return error.log("no config found for WebServer");
 	var config = JSON.parse(configJSON);

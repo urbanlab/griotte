@@ -1,5 +1,6 @@
 var Raspiomix = require('./Raspiomix.js');
-//var DMXInterface = require('./DMXInterface.js');
+var DMXInterface = require('./DMXInterface.js');
+var FirmataInterface = require('./FirmataInterface.js');
 var osc = require('node-osc');
 
 
@@ -13,6 +14,8 @@ var IOCommands = {
 	geta:"getAnalog",
 	getd:"getDigital",
 	writed:"writeDigital",
+	writepwm:"writePWM",
+	writeservo:"writeServo",
 	getrtc:"getRtc",
 	senddmx:"senddmx",
 	senddmxmultiple:"senddmxmultiple",
@@ -24,7 +27,8 @@ function IOInterface(){
 	
 	
 	this.raspiomix = new Raspiomix();
-	//this.dmxInterface = new DMXInterface();
+	this.dmxInterface = new DMXInterface();
+	this.firmataInterface = new FirmataInterface();
 	
 	
 	this.url = '127.0.0.1';
@@ -54,6 +58,12 @@ function IOInterface(){
 	});	
 	
 	//var handler = this.stayAlive();
+	/*this.firmataInterface.board.on("ready", function() {
+		self.firmataInterface.onAnalog(5,function(value){
+			console.log(value);
+			self.firmataInterface.writePWM(3,value*255/1024);
+		});
+	});*/
 }
 
 IOInterface.prototype.stayAlive = function(){
@@ -67,6 +77,8 @@ IOInterface.prototype.stayAlive = function(){
 
 IOInterface.prototype.receiveMessageOSC = function(message,rinfo){	
 		//console.log(message);
+		
+		var self = this;
 	
 		var mes = message.slice();
 		var address = mes.shift();
@@ -105,11 +117,48 @@ IOInterface.prototype.receiveMessageOSC = function(message,rinfo){
 					
 				break;
 				case IODeviceAddesses.arduino :
-					
+					var command = addressElements.shift();
+					switch(command){
+						case IOCommands.geta:
+							var pin = mes.shift();
+							this.firmataInterface.onAnalog(pin,function(value){
+								console.log(pin+"  "+value);		
+								self.oscClient.sendMessageOSC(to+':'+from+'/'+deviceAddress+'/'+'analogValue',[pin,value]);		
+							});
+							
+						break;
+						case IOCommands.getd :
+							var pin = mes.shift();
+							this.firmataInterface.onDigitalChange(pin,function(value){
+								//console.log(value);	
+								self.oscClient.sendMessageOSC(to+':'+from+'/'+deviceAddress+'/'+'digitalValue',[pin,value]);		
+							});						
+						break;
+						case IOCommands.writed :
+							var pin = mes.shift();
+							var value = mes.shift();
+							this.firmataInterface.writeDigital(pin,value);
+						break;
+						case IOCommands.writeservo :
+							var pin = mes.shift();
+							var value = mes.shift();
+							this.firmataInterface.writeServo(pin,value);
+						break;
+						case IOCommands.writepwm :
+							var pin = mes.shift();
+							var value = mes.shift();
+							this.firmataInterface.writePWM(pin,value);
+						break;
+						case "resetAll" :
+							this.firmataInterface.resetAll();
+						break;
+						default: console.log("message not recognized: "+ message);	
+					}
+				break;	
 				break;
 				case IODeviceAddesses.dmxusbpro :
 					
-					/*var command = addressElements.shift();
+					var command = addressElements.shift();
 					switch(command){
 						case IOCommands.senddmx:
 							var channel = mes.shift();
@@ -125,7 +174,7 @@ IOInterface.prototype.receiveMessageOSC = function(message,rinfo){
 							this.dmxInterface.blackout();
 						break;
 						default: console.log("message not recognized: "+ message);	
-					}		*/			
+					}					
 				break;				
 				default: return console.error("IO Address not recognized : "+baseAddress);
 		}
