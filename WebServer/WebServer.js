@@ -1,5 +1,7 @@
 var fs = require('fs'),
-		httpServer = require('http-server'),
+		//httpServer = require('http-server'),
+		express = require('express'),
+		busboy = require('connect-busboy'), //middleware for form/file upload
     socket = require('socket.io'),
     path = require('path'),
     events = require('events'),
@@ -52,6 +54,9 @@ Client.prototype.sendScenarioCreated = function(scenariopath,scenariolist){
 Client.prototype.sendScenarioDeleted = function(scenariolist){
 	this.socket.emit('scenarioDeleted',scenariolist);	
 }
+Client.prototype.sendMediaDeleted = function(mediaList){
+	this.socket.emit('mediaDeleted',mediaList);	
+}
 Client.prototype.addEventListeners = function(webserver){
 	
 	var self=this;
@@ -85,11 +90,19 @@ Client.prototype.addEventListeners = function(webserver){
 				self.sendScenarioSaved(scenariopath);		
 			});
 	});
+	// TODO BROADCAST NEW LIST
 	this.socket.on('deleteScenario', function (scenariopath) {
 			//webserver.eventEmitter.emit('deleteScenario',self,data);
 		if(scenariopath)
 			webserver.scenarioManager.deleteScenario(scenariopath,function(scenariolist){
 				self.sendScenarioDeleted(scenariolist);		
+			});
+	});
+	// TODO BROADCAST NEW LIST
+	this.socket.on('deleteMedia', function (mediapath) {
+		if(mediapath)
+			webserver.mediaManager.deleteMedia(mediapath,function(mediaList){
+				self.sendMediaDeleted(mediaList);		
 			});
 	});
 	
@@ -242,17 +255,27 @@ WebServer.prototype.start = function(){
 	sync(beforeWeStart.shift());	
 	
 	// there we go
-	this.server = httpServer.createServer({
+	/*this.server = httpServer.createServer({
 		root: this.root,
 		headers: {
 		  'Access-Control-Allow-Origin': '*',
 		  'Access-Control-Allow-Credentials': 'true'
 		}
-	  });
+	  });*/
+	this.app = express();
+	this.server = require('http').Server(this.app);
+	this.io = socket.listen(this.server,{ log: this.debug });
 	
-	io = socket.listen(this.server.server,{ log: this.debug });
+	this.app.use(busboy());
+	this.app.use(express.static(this.root));
+ 
 	this.server.listen(this.port);
-	io.sockets.on('connection',onSocketConnection);	
+
+	this.io.on('connection', onSocketConnection);
+	
+	//io = socket.listen(this.server.server,{ log: this.debug });
+	//this.server.listen(this.port);
+	//io.sockets.on('connection',onSocketConnection);	
 	
 	function onSocketConnection(socket){
 		// change with a proper client name or id
@@ -266,6 +289,18 @@ WebServer.prototype.start = function(){
 		// we ask for scenario player status, answer will be broadcasted to every connected client
 		self.oscInterface.getScenarioPlayerStatus();
 	}
+	
+	// upload route
+	this.app.route('/upload')
+    .post(function (req, res, next) {
+        req.pipe(req.busboy);
+        req.busboy.on('file', function(fieldname, file, filename){
+        		self.mediaManager.storeMedia(fieldname, file, filename,function(newlist){
+        				self.sendMediaList(newlist);
+        				res.redirect('back');           //where to go next
+        		});
+        });
+    });
 	
 	// on media player status handler
 	this.oscInterface.eventEmitter.on('status', function(status){
@@ -297,6 +332,8 @@ WebServer.prototype.stop = function(){
 	console.log('[WebServer] '.red+'stoped');	
 }
 
+// BROADCAST
+
 WebServer.prototype.sendPlayerStatus = function(status){
 	this.clients.forEach(function(client){
 			client.sendPlayerStatus(status);
@@ -305,6 +342,11 @@ WebServer.prototype.sendPlayerStatus = function(status){
 WebServer.prototype.sendScenarioPlayerStatus = function(status){
 	this.clients.forEach(function(client){
 			client.sendScenarioPlayerStatus(status);
+	});
+}
+WebServer.prototype.sendMediaList = function(list){
+	this.clients.forEach(function(client){
+			client.sendMediaList(list);
 	});
 }
 

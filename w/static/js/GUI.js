@@ -18,7 +18,7 @@ function GUI(){
 	}
 	
 	// initialize the current state
-	this.changeState(this.states.scenario);
+	this.changeState(this.states.medias);
 	
 	// initialize scenario section
 	this.changeScenarioSubState(this.scenarioSubStates.scenarioempty);
@@ -74,7 +74,21 @@ function GUI(){
   			}
   		}
   });
-
+  
+  
+  var myDropzone = new Dropzone("#upload-zone", { 
+  	url: "/upload",
+  	parallelUploads:5,
+  	maxFilesize:800
+  });
+	myDropzone.on("complete", function(file) {
+		myDropzone.removeFile(file);
+		$("#upload-message").show();
+	});
+	myDropzone.on("addedfile", function(file) {
+		$("#upload-message").hide();
+	});
+  
 	
 }
 

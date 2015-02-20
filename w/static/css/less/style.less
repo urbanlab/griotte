@@ -569,67 +569,65 @@ a:hover{
 	/*height:100%;*/
 	#media-controls{
 		.ds(0,2px,3px,0,0.2);
-		position:relative;
+		position: fixed;
+		width: 100%;
+		z-index: 1000;
 	}
-	.media-preview{
-		height:60px;	
+	.media-zone{
+		height:260px;	
+		padding:40px;
+		text-align:center;
 	}
 	.media-list{
 		height:calc(~"100% - 60px");
 	}
-	/*#media-list{
-		min-height: 100%;
-		height: auto;
-	}
-	table {
-		margin:0;	
-		height:100%
-	}
-	thead, tbody, tr, td, th { 
-		display: block;
-		border-style: none;
-	}
-	tr:after {
-		content: ' ';
-		display: block;
-		visibility: hidden;
-		clear: both;
-	}
-	thead th {
-		height: 33px;
-		
-	}
-	tbody {
-		overflow-y: auto;
-		background-color: @g1-ppp;
-		height: 300px;
-	}
-	thead {
-		background-color: @g1-ppp;
-		border-bottom-style: dashed;
-		border-bottom-width:1px;
-		border-bottom-color: @g1-pp;
-	}
-	tbody td, thead th {
-		width: 25%;
-		float: left;
-	}
-	.table-striped {
-	  > tbody > tr:nth-child(odd) {
-		background-color: @g1-ppp+#111;
-	  }
-	}
+	#upload-zone, #upload-zone * {
+	  box-sizing: border-box; }
 	
-	.table-hover {
-	  > tbody > tr:hover {
-		background-color: @g1-pp;
-		color:@w;
-	  }
+	#upload-zone {
+		position: relative; 
 	}
-
-	.media-preview{
-		height:60px;	
-	}*/
+	#upload-message{
+		opacity:0.15;
+		font-size:124px;
+		color: #222;
+		text-shadow: 0px 2px 3px #555;
+		position: absolute;
+		top: 60px;
+		left: 50%;
+		margin-left: -224px;
+	}
+	  #upload-zone .dz-preview {
+		position: relative;
+		display: inline-block;
+		width: 120px;
+		margin: 0.5em; }
+		#upload-zone .dz-preview .dz-progress {
+		  display: block;
+		  height: 15px;
+		  border: 1px solid #aaa; }
+		  #upload-zone .dz-preview .dz-progress .dz-upload {
+			display: block;
+			height: 100%;
+			width: 0;
+			background: @id-color-m; }
+		#upload-zone .dz-preview .dz-error-message {
+		  color: red;
+		  display: none; }
+		#upload-zone .dz-preview.dz-error .dz-error-message, #upload-zone .dz-preview.dz-error .dz-error-mark {
+		  display: block; }
+		#upload-zone .dz-preview.dz-success .dz-success-mark {
+		  display: block; }
+		#upload-zone .dz-preview .dz-error-mark, #upload-zone .dz-preview .dz-success-mark {
+		  position: absolute;
+		  display: none;
+		  left: 30px;
+		  top: 30px;
+		  width: 54px;
+		  height: 58px;
+		  left: 50%;
+		  margin-left: -27px; 
+	}
 }
 #settings-section{
 	

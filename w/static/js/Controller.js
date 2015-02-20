@@ -80,6 +80,11 @@ Controller.prototype.addEventListeners = function(){
 		self.gui.changeScenarioSubState(self.gui.scenarioSubStates.scenarioempty);
 		self.gui.closePopup();
 	})
+	this.socket.on('mediaDeleted', function (list){
+		self.mediaPlayer.updateMediaList(list);
+		self.mediaSection.updateMediaList(list);
+		self.scenarioSection.updateMediaList(list);
+	})
 	
 }
 	

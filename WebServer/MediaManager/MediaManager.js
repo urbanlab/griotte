@@ -161,8 +161,33 @@ MediaManager.prototype.copyMedia = function(media,from,to,callback){
     });
 	
 }
-MediaManager.prototype.deleteMedia = function(media,callback){
-	
+MediaManager.prototype.storeMedia = function(fieldname, file, filename,callback){
+	var self = this;
+	console.log("Uploading: " + filename+" to "+this.mediaDirectory+'/'+filename);
+	var fstream = fs.createWriteStream(this.mediaDirectory+'/'+filename);
+	file.pipe(fstream);
+	fstream.on('close', function () {    
+			console.log("Upload Finished of " + filename);
+			self.updateMediaList(function(err,list){
+					if(err)
+						return console.error(err);
+					
+					callback(list);	
+			});
+	});	
+}
+MediaManager.prototype.deleteMedia = function(mediapath,callback){
+	var self = this;
+	fs.unlink(mediapath, function (err) {
+		if (err) throw err;
+		console.log('successfully deleted '+mediapath);
+		self.updateMediaList(function(err,list){
+					if(err)
+						return console.error(err);
+					
+					callback(list);	
+		});
+	});
 }
 MediaManager.prototype.renameMedia = function(media,name,callback){
 	

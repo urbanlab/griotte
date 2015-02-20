@@ -24,6 +24,8 @@
     "filesize": "~2.0.4",
     "google-closure-library": "*",
     "magnific-popup": "~1.0.0",
-    "ace-builds": "~1.1.8"
+    "ace-builds": "~1.1.8",
+    "latest": "https://github.com/enyo/dropzone/releases/latest",
+    "dropzone": "~4.0.1"
   }
 }

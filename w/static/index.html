@@ -19,6 +19,7 @@
     <script src="lib/jquery-ui/jquery-ui.min.js"></script>
     <script src="lib/filesize/lib/filesize.min.js"></script>
     <script src="lib/magnific-popup/dist/jquery.magnific-popup.js"></script>
+    <script src="lib/dropzone/dist/dropzone.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     
     <script src="js/GUI.js"></script>
@@ -275,7 +276,7 @@
 						<div id="media-controls" class="toolbar">
 							<div class="row">
 								<div class="col-xs-1">
-									<button id="add-media-btn" type="button" class="btn btn-default col-xs-12"><span class="glyphicon glyphicon-plus" ></span>Add</button>
+									<button id="add-media-btn" type="button" class="btn btn-default col-xs-12 disabled"><span class="glyphicon glyphicon-plus" ></span>Add</button>
 								</div>
 								<div class="col-xs-7"></div>
 								<div class="col-xs-2 progress-container">
@@ -294,12 +295,10 @@
 							</div>
 						</div>
 						
-						<div class="media-preview row">
-								<div class="col-xs-4" style="visibility:hidden">
-									<a href="#" class="thumbnail">
-										<img data-src="holder.js/100%x180" alt="...">
-									</a>
-								</div>
+						<div id="upload-zone" class="media-zone row">
+							<div id="upload-message">
+								<span class="glyphicon glyphicon-open" ></span>Upload</button>
+							</div>
 						</div>
 						
 						<div class="media-list">

@@ -26,6 +26,12 @@ MediaSectionController.prototype.addEventListeners = function(){
 	this.element.find('#download-media-btn').click(function () {
 	});
 	this.element.find('#delete-media-btn').click(function () {
+		if(self.mediaList.selectedMedia.element !== null)
+			self.socket.emit('deleteMedia',self.mediaList.selectedMedia.path);
+	});
+	
+	$("#media-section").on('click','.media-element',function (event) {
+		self.mediaList.selectMedia(self.mediaList.currentMediaList[self.mediaList.mediaIndex({name:"",path:"",element:event.currentTarget})]);
 	});
 }
 

@@ -3,11 +3,11 @@
 1 verbose cli   '/usr/local/bin/npm',
 1 verbose cli   'install',
 1 verbose cli   '-g',
-1 verbose cli   'less' ]
+1 verbose cli   'bower' ]
 2 info using npm@1.4.28
-3 info using node@v0.10.33
-4 verbose cache add [ 'less', null ]
-5 verbose cache add name=undefined spec="less" args=["less",null]
+3 info using node@v0.10.36
+4 verbose cache add [ 'bower', null ]
+5 verbose cache add name=undefined spec="bower" args=["bower",null]
 6 verbose parsed url { protocol: null,
 6 verbose parsed url   slashes: null,
 6 verbose parsed url   auth: null,
@@ -17,231 +17,243 @@
 6 verbose parsed url   hash: null,
 6 verbose parsed url   search: null,
 6 verbose parsed url   query: null,
-6 verbose parsed url   pathname: 'less',
-6 verbose parsed url   path: 'less',
-6 verbose parsed url   href: 'less' }
-7 silly lockFile 0b439cf4-less less
-8 verbose lock less /Users/alainbarthelemy/.npm/0b439cf4-less.lock
-9 silly lockFile 0b439cf4-less less
-10 silly lockFile 0b439cf4-less less
-11 verbose addNamed [ 'less', '' ]
+6 verbose parsed url   pathname: 'bower',
+6 verbose parsed url   path: 'bower',
+6 verbose parsed url   href: 'bower' }
+7 silly lockFile 206e3ce5-bower bower
+8 verbose lock bower /home/pi/.npm/206e3ce5-bower.lock
+9 silly lockFile 206e3ce5-bower bower
+10 silly lockFile 206e3ce5-bower bower
+11 verbose addNamed [ 'bower', '' ]
 12 verbose addNamed [ null, '*' ]
-13 silly lockFile e13833ab-less less@
-14 verbose lock less@ /Users/alainbarthelemy/.npm/e13833ab-less.lock
-15 silly addNameRange { name: 'less', range: '*', hasData: false }
-16 verbose request where is /less
+13 silly lockFile 1240aab1-bower bower@
+14 verbose lock bower@ /home/pi/.npm/1240aab1-bower.lock
+15 silly addNameRange { name: 'bower', range: '*', hasData: false }
+16 verbose request where is /bower
 17 verbose request registry https://registry.npmjs.org/
-18 verbose request id 3dd890756a0e31ff
-19 verbose url raw /less
-20 verbose url resolving [ 'https://registry.npmjs.org/', './less' ]
-21 verbose url resolved https://registry.npmjs.org/less
-22 verbose request where is https://registry.npmjs.org/less
-23 info trying registry request attempt 1 at 15:05:06
-24 verbose etag "A8SQVXEDCJ7ZMW4N58DG6WBO6"
-25 http GET https://registry.npmjs.org/less
-26 http 200 https://registry.npmjs.org/less
-27 silly registry.get cb [ 200,
-27 silly registry.get   { date: 'Fri, 28 Nov 2014 14:05:06 GMT',
-27 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-27 silly registry.get     etag: '"8ZCJB0C4ETPMUMALA5GK30N41"',
-27 silly registry.get     'content-type': 'application/json',
-27 silly registry.get     'cache-control': 'max-age=60',
-27 silly registry.get     'content-length': '77709',
-27 silly registry.get     'accept-ranges': 'bytes',
-27 silly registry.get     via: '1.1 varnish',
-27 silly registry.get     age: '11',
-27 silly registry.get     'x-served-by': 'cache-ams4140-AMS',
-27 silly registry.get     'x-cache': 'HIT',
-27 silly registry.get     'x-cache-hits': '1',
-27 silly registry.get     'x-timer': 'S1417183506.777684,VS0,VE0',
-27 silly registry.get     vary: 'Accept',
-27 silly registry.get     'keep-alive': 'timeout=10, max=50',
-27 silly registry.get     connection: 'Keep-Alive' } ]
-28 silly addNameRange number 2 { name: 'less', range: '*', hasData: true }
-29 silly addNameRange versions [ 'less',
-29 silly addNameRange   [ '1.0.10',
-29 silly addNameRange     '1.0.11',
-29 silly addNameRange     '1.0.14',
-29 silly addNameRange     '1.0.18',
-29 silly addNameRange     '1.0.19',
-29 silly addNameRange     '1.0.21',
-29 silly addNameRange     '1.0.32',
-29 silly addNameRange     '1.0.36',
-29 silly addNameRange     '1.0.5',
-29 silly addNameRange     '1.0.40',
-29 silly addNameRange     '1.0.41',
-29 silly addNameRange     '1.0.44',
-29 silly addNameRange     '1.1.0',
-29 silly addNameRange     '1.1.1',
-29 silly addNameRange     '1.1.2',
-29 silly addNameRange     '1.1.4',
-29 silly addNameRange     '1.1.5',
-29 silly addNameRange     '1.1.6',
-29 silly addNameRange     '1.2.0',
-29 silly addNameRange     '1.2.1',
-29 silly addNameRange     '1.2.2',
-29 silly addNameRange     '1.3.0',
-29 silly addNameRange     '1.3.1',
-29 silly addNameRange     '1.3.2',
-29 silly addNameRange     '1.3.3',
-29 silly addNameRange     '1.4.0-b1',
-29 silly addNameRange     '1.4.0-b2',
-29 silly addNameRange     '1.4.0-b3',
-29 silly addNameRange     '1.4.0-b4',
-29 silly addNameRange     '1.4.0',
-29 silly addNameRange     '1.4.1',
-29 silly addNameRange     '1.4.2',
-29 silly addNameRange     '1.5.0-b1',
-29 silly addNameRange     '1.5.0-b2',
-29 silly addNameRange     '1.5.0-b3',
-29 silly addNameRange     '1.5.0-b4',
-29 silly addNameRange     '1.5.0',
-29 silly addNameRange     '1.5.1',
-29 silly addNameRange     '1.6.0',
-29 silly addNameRange     '1.6.1',
-29 silly addNameRange     '1.6.2',
-29 silly addNameRange     '1.6.3',
-29 silly addNameRange     '1.7.0',
-29 silly addNameRange     '1.7.1',
-29 silly addNameRange     '1.7.3',
-29 silly addNameRange     '1.7.4',
-29 silly addNameRange     '1.7.5',
-29 silly addNameRange     '2.0.0-b1',
-29 silly addNameRange     '2.0.0-b2',
-29 silly addNameRange     '2.0.0-b3',
-29 silly addNameRange     '2.0.0',
-29 silly addNameRange     '2.1.0',
-29 silly addNameRange     '2.1.1' ] ]
-30 verbose addNamed [ 'less', '2.1.1' ]
-31 verbose addNamed [ '2.1.1', '2.1.1' ]
-32 silly lockFile 752eb025-less-2-1-1 less@2.1.1
-33 verbose lock less@2.1.1 /Users/alainbarthelemy/.npm/752eb025-less-2-1-1.lock
-34 silly lockFile 53197aab-ry-npmjs-org-less-less-2-1-1-tgz https://registry.npmjs.org/less/-/less-2.1.1.tgz
-35 verbose lock https://registry.npmjs.org/less/-/less-2.1.1.tgz /Users/alainbarthelemy/.npm/53197aab-ry-npmjs-org-less-less-2-1-1-tgz.lock
-36 verbose addRemoteTarball [ 'https://registry.npmjs.org/less/-/less-2.1.1.tgz',
-36 verbose addRemoteTarball   '7ba1fd7698e7b4eb46286c3954aed43e54da41b6' ]
-37 info retry fetch attempt 1 at 15:05:07
-38 verbose fetch to= /var/folders/2k/mc_dcfpd34b9c193kv2gpf6c0000gn/T/npm-4585-j052Sd4P/registry.npmjs.org/less/-/less-2.1.1.tgz
-39 http GET https://registry.npmjs.org/less/-/less-2.1.1.tgz
-40 http 200 https://registry.npmjs.org/less/-/less-2.1.1.tgz
-41 silly lockFile 53197aab-ry-npmjs-org-less-less-2-1-1-tgz https://registry.npmjs.org/less/-/less-2.1.1.tgz
-42 silly lockFile 53197aab-ry-npmjs-org-less-less-2-1-1-tgz https://registry.npmjs.org/less/-/less-2.1.1.tgz
-43 silly lockFile 752eb025-less-2-1-1 less@2.1.1
-44 silly lockFile 752eb025-less-2-1-1 less@2.1.1
-45 silly lockFile e13833ab-less less@
-46 silly lockFile e13833ab-less less@
-47 silly resolved [ { name: 'less',
-47 silly resolved     version: '2.1.1',
-47 silly resolved     description: 'Leaner CSS',
-47 silly resolved     homepage: 'http://lesscss.org',
-47 silly resolved     author: { name: 'Alexis Sellier', email: 'self@cloudhead.net' },
-47 silly resolved     contributors: [ [Object] ],
-47 silly resolved     bugs: { url: 'https://github.com/less/less.js/issues' },
-47 silly resolved     repository: { type: 'git', url: 'https://github.com/less/less.js.git' },
-47 silly resolved     licenses: [ [Object] ],
-47 silly resolved     bin: { lessc: './bin/lessc' },
-47 silly resolved     main: 'index',
-47 silly resolved     directories: { test: './test' },
-47 silly resolved     jam: { main: './dist/less.js' },
-47 silly resolved     engines: { node: '>=0.10.0' },
-47 silly resolved     scripts: { test: 'grunt test' },
-47 silly resolved     optionalDependencies:
-47 silly resolved      { 'graceful-fs': '^3.0.4',
-47 silly resolved        mime: '^1.2.11',
-47 silly resolved        request: '^2.48.0',
-47 silly resolved        mkdirp: '^0.5.0',
-47 silly resolved        'source-map': '^0.1.x',
-47 silly resolved        promise: '^6.0.1' },
-47 silly resolved     devDependencies:
-47 silly resolved      { diff: '^1.0',
-47 silly resolved        grunt: '^0.4.5',
-47 silly resolved        'grunt-contrib-clean': '^0.6.0',
-47 silly resolved        'grunt-contrib-concat': '^0.5.0',
-47 silly resolved        'grunt-contrib-connect': '^0.9.0',
-47 silly resolved        'grunt-contrib-jasmine': '^0.8.1',
-47 silly resolved        'grunt-contrib-jshint': '^0.10.0',
-47 silly resolved        'grunt-contrib-uglify': '^0.6.0',
-47 silly resolved        'grunt-shell': '^1.1.1',
-47 silly resolved        'grunt-browserify': '^3.2.0',
-47 silly resolved        matchdep: '^0.3.0',
-47 silly resolved        'time-grunt': '^1.0.0',
-47 silly resolved        'grunt-saucelabs': '^8.3.2' },
-47 silly resolved     keywords:
-47 silly resolved      [ 'compile less',
-47 silly resolved        'css nesting',
-47 silly resolved        'css variable',
-47 silly resolved        'css',
-47 silly resolved        'gradients css',
-47 silly resolved        'gradients css3',
-47 silly resolved        'less compiler',
-47 silly resolved        'less css',
-47 silly resolved        'less mixins',
-47 silly resolved        'less',
-47 silly resolved        'less.js',
-47 silly resolved        'lesscss',
-47 silly resolved        'mixins',
-47 silly resolved        'nested css',
-47 silly resolved        'parser',
-47 silly resolved        'preprocessor',
-47 silly resolved        'bootstrap css',
-47 silly resolved        'bootstrap less',
-47 silly resolved        'style',
-47 silly resolved        'styles',
-47 silly resolved        'stylesheet',
-47 silly resolved        'variables in css',
-47 silly resolved        'css less' ],
-47 silly resolved     dependencies:
-47 silly resolved      { 'graceful-fs': '^3.0.4',
-47 silly resolved        mime: '^1.2.11',
-47 silly resolved        request: '^2.48.0',
-47 silly resolved        mkdirp: '^0.5.0',
-47 silly resolved        'source-map': '^0.1.x',
-47 silly resolved        promise: '^6.0.1' },
-47 silly resolved     _id: 'less@2.1.1',
-47 silly resolved     dist:
-47 silly resolved      { shasum: '7ba1fd7698e7b4eb46286c3954aed43e54da41b6',
-47 silly resolved        tarball: 'http://registry.npmjs.org/less/-/less-2.1.1.tgz' },
-47 silly resolved     _from: 'less@',
-47 silly resolved     _npmVersion: '1.3.24',
-47 silly resolved     _npmUser: { name: 'agatronic', email: 'luke.a.page@gmail.com' },
-47 silly resolved     maintainers: [ [Object], [Object] ],
-47 silly resolved     _shasum: '7ba1fd7698e7b4eb46286c3954aed43e54da41b6',
-47 silly resolved     _resolved: 'https://registry.npmjs.org/less/-/less-2.1.1.tgz' } ]
-48 info install less@2.1.1 into /usr/local/lib
-49 info installOne less@2.1.1
-50 verbose lib/node_modules/less unbuild
-51 verbose tar unpack /Users/alainbarthelemy/.npm/less/2.1.1/package.tgz
-52 silly lockFile 7a611c47--usr-local-lib-node-modules-less tar:///usr/local/lib/node_modules/less
-53 verbose lock tar:///usr/local/lib/node_modules/less /Users/alainbarthelemy/.npm/7a611c47--usr-local-lib-node-modules-less.lock
-54 silly lockFile 2250ade3-elemy-npm-less-2-1-1-package-tgz tar:///Users/alainbarthelemy/.npm/less/2.1.1/package.tgz
-55 verbose lock tar:///Users/alainbarthelemy/.npm/less/2.1.1/package.tgz /Users/alainbarthelemy/.npm/2250ade3-elemy-npm-less-2-1-1-package-tgz.lock
-56 silly gunzTarPerm modes [ '755', '644' ]
-57 error Error: EACCES, mkdir '/usr/local/lib/node_modules/less'
-57 error  { [Error: EACCES, mkdir '/usr/local/lib/node_modules/less']
-57 error   errno: 3,
-57 error   code: 'EACCES',
-57 error   path: '/usr/local/lib/node_modules/less',
-57 error   fstream_type: 'Directory',
-57 error   fstream_path: '/usr/local/lib/node_modules/less',
-57 error   fstream_class: 'DirWriter',
-57 error   fstream_stack:
-57 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
-57 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53',
-57 error      'Object.oncomplete (fs.js:107:15)' ] }
-58 error Please try running this command again as root/Administrator.
-59 error System Darwin 13.4.0
-60 error command "/usr/local/bin/node" "/usr/local/bin/npm" "install" "-g" "less"
-61 error cwd /Volumes/Storage HD/repository/miscellaneous/2014/blockly/static
-62 error node -v v0.10.33
-63 error npm -v 1.4.28
-64 error path /usr/local/lib/node_modules/less
-65 error fstream_path /usr/local/lib/node_modules/less
-66 error fstream_type Directory
-67 error fstream_class DirWriter
-68 error code EACCES
-69 error errno 3
-70 error stack Error: EACCES, mkdir '/usr/local/lib/node_modules/less'
-71 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
-71 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53
-71 error fstream_stack Object.oncomplete (fs.js:107:15)
-72 verbose exit [ 3, true ]
+18 verbose request id dfe8eb91fbeb186d
+19 verbose url raw /bower
+20 verbose url resolving [ 'https://registry.npmjs.org/', './bower' ]
+21 verbose url resolved https://registry.npmjs.org/bower
+22 verbose request where is https://registry.npmjs.org/bower
+23 info trying registry request attempt 1 at 09:58:56
+24 http GET https://registry.npmjs.org/bower
+25 http 200 https://registry.npmjs.org/bower
+26 silly registry.get cb [ 200,
+26 silly registry.get   { date: 'Fri, 20 Feb 2015 09:58:57 GMT',
+26 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+26 silly registry.get     etag: '"9X50Q7DME3EPZ5R3M5IYJ5R2K"',
+26 silly registry.get     'content-type': 'application/json',
+26 silly registry.get     'cache-control': 'max-age=60',
+26 silly registry.get     'content-length': '106464',
+26 silly registry.get     'accept-ranges': 'bytes',
+26 silly registry.get     via: '1.1 varnish',
+26 silly registry.get     age: '48',
+26 silly registry.get     'x-served-by': 'cache-fra1230-FRA',
+26 silly registry.get     'x-cache': 'HIT',
+26 silly registry.get     'x-cache-hits': '1',
+26 silly registry.get     'x-timer': 'S1424426337.874195,VS0,VE0',
+26 silly registry.get     vary: 'Accept',
+26 silly registry.get     'keep-alive': 'timeout=10, max=50',
+26 silly registry.get     connection: 'Keep-Alive' } ]
+27 silly addNameRange number 2 { name: 'bower', range: '*', hasData: true }
+28 silly addNameRange versions [ 'bower',
+28 silly addNameRange   [ '0.1.0',
+28 silly addNameRange     '0.1.2',
+28 silly addNameRange     '0.1.3',
+28 silly addNameRange     '0.2.0',
+28 silly addNameRange     '0.3.0',
+28 silly addNameRange     '0.3.1',
+28 silly addNameRange     '0.3.2',
+28 silly addNameRange     '0.4.0',
+28 silly addNameRange     '0.5.0',
+28 silly addNameRange     '0.5.1',
+28 silly addNameRange     '0.6.0',
+28 silly addNameRange     '0.6.1',
+28 silly addNameRange     '0.6.2',
+28 silly addNameRange     '0.6.3',
+28 silly addNameRange     '0.6.4',
+28 silly addNameRange     '0.6.5',
+28 silly addNameRange     '0.6.6',
+28 silly addNameRange     '0.6.7',
+28 silly addNameRange     '0.6.8',
+28 silly addNameRange     '0.7.0',
+28 silly addNameRange     '0.7.1',
+28 silly addNameRange     '0.8.0',
+28 silly addNameRange     '0.8.1',
+28 silly addNameRange     '0.8.2',
+28 silly addNameRange     '0.8.3',
+28 silly addNameRange     '0.8.4',
+28 silly addNameRange     '0.8.5',
+28 silly addNameRange     '0.8.6',
+28 silly addNameRange     '0.9.0',
+28 silly addNameRange     '0.9.1',
+28 silly addNameRange     '0.9.2',
+28 silly addNameRange     '0.10.0',
+28 silly addNameRange     '1.0.0',
+28 silly addNameRange     '1.0.1',
+28 silly addNameRange     '1.0.2',
+28 silly addNameRange     '1.0.3',
+28 silly addNameRange     '1.1.0',
+28 silly addNameRange     '1.1.1',
+28 silly addNameRange     '1.1.2',
+28 silly addNameRange     '1.2.0',
+28 silly addNameRange     '1.2.1',
+28 silly addNameRange     '1.2.2',
+28 silly addNameRange     '1.2.3',
+28 silly addNameRange     '1.2.4',
+28 silly addNameRange     '1.2.5',
+28 silly addNameRange     '1.2.6',
+28 silly addNameRange     '1.2.7',
+28 silly addNameRange     '1.2.8',
+28 silly addNameRange     '1.3.0',
+28 silly addNameRange     '1.3.1',
+28 silly addNameRange     '1.3.2',
+28 silly addNameRange     '1.3.3',
+28 silly addNameRange     '1.3.4',
+28 silly addNameRange     '1.3.5',
+28 silly addNameRange     '1.3.6',
+28 silly addNameRange     '1.3.7',
+28 silly addNameRange     '1.3.8',
+28 silly addNameRange     '1.3.9',
+28 silly addNameRange     '1.3.10',
+28 silly addNameRange     '1.3.11',
+28 silly addNameRange     '1.3.12' ] ]
+29 verbose addNamed [ 'bower', '1.3.12' ]
+30 verbose addNamed [ '1.3.12', '1.3.12' ]
+31 silly lockFile 9819431c-bower-1-3-12 bower@1.3.12
+32 verbose lock bower@1.3.12 /home/pi/.npm/9819431c-bower-1-3-12.lock
+33 silly lockFile b05fd70b-npmjs-org-bower-bower-1-3-12-tgz https://registry.npmjs.org/bower/-/bower-1.3.12.tgz
+34 verbose lock https://registry.npmjs.org/bower/-/bower-1.3.12.tgz /home/pi/.npm/b05fd70b-npmjs-org-bower-bower-1-3-12-tgz.lock
+35 verbose addRemoteTarball [ 'https://registry.npmjs.org/bower/-/bower-1.3.12.tgz',
+35 verbose addRemoteTarball   '37de0edb3904baf90aee13384a1a379a05ee214c' ]
+36 info retry fetch attempt 1 at 09:58:58
+37 verbose fetch to= /tmp/npm-3509-rcupRUdE/registry.npmjs.org/bower/-/bower-1.3.12.tgz
+38 http GET https://registry.npmjs.org/bower/-/bower-1.3.12.tgz
+39 http 200 https://registry.npmjs.org/bower/-/bower-1.3.12.tgz
+40 silly lockFile b05fd70b-npmjs-org-bower-bower-1-3-12-tgz https://registry.npmjs.org/bower/-/bower-1.3.12.tgz
+41 silly lockFile b05fd70b-npmjs-org-bower-bower-1-3-12-tgz https://registry.npmjs.org/bower/-/bower-1.3.12.tgz
+42 silly lockFile 9819431c-bower-1-3-12 bower@1.3.12
+43 silly lockFile 9819431c-bower-1-3-12 bower@1.3.12
+44 silly lockFile 1240aab1-bower bower@
+45 silly lockFile 1240aab1-bower bower@
+46 silly resolved [ { name: 'bower',
+46 silly resolved     version: '1.3.12',
+46 silly resolved     description: 'The browser package manager',
+46 silly resolved     author: { name: 'Twitter' },
+46 silly resolved     licenses: [ [Object] ],
+46 silly resolved     repository: { type: 'git', url: 'https://github.com/bower/bower' },
+46 silly resolved     main: 'lib',
+46 silly resolved     homepage: 'http://bower.io',
+46 silly resolved     engines: { node: '>=0.10.0' },
+46 silly resolved     dependencies:
+46 silly resolved      { abbrev: '~1.0.4',
+46 silly resolved        archy: '0.0.2',
+46 silly resolved        'bower-config': '~0.5.2',
+46 silly resolved        'bower-endpoint-parser': '~0.2.2',
+46 silly resolved        'bower-json': '~0.4.0',
+46 silly resolved        'bower-logger': '~0.2.2',
+46 silly resolved        'bower-registry-client': '~0.2.0',
+46 silly resolved        cardinal: '0.4.0',
+46 silly resolved        chalk: '0.5.0',
+46 silly resolved        chmodr: '0.1.0',
+46 silly resolved        'decompress-zip': '0.0.8',
+46 silly resolved        fstream: '~1.0.2',
+46 silly resolved        'fstream-ignore': '~1.0.1',
+46 silly resolved        glob: '~4.0.2',
+46 silly resolved        'graceful-fs': '~3.0.1',
+46 silly resolved        handlebars: '~2.0.0',
+46 silly resolved        inquirer: '0.7.1',
+46 silly resolved        insight: '0.4.3',
+46 silly resolved        'is-root': '~1.0.0',
+46 silly resolved        junk: '~1.0.0',
+46 silly resolved        lockfile: '~1.0.0',
+46 silly resolved        'lru-cache': '~2.5.0',
+46 silly resolved        mkdirp: '0.5.0',
+46 silly resolved        mout: '~0.9.0',
+46 silly resolved        nopt: '~3.0.0',
+46 silly resolved        opn: '~1.0.0',
+46 silly resolved        osenv: '0.1.0',
+46 silly resolved        'p-throttler': '0.1.0',
+46 silly resolved        promptly: '0.2.0',
+46 silly resolved        q: '~1.0.1',
+46 silly resolved        request: '~2.42.0',
+46 silly resolved        'request-progress': '0.3.0',
+46 silly resolved        retry: '0.6.0',
+46 silly resolved        rimraf: '~2.2.0',
+46 silly resolved        semver: '~2.3.0',
+46 silly resolved        'shell-quote': '~1.4.1',
+46 silly resolved        'stringify-object': '~1.0.0',
+46 silly resolved        'tar-fs': '0.5.2',
+46 silly resolved        tmp: '0.0.23',
+46 silly resolved        'update-notifier': '0.2.0',
+46 silly resolved        which: '~1.0.5' },
+46 silly resolved     devDependencies:
+46 silly resolved      { coveralls: '~2.11.0',
+46 silly resolved        'expect.js': '~0.3.1',
+46 silly resolved        grunt: '~0.4.4',
+46 silly resolved        'grunt-cli': '^0.1.13',
+46 silly resolved        'grunt-contrib-jshint': '~0.10.0',
+46 silly resolved        'grunt-contrib-watch': '~0.6.1',
+46 silly resolved        'grunt-exec': '~0.4.2',
+46 silly resolved        'grunt-simple-mocha': '~0.4.0',
+46 silly resolved        istanbul: '~0.3.2',
+46 silly resolved        'load-grunt-tasks': '~0.6.0',
+46 silly resolved        mocha: '~1.21.4',
+46 silly resolved        nock: '~0.46.0',
+46 silly resolved        'node-uuid': '~1.4.1',
+46 silly resolved        proxyquire: '~1.0.1' },
+46 silly resolved     scripts: { test: 'grunt test' },
+46 silly resolved     bin: { bower: 'bin/bower' },
+46 silly resolved     preferGlobal: true,
+46 silly resolved     gitHead: 'b26c072f0db054a1902ec4d2e3726dbf8a1c799a',
+46 silly resolved     bugs: { url: 'https://github.com/bower/bower/issues' },
+46 silly resolved     _id: 'bower@1.3.12',
+46 silly resolved     _shasum: '37de0edb3904baf90aee13384a1a379a05ee214c',
+46 silly resolved     _from: 'bower@',
+46 silly resolved     _npmVersion: '2.0.0',
+46 silly resolved     _npmUser: { name: 'sheerun', email: 'sheerun@sher.pl' },
+46 silly resolved     maintainers: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+46 silly resolved     dist:
+46 silly resolved      { shasum: '37de0edb3904baf90aee13384a1a379a05ee214c',
+46 silly resolved        tarball: 'http://registry.npmjs.org/bower/-/bower-1.3.12.tgz' },
+46 silly resolved     directories: {},
+46 silly resolved     _resolved: 'https://registry.npmjs.org/bower/-/bower-1.3.12.tgz' } ]
+47 info install bower@1.3.12 into /usr/local/lib
+48 info installOne bower@1.3.12
+49 verbose lib/node_modules/bower unbuild
+50 verbose tar unpack /home/pi/.npm/bower/1.3.12/package.tgz
+51 silly lockFile 1396471b-usr-local-lib-node-modules-bower tar:///usr/local/lib/node_modules/bower
+52 verbose lock tar:///usr/local/lib/node_modules/bower /home/pi/.npm/1396471b-usr-local-lib-node-modules-bower.lock
+53 silly lockFile d8908e6d--pi-npm-bower-1-3-12-package-tgz tar:///home/pi/.npm/bower/1.3.12/package.tgz
+54 verbose lock tar:///home/pi/.npm/bower/1.3.12/package.tgz /home/pi/.npm/d8908e6d--pi-npm-bower-1-3-12-package-tgz.lock
+55 silly gunzTarPerm modes [ '755', '644' ]
+56 error Error: EACCES, mkdir '/usr/local/lib/node_modules/bower'
+56 error  { [Error: EACCES, mkdir '/usr/local/lib/node_modules/bower']
+56 error   errno: 3,
+56 error   code: 'EACCES',
+56 error   path: '/usr/local/lib/node_modules/bower',
+56 error   fstream_type: 'Directory',
+56 error   fstream_path: '/usr/local/lib/node_modules/bower',
+56 error   fstream_class: 'DirWriter',
+56 error   fstream_stack:
+56 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
+56 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53',
+56 error      'Object.oncomplete (fs.js:108:15)' ] }
+57 error Please try running this command again as root/Administrator.
+58 error System Linux 3.12.28+
+59 error command "/usr/local/bin/node" "/usr/local/bin/npm" "install" "-g" "bower"
+60 error cwd /home/pi/griotte/w/static
+61 error node -v v0.10.36
+62 error npm -v 1.4.28
+63 error path /usr/local/lib/node_modules/bower
+64 error fstream_path /usr/local/lib/node_modules/bower
+65 error fstream_type Directory
+66 error fstream_class DirWriter
+67 error code EACCES
+68 error errno 3
+69 error stack Error: EACCES, mkdir '/usr/local/lib/node_modules/bower'
+70 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
+70 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53
+70 error fstream_stack Object.oncomplete (fs.js:108:15)
+71 verbose exit [ 3, true ]

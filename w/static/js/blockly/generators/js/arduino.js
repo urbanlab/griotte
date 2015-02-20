@@ -28,7 +28,7 @@ Blockly.JavaScript['fwriteservo'] = function(block) {
   var dropdown_pin = block.getFieldValue('pin');
   if(value_angle > 180) value_angle = 180;
   if(value_angle < 0 ) value_angle = 0;
-  var code = 'fwriteServo('+dropdown_pin+','+value_angle+');';
+  var code = 'fwriteServo('+dropdown_pin+','+value_angle+');\n';
   return code;
 };
 
@@ -37,6 +37,6 @@ Blockly.JavaScript['fwritepwm'] = function(block) {
   var dropdown_pin = block.getFieldValue('pin');
   if(value_valeur > 255) value_valeur = 255;
   if(value_valeur < 0 ) value_valeur = 0;
-  var code = 'fwritePWM('+dropdown_pin+','+value_valeur+');';
+  var code = 'fwritePWM('+dropdown_pin+','+value_valeur+');\n';
   return code;
 };

@@ -1,0 +1,11 @@
+{
+  "name": "latest",
+  "_cacheHeaders": {
+    "Content-Type": "text/html; charset=utf-8"
+  },
+  "main": "index",
+  "_source": "https://github.com/enyo/dropzone/releases/latest",
+  "_target": "*",
+  "_originalSource": "https://github.com/enyo/dropzone/releases/latest",
+  "_direct": true
+}
