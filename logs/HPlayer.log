@@ -47,12 +47,12 @@ Compiled
 Compiled
 [notice ] bool ofxOMXPlayer::openEngine(int): DELETE TOOK 0 MS
 [ error ] COMXPlayer::OpenFile -  
-[notice ] bool ofxOMXPlayerEngine::didReadFile(bool): didOpenMovie TOOK 0 MS
+[notice ] bool ofxOMXPlayerEngine::didReadFile(bool): didOpenMovie TOOK 2 MS
 [warning] bool ofxOMXPlayerEngine::setup(ofxOMXPlayerSettings&): FAST PATH MOVE OPEN FAILED - LIKELY A STREAM, TRYING SLOW PATH
 [ error ] COMXPlayer::OpenFile -  
-[notice ] bool ofxOMXPlayerEngine::didReadFile(bool): didOpenMovie TOOK 1 MS
+[notice ] bool ofxOMXPlayerEngine::didReadFile(bool): didOpenMovie TOOK 0 MS
 [ error ] omxReader open moviePath FAIL: 
-[notice ] bool ofxOMXPlayer::openEngine(int): setup TOOK 2 MS
+[notice ] bool ofxOMXPlayer::openEngine(int): setup TOOK 3 MS
 [ error ] bool ofxOMXPlayer::openEngine(int): engine->setup FAIL
 [warning] ofShader: GL_VERTEX_SHADER shader reports:
 Compiled
