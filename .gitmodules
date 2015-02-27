@@ -4,3 +4,6 @@
 [submodule "bin/HPlayer"]
 	path = bin/HPlayer
 	url = https://github.com/Hemisphere-Project/HPlayer
+[submodule "IOInterface/node_modules/dmx"]
+	path = IOInterface/node_modules/dmx
+	url = https://github.com/AlainBarthelemy/dmx
