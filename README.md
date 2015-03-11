@@ -57,7 +57,7 @@ Installation
   5. Use
   	
 	You can access the web interface via your webbrowser at
-		http://<your pi IP>:8080
+		http://**your-Pi-IP**:8080
 	And begin to write your own scenarios !
 
 
@@ -66,9 +66,7 @@ Credits
 
 The Griotte Project is supported by Erasme, Lyon - France
 
-Griotte v2 has been fully re-coded by @AlainBarthelemy from the [Hemisphere-Project](https://github.com/Hemisphere-Project) Team.
-
-Griotte v2 run with Node.JS
+Griotte v2 has been fully re-coded by @AlainBarthelemy from the [Hemisphere-Project](https://github.com/Hemisphere-Project) Team, and now run with Node.JS
 
 Griotte v2 use external modules to work:
 
