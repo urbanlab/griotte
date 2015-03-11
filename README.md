@@ -41,7 +41,7 @@ Installation
 
   1. clone Griotte from GitHub
 
-		git clone --recursive -b griotte https://github.com/erasme/griotte.git
+		git clone --recursive -b v2 https://github.com/erasme/griotte.git
 
   3. Install dependencies (Raspbian/Debian script), you must reboot once completed.
 
