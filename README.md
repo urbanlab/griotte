@@ -39,58 +39,42 @@ Installation
 		i2c-dev
 		#save and exit
 
-		#install i2ctools and reboot
-		sudo apt-get install i2c-tools
-		sudo apt-get update
-		sudo adduser pi i2c
-		sudo reboot
+  1. clone Griotte from GitHub
 
-  1bis. (temporary) Install missing pkg
-
-  		sudo apt-get install libfreeimage-dev
-
-  1ter. Install ftdi driver for ENTTEC DMX USB PRO
-
-  		follow the instructions at http://www.ftdichip.com/Drivers/D2XX.htm
-  		and then copy ftd2xx.h and WinTypes.h to /usr/local/include directory
-  		OR
-  		(clone the node ftdi module (https://github.com/KABA-CCEAC/node-ftdi) and run install.sh that will do the math
-  		for you.)
-
-  		NB : if you have ftdi_sio installed you might need to remove it for the DMX USB PRO to work properly
-  		(sudo nano /etc/modprobe.d/raspi-blacklist.conf)
-
-  1. install node.js
-
-  	create a node directory and download the last arm distribution
-  	in this directory
-
-		cd /home/pi
-  		mkdir node
-  		cd ./node
-  		wget http://node-arm.herokuapp.com/node_latest_armhf.deb
-
-  	Install the downloaded package
-
-  		sudo dpkg -i node_latest_armhf.deb
-
-  	Once the package installed you should be able to run node typing "node"
-  	and execute a console.log("hello baby") in interactive mode
-
-  2. clone HController from GitHub
-
-		cd /home/pi
 		git clone --recursive -b griotte https://github.com/erasme/griotte.git
 
-  3. install forever
+  3. Install dependencies (Raspbian/Debian script), you must reboot once completed.
 
-		sudo npm install forever -g
+		cd griotte
+		sudo ./install_dependencies.sh
+		sudo reboot
 
-  4. Get Started :
+  4. Get Started
 
   	cd griotte
-    ./startup.sh
+    	./startup.sh
+    	
+  5. Use
+  	
+	You can access the web interface via your webbrowser at
+		http://<your pi IP>:8080
+	And begin to write your own scenarios !
 
-```
 
-C
+Credits
+--------
+
+The Griotte Project is supported by Erasme, Lyon - France
+
+Griotte v2 has been fully re-coded by @AlainBarthelemy from the [Hemisphere-Project](https://github.com/Hemisphere-Project) Team.
+
+Griotte v2 run with Node.JS
+
+Griotte v2 use external modules to work:
+
+- [HPlayer](https://github.com/Hemisphere-Project/HPlayer) to playback multimedia cotents
+- [HDmx](https://github.com/Hemisphere-Project/HDmx) to interface Enttec DMXUSB Pro 
+- [MCP3424](https://github.com/x3itsolutions/mcp3424) to interface MCP3424 4Channel Delta Sigma ADC 
+- a bunch of Node.JS modules (firmata, osc, i2c, rpio, serialport, http-server, socket.io, ...)
+- some common Web frameworks and libraries (Jquery, Bootstrap, ...)
+
