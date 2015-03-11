@@ -1,36 +1,14 @@
-play ! - images
-playMedia('/home/pi/media/croco.jpg');
-
-[32m[Process Manager] [39mnode started with pid 4120
-[31m[Process Manager] [39m4120 killed
-[Process Manager] 4120[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - images
+play ! - dmx test
 var handler;
+var handler2;
 
 
 handler = setInterval(function(){
-  playMedia('/home/pi/media/croco.jpg');
-  handler = setTimeout(function(){
-    playMedia('/home/pi/media/tumblr_mmabytqarU1ra4livo1_500.jpg');
-  },500);
+  sendDmx(1, 100);
+  handler2 = setTimeout(function(){
+    sendDmx(1, 0);
+  },1000);
 }
-,1000);
+,2000);
 
-[32m[Process Manager] [39mnode started with pid 4268
-[31m[Process Manager] [39m4268 killed
-[Process Manager] 4268[31m exited with code [39mnull[31m and signal [39mSIGKILL
-play ! - images
-var handler;
-
-
-handler = setInterval(function(){
-  playMedia('/home/pi/media/croco.jpg');
-  handler = setTimeout(function(){
-    playMedia('/home/pi/media/tumblr_mmabytqarU1ra4livo1_500.jpg');
-  },250);
-}
-,500);
-
-[32m[Process Manager] [39mnode started with pid 4363
-[31m[Process Manager] [39m4363 killed
-[Process Manager] 4363[31m exited with code [39mnull[31m and signal [39mSIGKILL
+[32m[Process Manager] [39mnode started with pid 6503

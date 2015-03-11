@@ -1,8 +1,2 @@
 [32m[WebServer][39m started on port 8080
-play scenario  images
-stopScenario
-scenario saved
-play scenario  images
-stopScenario
-play scenario  images
-stopScenario
+play scenario  dmx test

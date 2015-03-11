@@ -125,9 +125,9 @@ function ScenarioAPI(osc){
 	this.sendDmx = function(channel,value){
 			self.osc.sendDmx(channel,value);
 	}
-	this.sendDmxM = function(valueString){
+	/*this.sendDmxM = function(valueString){
 			self.osc.sendDmxM(valueString);
-	}
+	}*/
 	this.sendDmxBlackout = function(){
 			self.osc.sendDmxBlackout();
 	}

@@ -10,7 +10,8 @@ function ScenarioOSC(config){
 	
 	this.services = {
 		iointerface:"iointerface",
-		hplayer:"hplayer"
+		hplayer:"hplayer",
+		hdmx:"hdmx"
 	}
 	
 	
@@ -227,15 +228,15 @@ ScenarioOSC.prototype.resume = function(){
 /***************************  DMX Commands  ************************/
 
 ScenarioOSC.prototype.sendDmx = function(channel,value){
-	this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/dmxusbpro','senddmx',[channel,value]);
+	this.oscClient.sendMessage("scenario:"+this.services.hdmx,'dmx/send',[channel,value]);
 }
 
-ScenarioOSC.prototype.sendDmxM = function(valuesString){
-	this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/dmxusbpro','senddmxmultiple',[valuesString]);
-}
+/*ScenarioOSC.prototype.sendDmxM = function(valuesString){
+	this.oscClient.sendMessage("scenario:"+this.services.hdmx,'dmx/sendmultiple',[valuesString]);
+}*/
+
 ScenarioOSC.prototype.sendDmxBlackout = function(){
-		this.oscClient.sendMessage("scenario:"+this.services.iointerface+'/dmxusbpro','senddmxblackout');
-
+		this.oscClient.sendMessage("scenario:"+this.services.hdmx,'dmx/blackout');
 }
 
 module.exports = ScenarioOSC;

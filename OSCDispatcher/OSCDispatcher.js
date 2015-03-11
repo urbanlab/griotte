@@ -12,22 +12,32 @@ function OSCDispatcher(config){
 		{
 			name:"hplayer",
 			port:9000,
+			postmanTag: true
+		},
+		{
+			name:"hdmx",
+			port:3000,
+			postmanTag: false
 		},
 		{
 			name:"scenario",
-			port:8000
+			port:8000,
+			postmanTag: true
 		},
 		{
 			name:"scenarioplayer",
-			port:8001
+			port:8001,
+			postmanTag: true
 		},
 		{
 			name:"iointerface",
-			port:7000
+			port:7000,
+			postmanTag: true
 		},
 		{
 			name:"webserver",
-			port:6000
+			port:6000,
+			postmanTag: true
 		}
 	];
 	
@@ -57,22 +67,19 @@ OSCDispatcher.prototype.receiveMessageOSC = function(message,rinfo){
 	//console.log(rinfo);
 	var address = mes.shift();
 	var addressElements = address.split('/');
-	var baseAddress = addressElements.shift();
-	var baseAddressElements = baseAddress.split(':');
-	var from = baseAddressElements.shift();
-	var to = baseAddressElements.shift();
+	var postmanAddr = addressElements.shift();
+	var oscpath = addressElements.join('/');
 	
-	// HACK POUR MGR
-	/*if(message[0] === "#bundle"){
-		var hpmess = message[2];
-		hpmess.unshift("hplayer:webserver/status");
-		return this.services[4].client.sendMessage(hpmess)
-	}*/
+	var postmanElements = postmanAddr.split(':');
+	var from = postmanElements.shift();
+	var to = postmanElements.shift();
 	
 	var k = 0;
 	for(var k = 0; k<this.services.length; k++){
-			if(this.services[k].name == to){
-				return this.services[k].client.sendMessage(message)
+			if(this.services[k].name == to)
+			{
+				if (!this.services[k].postmanTag) message[0] = '/'+oscpath;
+				return this.services[k].client.sendMessage(message);
 			}
 				
 	}

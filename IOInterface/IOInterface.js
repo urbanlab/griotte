@@ -1,5 +1,5 @@
 var Raspiomix = require('./Raspiomix.js');
-var DMXInterface = require('./DMXInterface.js');
+//var DMXInterface = require('./DMXInterface.js');
 var FirmataInterface = require('./FirmataInterface.js');
 var osc = require('node-osc');
 
@@ -7,8 +7,8 @@ var osc = require('node-osc');
 var IODeviceAddesses = {
 	raspiomix:"raspiomix",
 	grovepi:"grovepi",
-	arduino:"arduino",
-	dmxusbpro:"dmxusbpro"
+	arduino:"arduino"
+	//,dmxusbpro:"dmxusbpro"
 }
 var IOCommands = {
 	geta:"getAnalog",
@@ -27,7 +27,7 @@ function IOInterface(){
 	
 	
 	this.raspiomix = new Raspiomix();
-	this.dmxInterface = new DMXInterface();
+	//this.dmxInterface = new DMXInterface();
 	this.firmataInterface = new FirmataInterface();
 	
 	
@@ -156,7 +156,7 @@ IOInterface.prototype.receiveMessageOSC = function(message,rinfo){
 					}
 				break;	
 				break;
-				case IODeviceAddesses.dmxusbpro :
+				/*case IODeviceAddesses.dmxusbpro :
 					
 					var command = addressElements.shift();
 					switch(command){
@@ -175,7 +175,7 @@ IOInterface.prototype.receiveMessageOSC = function(message,rinfo){
 						break;
 						default: console.log("message not recognized: "+ message);	
 					}					
-				break;				
+				break;*/				
 				default: return console.error("IO Address not recognized : "+baseAddress);
 		}
 	

@@ -7,3 +7,6 @@
 [submodule "IOInterface/node_modules/dmx"]
 	path = IOInterface/node_modules/dmx
 	url = https://github.com/AlainBarthelemy/dmx
+[submodule "bin/HDmx"]
+	path = bin/HDmx
+	url = https://github.com/Hemisphere-Project/HDmx.git
