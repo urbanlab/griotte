@@ -51,8 +51,8 @@ Installation
 
   4. Get Started
 
-  	cd griotte
-    	./startup.sh
+  		cd griotte
+    		./startup.sh
     	
   5. Use
   	
