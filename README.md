@@ -15,9 +15,9 @@ Description
 
 Griotte is a framework that turns a Raspberry Pi into a programmable multimedia player.
 
-Associated with a RaspiOMix interface and sensors (temperature, distance, RFID, ..., you name it), the player can react to external events, activate external devices, drive lights via DMX, ...
+Associated with a [RaspiOMix](http://www.raspiomix.org/) interface and sensors (temperature, distance, RFID, ..., you name it), the player can react to external events, activate external devices, drive lights via DMX, ...
 
-While RaspiOMix uses SeeedStudio's Grove system, giving access to a wide range of sensors and actuators, any 3.3v/5v sensor can be used.
+While [RaspiOMix](http://www.raspiomix.org/) uses [SeeedStudio's Grove system](http://wiki.seeed.cc/Grove_System/), giving access to a wide range of sensors and actuators, any 3.3v/5v sensor can be used.
 
 Griotte can play scenarios written with Blockly simply by dragging and dropping blocks.
 
